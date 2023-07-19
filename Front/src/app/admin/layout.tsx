@@ -8,12 +8,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <main className="flex">
       <NavBar />
-      <main>
-        <SideBar />
+      <SideBar />
+      <div className="p-4 md:mr-64 bg-gray-50 w-full h-[100dvh] pt-20 ">
         {children}
-      </main>
-    </>
+      </div>
+    </main>
   );
 }
