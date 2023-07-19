@@ -1,4 +1,6 @@
 import AdminSideBAr from "@/components/AdminDashboard/AdminSideBar";
+import NavBar from "@/components/AdminDashboard/NavBar";
+import SideBar from "@/components/AdminDashboard/SideBar";
 
 export default function AdminLayout({
   children,
@@ -6,9 +8,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main>
-      <AdminSideBAr />
-      {children}
-    </main>
+    <>
+      <NavBar />
+      <main>
+        <SideBar />
+        {children}
+      </main>
+    </>
   );
 }
