@@ -11,8 +11,9 @@ export default function AdminLayout({
     <main className="flex">
       <NavBar />
       <SideBar />
-      <div className="p-4 md:mr-64 bg-gray-50 w-full h-[100dvh] pt-20 ">
+      <div className="p-4 md:mr-64 bg-gray-100  w-full h-full pt-20 ">
         {children}
+        <div className="w-full h-10 text-center rounded-lg">Footer</div>
       </div>
     </main>
   );
