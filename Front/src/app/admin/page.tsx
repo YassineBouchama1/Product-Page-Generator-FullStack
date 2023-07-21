@@ -13,7 +13,7 @@ export default function AdminPage() {
 
         <Status title="دخل" status="$961.99" icon={Icons.IconIncom} />
       </section>
-      <section className="  min-h-screen w-full ">
+      <section className=" bg-white  min-h-screen w-full ">
         <div className="w-full  bg-gray-50 p-2 border-b flex justify-between   shadow-md rounded-t-lg">
           <span>أحدث الطلبات</span>
           <Link href="/admin/orders">
