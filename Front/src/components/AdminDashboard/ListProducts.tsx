@@ -5,15 +5,12 @@ import ProductCard from "./ProductCard";
 import Pagination from "./utilis/Pagination";
 export default function ListProducts() {
   return (
-    <main className="flex flex-col gap-6">
-      <div className=" grid lg:grid-cols-3 gap-4 sm:grid-cols-2 overflow-x-auto  text-right justify-center">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-      </div>
-      <Pagination />
-    </main>
+    <div className=" grid lg:grid-cols-3 xl:grid-cols-4  2xl:grid-cols-5 gap-4 sm:grid-cols-2 overflow-x-auto  text-right justify-center">
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+    </div>
   );
 }
