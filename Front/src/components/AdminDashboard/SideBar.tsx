@@ -1,18 +1,32 @@
+"use client";
+import { usePathname } from "next/navigation";
+
 import Link from "next/link";
+import { useSelectedLayoutSegment } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function SideBar() {
+  const pathname = usePathname();
+  const router = useRouter();
+
   return (
     <aside
       id="logo-sidebar"
-      className={`fixed right-[-100%] md:right-0 top-0 z-40 w-64 h-screen pt-20 transition-right duration-300 ease-in-out bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700`}
+      className={`fixed right-[-100%] md:right-0 top-0 z-40 
+     w-64 h-screen pt-20 transition-right duration-300 ease-in-out
+      bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800
+       dark:border-gray-700`}
       aria-label="Sidebar"
     >
-      <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+      <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800  ">
         <ul className="space-y-2 font-medium">
           <li>
             <Link
               href="/admin"
-              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              className={`${
+                pathname.startsWith("/admin") ? "bg-gray-100" : "none"
+              } flex items-center p-2 text-gray-900 rounded-lg
+               dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`}
             >
               <svg
                 aria-hidden="true"
@@ -31,7 +45,10 @@ export default function SideBar() {
           <li>
             <Link
               href="/admin/orders"
-              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              className={`${
+                pathname.startsWith("/admin/orders") ? "bg-gray-100" : "none"
+              } flex items-center p-2 text-gray-900 rounded-lg
+               dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`}
             >
               <svg
                 aria-hidden="true"
@@ -53,7 +70,10 @@ export default function SideBar() {
           <li>
             <Link
               href="/admin/products"
-              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              className={`${
+                pathname.startsWith("/admin/products") ? "bg-gray-100" : "none"
+              } flex items-center p-2 text-gray-900 rounded-lg
+               dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`}
             >
               <svg
                 aria-hidden="true"
@@ -74,7 +94,10 @@ export default function SideBar() {
           <li>
             <Link
               href="/admin/setting"
-              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              className={`${
+                pathname.startsWith("/admin/setting") ? "bg-gray-100" : "none"
+              } flex items-center p-2 text-gray-900 rounded-lg
+               dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`}
             >
               <svg
                 className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75  dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
