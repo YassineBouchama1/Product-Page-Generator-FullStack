@@ -1,4 +1,3 @@
-import AdminSideBAr from "@/components/AdminDashboard/AdminSideBar";
 import NavBar from "@/components/AdminDashboard/NavBar";
 import SideBar from "@/components/AdminDashboard/SideBar";
 

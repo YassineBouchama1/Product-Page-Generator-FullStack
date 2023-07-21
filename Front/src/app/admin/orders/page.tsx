@@ -1,17 +1,16 @@
+import OrderList from "@/components/AdminDashboard/utilis/OrderList";
 import Status from "@/components/AdminDashboard/utilis/Status";
 import React from "react";
 
 export default function OrderPage() {
   return (
-    <div className="flex flex-col gap-y-10">
-      <div className="grid md:grid-cols-3 sm:grid-cols-1 gap-5 ">
-        <Status />
-        <Status />
-        <Status />
+    <section className="bg-white  min-h-screen w-full  rounded-md p-4">
+      <div className="w-full  bg-gray-50 p-2 border-b flex justify-between   shadow-md rounded-t-lg">
+        <span> الطلبات</span>
+
+        <span className="text-red-500 font-bold cursor-pointer hover:font-black duration-300"></span>
       </div>
-      <section className="bg-white  min-h-screen w-full  rounded-md p-5">
-        Orders
-      </section>
-    </div>
+      <OrderList />
+    </section>
   );
 }
