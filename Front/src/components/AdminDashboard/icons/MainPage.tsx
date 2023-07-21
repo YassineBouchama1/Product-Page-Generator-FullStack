@@ -67,6 +67,8 @@ const IconSales = (
   </svg>
 );
 
+
+
 const Icons = {
   IconSales,
   IconCanceld,
