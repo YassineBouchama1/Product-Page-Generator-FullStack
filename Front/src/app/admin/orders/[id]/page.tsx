@@ -1,5 +1,5 @@
 import React from "react";
-import pic from "../../../../../public/p.png";
+import pic from "../../../../../public/pjpg.jpg";
 import Image from "next/image";
 import Link from "next/link";
 import OrderIcons from "@/components/AdminDashboard/icons/OrderIcons";

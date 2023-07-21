@@ -1,10 +1,11 @@
-import AuthService from "@/services/AuthApi";
+"use client";
 
+import AuthService from "@/services/AuthApi";
 import UserLayout from "@/components/Layout/UserLayout";
 import Link from "next/link";
 export default async function Register() {
   const data = await AuthService.getdataTest();
-  console.log(data);
+
   return (
     <>
       <UserLayout>

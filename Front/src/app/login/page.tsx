@@ -1,10 +1,9 @@
+"use client";
 import Link from "next/link";
-import Head from "next/head";
 import Image from "next/image";
 
 export default function Login() {
   // const [handleButtonClick, handleChange, data, loading] = LoginHook();
-
 
   return (
     <>
