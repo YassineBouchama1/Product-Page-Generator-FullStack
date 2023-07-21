@@ -10,7 +10,7 @@ export default function AdminLayout({
     <main className="flex">
       <NavBar />
       <SideBar />
-      <div className=" md:mr-64 bg-gray-100  w-full h-full pt-20 p-5">
+      <div className=" md:mr-64 bg-gray-100  w-full h-full min-h-screen pt-20 p-5">
         {children}
       </div>
     </main>
