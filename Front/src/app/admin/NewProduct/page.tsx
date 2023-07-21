@@ -1,11 +1,11 @@
 import React from "react";
 
-export default function Edit() {
+export default function AddProduct() {
   return (
-    <div>
-      <h2 className="font-extrabold py-4">تفاصيل المنتج</h2>
+    <div className="">
+      <h2 className="font-extrabold py-4">إضافة منتج جديد</h2>
       <button className=" bg-black fixed bottom-20 left-10 z-50 text-white p-2 shadow-md rounded-md">
-        تحديث المنتج{" "}
+        إنشاء المنتج{" "}
       </button>
       <div className="grid grid-rows-2 grid-cols-4 gap-4     ">
         {/* Product Details */}
