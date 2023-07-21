@@ -24,7 +24,7 @@ export default function SideBar() {
             <Link
               href="/admin"
               className={`${
-                pathname.startsWith("/admin") ? "bg-gray-100" : "none"
+                pathname.endsWith("/admin") ? "bg-gray-100" : "none"
               } flex items-center p-2 text-gray-900 rounded-lg
                dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`}
             >
@@ -46,7 +46,7 @@ export default function SideBar() {
             <Link
               href="/admin/orders"
               className={`${
-                pathname.startsWith("/admin/orders") ? "bg-gray-100" : "none"
+                pathname.endsWith("/orders") ? "bg-gray-100" : "none"
               } flex items-center p-2 text-gray-900 rounded-lg
                dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`}
             >
@@ -71,7 +71,7 @@ export default function SideBar() {
             <Link
               href="/admin/products"
               className={`${
-                pathname.startsWith("/admin/products") ? "bg-gray-100" : "none"
+                pathname.endsWith("products") ? "bg-gray-100" : "none"
               } flex items-center p-2 text-gray-900 rounded-lg
                dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`}
             >
@@ -95,7 +95,7 @@ export default function SideBar() {
             <Link
               href="/admin/setting"
               className={`${
-                pathname.startsWith("/admin/setting") ? "bg-gray-100" : "none"
+                pathname.endsWith("setting") ? "bg-gray-100" : "none"
               } flex items-center p-2 text-gray-900 rounded-lg
                dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700`}
             >
