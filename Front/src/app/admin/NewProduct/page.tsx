@@ -3,7 +3,7 @@ import React from "react";
 export default function AddProduct() {
   return (
     <div className="">
-      <h2 className="font-extrabold py-4">إضافة منتج جديد</h2>
+      <h2 className="font-extrabold py-4 bg-white p-3">إضافة منتج جديد</h2>
       <button className=" bg-black fixed bottom-20 left-10 z-50 text-white p-2 shadow-md rounded-md">
         إنشاء المنتج{" "}
       </button>

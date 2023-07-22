@@ -3,17 +3,19 @@ import Status from "../../components/AdminDashboard/utilis/Status";
 import OrderList from "@/components/AdminDashboard/utilis/OrderList";
 import Icons from "@/components/AdminDashboard/icons/MainPage";
 import Link from "next/link";
+import Orders from "@/components/AdminDashboard/utilis/orders";
 
 export default function AdminPage() {
   return (
     <div className="flex flex-col gap-y-10">
+      <h2 className="font-extrabold bg-white p-3">إضافة منتج جديد</h2>
       <section className="grid md:grid-cols-3 sm:grid-cols-1 gap-5 ">
         <Status title="المنتجات المباعة" status="32" icon={Icons.IconSales} />
         <Status title="قيد الانتظار" status="14" icon={Icons.IconCanceld} />
 
         <Status title="دخل" status="$961.99" icon={Icons.IconIncom} />
       </section>
-      <section className=" bg-white  min-h-screen w-full ">
+      <section className=" bg-white  w-full ">
         <div className="w-full  bg-gray-50 p-2 border-b flex justify-between   shadow-md rounded-t-lg">
           <span>أحدث الطلبات</span>
           <Link href="/admin/orders">
