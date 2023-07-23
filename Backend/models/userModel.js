@@ -25,7 +25,11 @@ const userSchema = mongoose.Schema({
     },
 
     passwordChangedAt: Date,
+    credit: {
+        type: Number,
 
+        default: 2
+    },
     role: {
         type: String,
         enum: ['user', 'admin'],

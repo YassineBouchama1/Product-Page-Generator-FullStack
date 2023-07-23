@@ -15,10 +15,7 @@ exports.getAllUsers = factory.getAll(userModel)
 
 
 
-// @desc    Delete specific category
-// @route   DELETE /api/v1/Prodcuts/:id
-// @access    Protected/Admin
-exports.updateProduct = factory.updateOne(userModel)
+
 
 // @desc    Delete specific category
 // @route   DELETE /api/v1/Prodcuts/:id

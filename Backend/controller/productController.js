@@ -63,12 +63,26 @@ exports.CreateProduct = expressAsyncHandler(async (req, res, next) => {
     /// bugs thata wont pass to new ariabal
 
 
-
+    // check if user exist
     if (!req.user) {
         return next(
             new ApiError(`There is user id `, 404)
         );
     }
+
+    // get number of all Products that user created
+    const Products = await Product.find({ user: req.user._id })
+    console.log(Products.length)
+    console.log(req.user.credit)
+
+    // check if user rich limit to create product
+    if (Products.length >= req.user.credit) {
+        return next(
+            new ApiError(`You can't create more Product You rich your limit  `, 404)
+        );
+    }
+
+
 
     req.body.user = await req.user._id;
 
@@ -80,6 +94,7 @@ exports.CreateProduct = expressAsyncHandler(async (req, res, next) => {
     res.status(200).json({ data: AllProducts })
 
 })
+
 
 
 
