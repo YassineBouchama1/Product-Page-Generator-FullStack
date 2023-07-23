@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import pic from "../../../public/p.png";
+import pic from "../../../../public/p.png";
 import Link from "next/link";
 
 export default function ProductCard() {

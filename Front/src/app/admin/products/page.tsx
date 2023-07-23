@@ -1,4 +1,4 @@
-import ListProducts from "@/components/AdminDashboard/ListProducts";
+import ListProducts from "@/components/AdminDashboard/Product/ListProducts";
 import Pagination from "@/components/AdminDashboard/utilis/Pagination";
 import Status from "@/components/AdminDashboard/utilis/Status";
 import React from "react";

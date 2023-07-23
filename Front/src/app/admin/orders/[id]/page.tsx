@@ -3,7 +3,7 @@ import pic from "../../../../../public/pjpg.jpg";
 import Image from "next/image";
 import Link from "next/link";
 import OrderIcons from "@/components/AdminDashboard/icons/OrderIcons";
-import OrderStatus from "@/components/AdminDashboard/OrderStatus";
+import OrderStatus from "@/components/AdminDashboard/Order/OrderStatus";
 
 export default function page() {
   return (

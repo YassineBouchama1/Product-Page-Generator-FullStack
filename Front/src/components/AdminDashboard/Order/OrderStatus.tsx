@@ -1,5 +1,5 @@
 import React from "react";
-import OrderIcons from "./icons/OrderIcons";
+import OrderIcons from "../icons/OrderIcons";
 
 export default function OrderStatus() {
   return (
