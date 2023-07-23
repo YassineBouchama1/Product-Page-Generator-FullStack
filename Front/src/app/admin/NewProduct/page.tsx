@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function AddProduct() {
   return (
     <div className="">
@@ -42,7 +40,7 @@ export default function AddProduct() {
             </div>
           </div>
           <div className="mb-6">
-            <label for="exampleInput1" className="inline-block mb-2">
+            <label htmlFor="exampleInput1" className="inline-block mb-2">
               اسم المنتج:
             </label>
             <input
@@ -52,7 +50,7 @@ export default function AddProduct() {
             ></input>
           </div>
           <div className="mb-6">
-            <label for="exampleInput1" className="inline-block mb-2">
+            <label htmlFor="exampleInput1" className="inline-block mb-2">
               سعر:
             </label>
             <input
@@ -62,7 +60,7 @@ export default function AddProduct() {
             ></input>
           </div>
           <div className="mb-6">
-            <label for="exampleInput1" className="inline-block mb-2">
+            <label htmlFor="exampleInput1" className="inline-block mb-2">
               كمية:
             </label>
             <input
@@ -77,7 +75,7 @@ export default function AddProduct() {
         <section className=" col-span-4 xl:col-span-2 w-full bg-white h-full min-h-[500px] rounded-md shadow p-4">
           <h3 className="font-extrabold py-4"> تحسين محركات البحث</h3>
           <div className="mb-6">
-            <label for="exampleInput1" className="inline-block mb-2">
+            <label htmlFor="exampleInput1" className="inline-block mb-2">
               عنوان:
             </label>
             <input
@@ -87,13 +85,12 @@ export default function AddProduct() {
             ></input>
           </div>
           <div className="mb-6">
-            <label for="exampleTextarea1" class="inline-block mb-2">
+            <label htmlFor="exampleTextarea1" className="inline-block mb-2">
               وصف:
             </label>
             <textarea
-              class="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600"
+              className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600"
               id="exampleTextarea1"
-              rows="3"
             ></textarea>
           </div>
         </section>

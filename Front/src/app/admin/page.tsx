@@ -3,7 +3,6 @@ import Status from "../../components/AdminDashboard/utilis/Status";
 import OrderList from "@/components/AdminDashboard/utilis/OrderList";
 import Icons from "@/components/AdminDashboard/icons/MainPage";
 import Link from "next/link";
-import Orders from "@/components/AdminDashboard/utilis/orders";
 
 export default function AdminPage() {
   return (
