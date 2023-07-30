@@ -6,7 +6,7 @@ import AuthService from "@/services/AuthApi";
 import notify from "../Global/useNotifaction";
 import useValidator from "../Global/useFormValidator";
 import apiClient from "@/services/baseURL";
-import Register from "@/app/register/page";
+import Register from "@/app/(auth)/register/page";
 
 interface initialData {
   nameStore: string;
@@ -43,8 +43,6 @@ export default function RegisterHook() {
   };
 
   const datao = getdataTest();
-const Register=[
-  datao
-]
+  const Register = [datao];
   return [datao];
 }
