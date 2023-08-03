@@ -42,9 +42,10 @@ export default function RegisterHook() {
     const rsul = validateData();
     //validator
     if (!rsul) {
-      console.log("data not valid");
+      console.log("data dosn't valid");
       return;
     } else {
+      console.log("data  valid");
       //send inputs to server fro create accont
       const result = await AuthService.signup(data);
 

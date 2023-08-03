@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import LoginHook from "@/hooks/Auth/useLogin";
+import { ToastContainer } from "react-toastify";
 
 export default function Login() {
-  // const [handleButtonClick, handleChange, data, loading] = LoginHook();
-
+  const LoginLogic = LoginHook();
   return (
     <>
       <section className="bg-white">
@@ -85,8 +86,7 @@ export default function Login() {
                     </label>
                     <input
                       type="email"
-                      // onChange={handleChange}
-                      // value={data.email}
+                      onChange={LoginLogic.handleChange}
                       name="email"
                       className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
                     ></input>
@@ -101,15 +101,14 @@ export default function Login() {
                     </label>
                     <input
                       type="password"
-                      // onChange={handleChange}
-                      // value={data.password}
+                      onChange={LoginLogic.handleChange}
                       name="password"
                       className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
                     ></input>
                   </div>
 
                   <button
-                    // onClick={(e) => handleButtonClick(e)}
+                    onClick={LoginLogic.onSubmit}
                     className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base"
                   >
                     تسجيل الدخول
@@ -131,7 +130,7 @@ export default function Login() {
             </div>
           </main>
         </div>
-        {/* <ToastContainer /> */}
+        <ToastContainer />
       </section>
     </>
   );
