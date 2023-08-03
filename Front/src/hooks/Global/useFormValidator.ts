@@ -1,22 +1,23 @@
 import { useState, useEffect } from "react";
 import Joi from "joi-browser";
+import notify from "./useNotifaction";
 
 const useValidator = (initialData: any, schema: any) => {
   const [data, setData] = useState(initialData);
-  const [errorsValidator, setErrorsValidator] = useState({});
+  const [errorsValidator, setErrorsValidator] = useState([]);
 
-  //this for rerander function or chekcer every tim user change ipnuts
-  useEffect(() => {
-    validateData();
-  }, [data]);
+  // //this for rerander function or chekcer every tim user change ipnuts
+  // useEffect(() => {
+  //   validateData();
+  // }, [data]);
 
   const validateData = () => {
     const options = { abortEarly: false };
     const { error } = Joi.validate(data, schema, options); // get only errors from return joi
-
+    console.log(error);
     // if there is no errors we send empty array errors
     if (!error) {
-      setErrorsValidator({});
+      setErrorsValidator([]);
       return true;
     }
 
@@ -24,6 +25,8 @@ const useValidator = (initialData: any, schema: any) => {
     const newErrors: any = {};
     for (const item of error.details) {
       newErrors[item.path[0]] = item.message;
+      console.log(item.message);
+      notify(item.message, "error");
     }
     setErrorsValidator(newErrors);
     return false;

@@ -1,19 +1,15 @@
 "use client";
+import { ToastContainer } from "react-toastify";
 
-import AuthService from "@/services/AuthApi";
 import UserLayout from "@/components/Layout/UserLayout";
 import Link from "next/link";
-export default async function Register() {
-  const data = await AuthService.getdataTest();
-
+import RegisterHook from "@/hooks/Auth/useRegister";
+// eslint-disable-next-line @next/next/no-async-client-component
+export default function Register() {
+  const RegesterLogic = RegisterHook();
   return (
     <>
       <UserLayout>
-        <div>
-          {/* {datao.map((i, index) => (
-            <p key={index}>{i}</p>
-          ))} */}
-        </div>
         <section className="bg-white">
           <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
             <div className="max-w-xl lg:max-w-3xl">
@@ -29,8 +25,7 @@ export default async function Register() {
                       </label>
                       <input
                         type="text"
-                        //   onChange={handleChange}
-                        //   value={data.nameStore}
+                        onChange={RegesterLogic.handleChange}
                         name="nameStore"
                         className="w-full rounded border  bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
                       ></input>
@@ -45,8 +40,7 @@ export default async function Register() {
                       </label>
                       <input
                         type="email"
-                        //   onChange={handleChange}
-                        //   value={data.email}
+                        onChange={RegesterLogic.handleChange}
                         name="email"
                         className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
                       ></input>
@@ -62,8 +56,7 @@ export default async function Register() {
                         كلمة المرور
                       </label>
                       <input
-                        //   onChange={handleChange}
-                        //   value={data.password}
+                        onChange={RegesterLogic.handleChange}
                         name="password"
                         type="password"
                         className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
@@ -78,8 +71,7 @@ export default async function Register() {
                         تأكيد كلمة المرور
                       </label>
                       <input
-                        //   onChange={handleChange}
-                        //   value={data.passwordConfirm}
+                        onChange={RegesterLogic.handleChange}
                         type="password"
                         name="passwordConfirm"
                         className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
@@ -88,7 +80,7 @@ export default async function Register() {
                   </div>
 
                   <button
-                    //   onClick={(e) => handleButtonClick(e)}
+                    onClick={RegesterLogic.onSubmit}
                     className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base"
                   >
                     أنشئ حسابك
@@ -112,6 +104,7 @@ export default async function Register() {
         </section>
         {/* <ToastContainer /> */}
       </UserLayout>
+      <ToastContainer />
     </>
   );
 }
