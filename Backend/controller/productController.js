@@ -13,6 +13,7 @@ const factory = require('./handlersFactory')
 
 const sharp = require('sharp');
 const { uploadMultImage } = require('../middleWares/uploadImageMiddleWar');
+const ApiFeatures = require('../utils/apiFeatures');
 
 
 
@@ -89,9 +90,9 @@ exports.CreateProduct = expressAsyncHandler(async (req, res, next) => {
     const newProduct = await Product.create(req.body);
 
     //1) filter Product by userid{get only Product belong this userID}
-    const AllProducts = await Product.find({ user: req.user._id })
+    // const AllProducts = await Product.find({ user: req.user._id })
     // document.save()
-    res.status(200).json({ data: AllProducts })
+    res.status(200).json({ data: newProduct })
 
 })
 
@@ -102,22 +103,41 @@ exports.CreateProduct = expressAsyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/list
 // @access  Private/User
 exports.getAllProduct = expressAsyncHandler(async (req, res) => {
-
-    //1) filter Product by userid{get only Product belong this userID}
-    const Products = await Product.find({ user: req.user._id })
-
-
-    if (!Products) {
-        return next(
-            new ApiError(`There is no Product for this user id : ${req.user._id}`, 404)
-        );
+    let filter = {};
+    if (req.filterObj) {
+        filter = req.filterObj;
     }
 
-    res.status(200).json({
-        status: 'success',
-        result: Products.length,
-        data: Products,
-    });
+    // Build query
+    const documentsCounts = await Product.countDocuments();
+
+    const apiFeatures = new ApiFeatures(Product.find({ user: req.user._id }, filter), req.query,)
+        .paginate(documentsCounts)
+        .filter()
+
+        .sort();
+
+    // Execute query
+    const { mongooseQuery, paginationResult } = apiFeatures;
+    const files = await mongooseQuery;
+
+    res.status(200)
+        .json({ results: files.length, paginationResult, data: files });
+    //1) filter Product by userid{get only Product belong this userID}
+    // const Products = await Product.find({ user: req.user._id })
+
+
+    // if (!Products) {
+    //     return next(
+    //         new ApiError(`There is no Product for this user id : ${req.user._id}`, 404)
+    //     );
+    // }
+
+    // res.status(200).json({
+    //     status: 'success',
+    //     result: Products.length,
+    //     data: Products,
+    // });
 })
 
 

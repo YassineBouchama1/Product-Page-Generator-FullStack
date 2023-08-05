@@ -3,6 +3,7 @@ const OrderModel = require('../models/orderModel')
 const Product = require('../models/productModel')
 const factory = require('./handlersFactory')
 const ApiError = require('../utils/ApiError')
+const ApiFeatures = require('../utils/apiFeatures')
 
 
 
@@ -45,22 +46,41 @@ exports.CreateOrder = expressAsyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/Prodcuts/:id
 // @access    Protected/Admin
 exports.getAllPOrders = expressAsyncHandler(async (req, res) => {
-
-    //1) filter order by userid{get only order belong this userID}
-    const Orders = await OrderModel.find({ user: req.user._id })
-
-
-    if (!Orders) {
-        return next(
-            new ApiError(`There is no Product for this user id : ${req.user._id}`, 404)
-        );
+    let filter = {};
+    if (req.filterObj) {
+        filter = req.filterObj;
     }
 
-    res.status(200).json({
-        status: 'success',
-        result: Orders.length,
-        data: Orders,
-    });
+    // Build query
+    const documentsCounts = await Product.countDocuments();
+
+    const apiFeatures = new ApiFeatures(OrderModel.find({ user: req.user._id }, filter), req.query,)
+        .paginate(documentsCounts)
+        .filter()
+
+        .sort();
+
+    // Execute query
+    const { mongooseQuery, paginationResult } = apiFeatures;
+    const files = await mongooseQuery;
+
+    res.status(200)
+        .json({ results: files.length, paginationResult, data: files });
+    // //1) filter order by userid{get only order belong this userID}
+    // const Orders = await OrderModel.find({ user: req.user._id })
+
+
+    // if (!Orders) {
+    //     return next(
+    //         new ApiError(`There is no Product for this user id : ${req.user._id}`, 404)
+    //     );
+    // }
+
+    // res.status(200).json({
+    //     status: 'success',
+    //     result: Orders.length,
+    //     data: Orders,
+    // });
 })
 
 

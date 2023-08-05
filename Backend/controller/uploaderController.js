@@ -5,7 +5,8 @@ const { uploadSingleImage } = require('../middleWares/uploadImageMiddleWar');
 const sharp = require('sharp');
 const expressAsyncHandler = require('express-async-handler');
 
-const factory = require('./handlersFactory')
+const factory = require('./handlersFactory');
+const ApiFeatures = require('../utils/apiFeatures');
 
 
 
@@ -50,25 +51,45 @@ exports.CreateImagesToStock = expressAsyncHandler(async (req, res, next) => {
 })
 
 
+
 // @desc    get Images by id user
 // @route   GET /api/v1/list
 // @access  Private/User
 exports.getAllImages = expressAsyncHandler(async (req, res) => {
-
-    //1) filter Product by userid{get only Product belong this userID}
-    const Images = await uploaderModel.find({ user: req.user._id })
-
-    if (!Images) {
-        return next(
-            new ApiError(`There is no Images for this user  : ${req.user._id}`, 404)
-        );
+    let filter = {};
+    if (req.filterObj) {
+        filter = req.filterObj;
     }
 
-    res.status(200).json({
-        status: 'success',
-        result: Images.length,
-        data: Images,
-    });
+    // Build query
+    const documentsCounts = await uploaderModel.countDocuments();
+    const apiFeatures = new ApiFeatures(uploaderModel.find({ user: req.user._id }, filter), req.query,)
+        .paginate(documentsCounts)
+        .filter()
+
+        .sort();
+
+    // Execute query
+    const { mongooseQuery, paginationResult } = apiFeatures;
+    const files = await mongooseQuery;
+
+    res.status(200)
+        .json({ results: files.length, paginationResult, data: files });
+
+    // //1) filter Product by userid{get only Product belong this userID}
+    // const Images = await uploaderModel.find({ user: req.user._id })
+
+    // if (!Images) {
+    //     return next(
+    //         new ApiError(`There is no Images for this user  : ${req.user._id}`, 404)
+    //     );
+    // }
+
+    // res.status(200).json({
+    //     status: 'success',
+    //     result: Images.length,
+    //     data: Images,
+    // });
 })
 
 

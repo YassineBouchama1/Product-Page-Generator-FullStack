@@ -12,7 +12,7 @@ const productSchema = mongoose.Schema({
     title: {
         type: String,
         required: [true, "title Require"],
-        unique: true,
+        // unique: true,
 
         minlength: [3, 'to short product title'],
         maxlength: [100, 'to long product title'],
@@ -31,6 +31,11 @@ const productSchema = mongoose.Schema({
         type: String,
         required: [true, ' product Description is required'],
         minlength: [20, ' to shot product description']
+    },
+    seo: {
+        type: String,
+        required: [true, ' product seo Description is required'],
+        maxlength: [100, ' to shot product seo description']
     },
     quantity: {
         type: Number,
