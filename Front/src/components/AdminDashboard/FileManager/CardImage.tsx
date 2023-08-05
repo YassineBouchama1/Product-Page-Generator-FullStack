@@ -1,13 +1,18 @@
-import React from "react";
-import pic from "../../../../public/p.png";
-
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-export default function CardImage() {
+import useDeleteFile from "@/hooks/FileManager/useDeleteFile";
+export default function CardImage({ item }) {
+  const useImage = useDeleteFile();
+
+  const copy = async () => {
+    await navigator.clipboard.writeText(item.image);
+    alert("link copied");
+  };
   return (
     <div className="h-[300px] flex flex-col items-center p-10  border border-gray-200 rounded-lg shadow">
       <Image
-        src={pic}
+        src={item.image}
         alt="image name"
         width="100"
         height="100"
@@ -15,18 +20,18 @@ export default function CardImage() {
       />
 
       <div className="flex mt-4 space-x-3 md:mt-6 gap-2">
-        <Link
-          href="#"
+        <button
+          onClick={(e) => useImage.onDelete(item._id, e)}
           className="inline-flex items-center px-4 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Delete
-        </Link>
-        <Link
-          href="#"
+        </button>
+        <button
+          onClick={copy}
           className="inline-flex items-center px-4 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Copy Link
-        </Link>
+        </button>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const useValidator = (initialData: any, schema: any) => {
   const validateData = () => {
     const options = { abortEarly: false };
     const { error } = Joi.validate(data, schema, options); // get only errors from return joi
-    console.log(error);
+
     // if there is no errors we send empty array errors
     if (!error) {
       setErrorsValidator([]);
@@ -25,7 +25,7 @@ const useValidator = (initialData: any, schema: any) => {
     const newErrors: any = {};
     for (const item of error.details) {
       newErrors[item.path[0]] = item.message;
-      console.log(item.message);
+
       notify(item.message, "error");
     }
     setErrorsValidator(newErrors);

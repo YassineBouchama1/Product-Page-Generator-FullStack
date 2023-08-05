@@ -3,6 +3,7 @@ import ListImages from "@/components/AdminDashboard/FileManager/ListImages";
 import Uploader from "@/components/AdminDashboard/FileManager/Uploader";
 import Pagination from "@/components/AdminDashboard/utilis/Pagination";
 import React from "react";
+import { ToastContainer } from "react-toastify";
 
 function page() {
   return (
@@ -13,7 +14,8 @@ function page() {
           <Uploader />
         </div>
       </section>
-      <Pagination />
+
+      <ToastContainer />
     </section>
   );
 }

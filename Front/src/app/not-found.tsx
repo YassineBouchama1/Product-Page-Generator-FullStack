@@ -13,7 +13,7 @@ export default function ErrorPage() {
               </h1>
               <hr className="block w-12 h-0.5 mx-auto my-5 bg-indigo-500 border-indigo-500"></hr>
               <p className="text-gray-500 leading-relaxed font-light text-xl mx-auto pb-2">
-                That page can't be found. It looks like nothing was found at
+                That page cant be found. It looks like nothing was found at
                 this location.
               </p>
             </header>
