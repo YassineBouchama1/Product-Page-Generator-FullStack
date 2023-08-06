@@ -3,7 +3,7 @@
 import Joi from "joi-browser";
 import AuthService from "@/services/AuthApi";
 import { useRouter } from "next/navigation";
-import useValidator from "../Global/useFormValidator";
+import useValidator from "../../hooks/Global/useFormValidator";
 
 import notify from "@/hooks/Global/useNotifaction";
 

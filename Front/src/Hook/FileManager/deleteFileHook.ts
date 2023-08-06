@@ -1,6 +1,6 @@
 "use client";
 import FileManagerServeice from "@/services/FileManager";
-import notify from "../Global/useNotifaction";
+import notify from "@/hooks/Global/useNotifaction";
 import { useRouter } from "next/navigation";
 const useDeleteFile = () => {
   const router = useRouter();

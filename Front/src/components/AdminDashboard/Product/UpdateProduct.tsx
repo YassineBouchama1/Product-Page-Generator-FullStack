@@ -1,14 +1,18 @@
 "use client";
-import useUpdateProduct from "@/hooks/Product/useUpdateProduct";
+import useUpdateProduct from "@/Hook/Product/updateProductHook";
 import React, { useRef, useState } from "react";
 import UploadImageProduct from "./UploadImageProduct";
 import JoditEditor from "jodit-react";
 import Loader from "@/components/Shared/Loader";
 import Error from "@/components/Shared/Error";
+import { useAppSelector } from "@/stores/hooks";
 
 export default function UpdateProduct() {
   const updateFunctions = useUpdateProduct();
-
+  const startupPokemon = useAppSelector(
+    (state) => state.products.GetOneProduct
+  );
+  console.log(startupPokemon);
   return (
     <div className="relative">
       {updateFunctions.isloading ? <Loader /> : null}

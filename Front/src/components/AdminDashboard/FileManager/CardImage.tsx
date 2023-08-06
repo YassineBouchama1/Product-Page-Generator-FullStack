@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import useDeleteFile from "@/hooks/FileManager/useDeleteFile";
+import useDeleteFile from "@/Hook/FileManager/deleteFileHook";
 export default function CardImage({ item }) {
   const useImage = useDeleteFile();
 

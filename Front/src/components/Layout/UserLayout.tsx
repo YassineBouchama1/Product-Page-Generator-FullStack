@@ -1,4 +1,4 @@
-import UserFooter from "../UserUi/UserFooter";
+import UserFooter from "../Shared/UserFooter";
 import UserNavBar from "../UserUi/UserNavBar";
 
 const UserLayout = ({ children }: any) => {

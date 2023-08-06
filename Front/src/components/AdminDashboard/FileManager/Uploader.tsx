@@ -1,5 +1,5 @@
 "use client";
-import useInsertFile from "@/hooks/FileManager/useInsertFile";
+import useInsertFile from "@/Hook/FileManager/addFileHook";
 
 function Uploader() {
   const fileFinctions = useInsertFile();
@@ -13,7 +13,6 @@ function Uploader() {
       </label>
 
       <input
-     
         onChange={(e) => fileFinctions.setFile(e.target.files[0])}
         className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg 
 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 

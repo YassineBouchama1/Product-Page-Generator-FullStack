@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import pic from "../../../../public/p.png";
 import Link from "next/link";
-import useGetAllProducts from "@/hooks/Product/useDeleteProduct";
+import useGetAllProducts from "@/Hook/Product/getProductsHook";
 
 export default function ProductCard({ item }) {
   const functi = useGetAllProducts();

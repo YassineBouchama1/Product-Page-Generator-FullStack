@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import useValidator from "../Global/useFormValidator";
+import useValidator from "@/hooks/Global/useFormValidator";
 import Joi from "joi-browser";
 import ProductService from "@/services/ProductApi";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
@@ -10,7 +10,7 @@ import {
 } from "@/stores/productsSlice/ActionsProducts";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-export default function useUpdateProduct() {
+export default function useAddProduct() {
   ///Start config textRich
   const editor = useRef(null);
   const config = {
@@ -40,39 +40,7 @@ export default function useUpdateProduct() {
 
   const dispatch = useAppDispatch();
   //@desc get data for spicific product by params.id
-  useEffect(() => {
-    const getOneProduct = async () => {
-      setIsloading(true);
-      await dispatch(getOneProductRedux(params.id));
-    };
 
-    getOneProduct();
-  }, []);
-
-  const GetOneProduct = useAppSelector((state) => state.products.GetOneProduct);
-
-  useEffect(() => {
-    if (GetOneProduct?.status === "error") {
-      setError(true);
-      return;
-    }
-
-    setformInputData({
-      title: GetOneProduct.data?.title,
-      quantity: GetOneProduct.data?.quantity,
-      price: GetOneProduct.data?.price,
-      seo: GetOneProduct.data?.seo,
-    });
-    setContent(GetOneProduct.data?.description);
-    // setMainImage({
-    //   image: null,
-    //   displayImageCover: GetOneProduct?.images[0],
-    // });
-    setIsloading(false);
-    setError(false);
-  }, [GetOneProduct]);
-
-  console.log(formInputData);
   const handleChange = (evnt) => {
     const newInput = (data) => ({
       ...data,
@@ -94,7 +62,6 @@ export default function useUpdateProduct() {
   const onSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    //validator
     // add validation to products inputs validator
     if (false) {
       console.log("data dosn't valid");
@@ -109,8 +76,8 @@ export default function useUpdateProduct() {
       await formData.append("seo", formInputData.seo);
 
       //send inputs to server fro create accont
-      // const result = await dispatch(updateProductRedux(params.id, formData));
-      const result = await ProductService.update(params.id, formData);
+      //   const result = await dispatch(updateProductRedux(params.id, formData));
+      const result = await ProductService.create(formData);
       console.log(result);
       router.refresh();
     }
