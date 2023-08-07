@@ -49,8 +49,7 @@ export default function Error() {
               </h3>
               <div className="mt-2">
                 <p className="text-sm text-gray-500">
-                  There was an error processing your request. You can back to
-                  list of products
+                  There was an error processing your request. 
                 </p>
               </div>
             </div>

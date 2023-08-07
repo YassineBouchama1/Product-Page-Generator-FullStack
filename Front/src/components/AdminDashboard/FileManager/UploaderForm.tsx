@@ -1,8 +1,9 @@
 "use client";
-import useInsertFile from "@/Hook/FileManager/addFileHook";
+import UploaderFormHook from "@/Hook/FileManager/UploaderFormHook";
+import useInsertFile from "@/Hook/FileManager/UploaderFormHook";
 
-function Uploader() {
-  const fileFinctions = useInsertFile();
+function UploaderForm() {
+  const FormFinctions = UploaderFormHook();
   return (
     <>
       <label
@@ -13,7 +14,7 @@ function Uploader() {
       </label>
 
       <input
-        onChange={(e) => fileFinctions.setFile(e.target.files[0])}
+        onChange={(e) => FormFinctions.setFile(e.target.files[0])}
         className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg 
 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 
 dark:border-gray-600 dark:placeholder-gray-400"
@@ -22,7 +23,7 @@ dark:border-gray-600 dark:placeholder-gray-400"
       ></input>
 
       <button
-        onClick={(e) => fileFinctions.onSubmit(e)}
+        onClick={(e) => FormFinctions.onSubmit(e)}
         className="w-full h-14 bg-green-600 text-white rounded-md"
       >
         Upload
@@ -31,4 +32,4 @@ dark:border-gray-600 dark:placeholder-gray-400"
   );
 }
 
-export default Uploader;
+export default UploaderForm;

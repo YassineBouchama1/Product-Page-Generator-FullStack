@@ -43,6 +43,8 @@ export const updateProductRedux = createAsyncThunk(
   "product/update",
   async (id, formData) => {
     try {
+
+
       const response = await ProductService.create(id, formData);
 
       return response;

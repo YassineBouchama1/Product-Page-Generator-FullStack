@@ -1,15 +1,12 @@
 "use client";
-import ProductService from "@/services/ProductApi";
-import { useEffect, useState } from "react";
-import notify from "../Global/useNotifaction";
-import { assert } from "console";
-import { getAllProducts } from "@/stores/productsSlice/ActionsProducts";
-import { useAppDispatch, useAppSelector } from "@/stores/hooks";
-import { useRouter } from "next/navigation";
-const useGetAllProducts = () => {
+import ProductService from "@/lib/ProductApi";
 
+import notify from "@/hooks/Global/useNotifaction";
+
+import { useRouter } from "next/navigation";
+const ProductCardHook = () => {
   const router = useRouter();
-  
+
   const onDelete = async (
     id: string,
     event: React.MouseEvent<HTMLButtonElement>
@@ -34,4 +31,4 @@ const useGetAllProducts = () => {
   return productFun;
 };
 
-export default useGetAllProducts;
+export default ProductCardHook;

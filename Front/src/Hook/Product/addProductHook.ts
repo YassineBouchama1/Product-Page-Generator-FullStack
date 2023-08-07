@@ -2,12 +2,12 @@
 import { useEffect, useRef, useState } from "react";
 import useValidator from "@/hooks/Global/useFormValidator";
 import Joi from "joi-browser";
-import ProductService from "@/services/ProductApi";
-import { useAppDispatch, useAppSelector } from "@/stores/hooks";
+import ProductService from "@/lib/ProductApi";
+import { useAppDispatch, useAppSelector } from "@/Redux/hooks";
 import {
   getOneProductRedux,
   updateProductRedux,
-} from "@/stores/productsSlice/ActionsProducts";
+} from "@/Redux/productsSlice/ActionsProducts";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 export default function useAddProduct() {

@@ -1,20 +1,30 @@
 import CardImage from "@/components/AdminDashboard/FileManager/CardImage";
-import ListImages from "@/components/AdminDashboard/FileManager/ListImages";
-import Uploader from "@/components/AdminDashboard/FileManager/Uploader";
-import Pagination from "@/components/AdminDashboard/utilis/Pagination";
+import UploaderForm from "@/components/AdminDashboard/FileManager/UploaderForm";
+
+import Error from "@/components/Shared/Error";
+import FileManagerServeice from "@/lib/FileManager";
 import React from "react";
 import { ToastContainer } from "react-toastify";
 
-function page() {
+async function page() {
+  const files = await FileManagerServeice.findAll();
+
+  if (!files?.data) return <Error />;
   return (
     <section className="bg-white rounded-md flex flex-col  ">
       <section className="bg-white rounded-md grid  grid-cols-6">
-        <ListImages />
+        <div className="xl:col-span-5 col-span-6 w-full min-h-screen h-full p-5 grid xl:grid-cols-4 grid-cols-2    gap-5 justify-center">
+          {files &&
+            files.data?.map((user: { id: React.Key }) => (
+              <div key={user.id}>
+                <CardImage item={user} />
+              </div>
+            ))}
+        </div>
         <div className="xl:col-span-1 col-span-6 w-full h-full order-first xl:order-2  border-r-2 p-5 flex flex-col items-center gap-5">
-          <Uploader />
+          <UploaderForm />
         </div>
       </section>
-
       <ToastContainer />
     </section>
   );

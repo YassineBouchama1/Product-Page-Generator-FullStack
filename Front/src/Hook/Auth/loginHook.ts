@@ -1,7 +1,7 @@
 "use client";
 
 import Joi from "joi-browser";
-import AuthService from "@/services/AuthApi";
+import AuthService from "@/lib/AuthApi";
 import { useRouter } from "next/navigation";
 import useValidator from "../../hooks/Global/useFormValidator";
 

@@ -1,11 +1,10 @@
 "use client";
-import FileManagerServeice from "@/services/FileManager";
+import FileManagerServeice from "@/lib/FileManager";
 import notify from "@/hooks/Global/useNotifaction";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-const useInsertFile = () => {
+const UploaderFormHook = () => {
   const router = useRouter();
-
   const [file, setFile] = useState<File | null>(null);
 
   //function works when click upload
@@ -34,12 +33,11 @@ const useInsertFile = () => {
     }
   };
 
-  const fileFun = {
+  return {
     onSubmit,
     setFile,
     file,
   };
-  return fileFun;
 };
 
-export default useInsertFile;
+export default UploaderFormHook;

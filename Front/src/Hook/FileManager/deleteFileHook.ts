@@ -1,8 +1,8 @@
 "use client";
-import FileManagerServeice from "@/services/FileManager";
+import FileManagerServeice from "@/lib/FileManager";
 import notify from "@/hooks/Global/useNotifaction";
 import { useRouter } from "next/navigation";
-const useDeleteFile = () => {
+const DeleteFileHook = () => {
   const router = useRouter();
 
   const onDelete = async (
@@ -12,9 +12,8 @@ const useDeleteFile = () => {
     event.preventDefault();
 
     if (id === "" || null || undefined) return notify("the is error", "warn");
-    const result = await FileManagerServeice.deleteById(id);
 
-    //IF DONE RUN REDUX DISPATCH REFRICH THAT
+    const result = await FileManagerServeice.deleteById(id);
 
     if (result.status === "error") {
       notify("there is pb repeat", "warn");
@@ -25,10 +24,20 @@ const useDeleteFile = () => {
     }
   };
 
-  const productFun = {
-    onDelete,
+  /// for copy link
+  const copy = async (
+    imageLink: string,
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    await navigator.clipboard.writeText(imageLink);
+    alert("link copied");
   };
-  return productFun;
+
+  return {
+    onDelete,
+    copy,
+  };
 };
 
-export default useDeleteFile;
+export default DeleteFileHook;
