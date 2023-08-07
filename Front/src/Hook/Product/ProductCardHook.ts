@@ -22,6 +22,7 @@ const ProductCardHook = () => {
     } else {
       router.refresh();
       // router.push("/admin/products");
+      notify("Removed Success", "success");
     }
   };
 

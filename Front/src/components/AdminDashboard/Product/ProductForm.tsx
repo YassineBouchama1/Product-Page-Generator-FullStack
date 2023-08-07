@@ -1,16 +1,18 @@
 "use client";
-import useUpdateProduct from "@/Hook/Product/updateProductHook";
 import React, { ChangeEvent, useRef, useState } from "react";
 
 import JoditEditor from "jodit-react";
 import Loader from "@/components/Shared/Loader";
 import Error from "@/components/Shared/Error";
-import { useAppSelector } from "@/Redux/hooks";
+
 import { useRouter } from "next/navigation";
 import ProductService from "@/lib/ProductApi";
 import Image from "next/image";
 import FormField from "@/components/Shared/FormField";
 import ButtonSubmit from "@/components/Shared/ButtonSubmit";
+import notify from "@/hooks/Global/useNotifaction";
+import displayErrors from "@/hooks/Global/useDisplayErrors";
+import { ToastContainer } from "react-toastify";
 
 export default function ProductForm({ type, product }) {
   const router = useRouter();
@@ -26,12 +28,13 @@ export default function ProductForm({ type, product }) {
     quantity: product?.quantity || "",
     price: product?.price || "",
     seo: product?.seo || "",
-    image: product?.images[0] || "",
+    image: product?.image || "",
+    display: product?.image || "",
     description: product?.description || "",
     id: product?._id || "",
   });
 
-  const handleStateChange = (fieldName, value: string) => {
+  const handleStateChange = (fieldName, value: string | File) => {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
   };
   const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,16 +49,8 @@ export default function ProductForm({ type, product }) {
 
       return;
     }
-
-    const reader = new FileReader();
-
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-      const result = reader.result as string;
-
-      handleStateChange("image", result);
-    };
+    handleStateChange("image", file);
+    handleStateChange("display", URL.createObjectURL(file));
   };
 
   ///Start config textRich
@@ -68,35 +63,50 @@ export default function ProductForm({ type, product }) {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setSubmitting(true);
 
-    const formData = await new FormData();
-    formData.append("images", form.image);
-    await formData.append("title", form.title);
-    await formData.append("description", form.description);
-    await formData.append("quantity", +form.quantity);
-    await formData.append("price", +form.price);
-    await formData.append("seo", form.seo);
+    const formData = new FormData();
+
+    if ( form.image !== product.image) {
+      formData.append("image", form.image);
+    }
+
+    if (type === "create") {
+      formData.append("image", form.image);
+    }
+    formData.append("title", form.title);
+    formData.append("description", form.description);
+    formData.append("quantity", +form.quantity);
+    formData.append("price", +form.price);
+    formData.append("seo", form.seo);
 
     try {
       if (type === "create") {
-        console.log("creating");
         const result = await ProductService.create(formData);
-        console.log(result);
-        router.push("/admin/products");
+
+        if (result.errors) return displayErrors(result);
+        else {
+          notify("Created", "success");
+          router.push("/admin/products");
+        }
       }
 
       if (type === "edit") {
-        await ProductService.update(formData, product.id);
+        const result = await ProductService.update(formData, product.id);
 
+        if (result.errors) {
+          return displayErrors(result);
+        }
+      } else {
+        notify("Done Edit", "success");
         router.refresh();
       }
     } catch (error) {
-      alert(
+      notify(
         `Failed to ${
           type === "create" ? "create" : "edit"
-        } a project. Try again!`
+        } a project. Try again!`,
+        "error"
       );
     } finally {
       setSubmitting(false);
@@ -165,10 +175,33 @@ export default function ProductForm({ type, product }) {
 
           <section className=" col-span-4 xl:col-span-2 w-full bg-white  rounded-md shadow p-4">
             <h3 className="font-extrabold py-4"> تحسين محركات البحث</h3>
-            <div className="flexStart form_image-container">
-              <label htmlFor="poster" className="flexCenter form_image-label">
+            <div className="flex flex-col gap-5 ">
+              <label
+                htmlFor="poster"
+                className="flex justify-center items-center  h-[300px]"
+              >
                 {!form.image && "Choose a poster for your project"}
+                {form.image && (
+                  <div>
+                    <button
+                      onClick={() => handleStateChange("image", "")}
+                      className="text-red-800"
+                    >
+                      x
+                    </button>
+                    <div className="w-full h-[300px] mb-3 rounded-sm shadow-lg">
+                      <Image
+                        src={form.display}
+                        alt="image name"
+                        width="70"
+                        height="10"
+                        className="w-full h-[300px] mb-3 rounded-sm shadow-lg"
+                      />
+                    </div>
+                  </div>
+                )}
               </label>
+
               <div id="imageSingle" className="dropzone single-dropzone mb-6">
                 <div className="dz-message">
                   <div className="pre-upload flex flex-col justify-center">
@@ -202,7 +235,7 @@ export default function ProductForm({ type, product }) {
                         id="image"
                         type="file"
                         accept="image/*"
-                        required={type === "create" ? true : false}
+                        // required={type === "create" ? true : false}
                       ></input>
                     </label>
                   </div>
@@ -224,6 +257,7 @@ export default function ProductForm({ type, product }) {
           </section>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 }

@@ -4,9 +4,9 @@ import React from "react";
 import pic from "../../../../public/p.png";
 import Link from "next/link";
 
-
 import BtnCopyLink from "@/components/Shared/BtnCopyLink";
 import ProductCardHook from "@/Hook/Product/ProductCardHook";
+import { ToastContainer } from "react-toastify";
 
 export default function ProductCard({ item }) {
   const functi = ProductCardHook();
@@ -15,11 +15,11 @@ export default function ProductCard({ item }) {
     <div className="min-w-sm max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="flex flex-col items-center p-10">
         <Image
-          src={pic}
+          src={item.image}
           alt="image name"
-          width="50"
+          width="70"
           height="10"
-          className="w-24 h-24 mb-3 rounded-full shadow-lg"
+          className="w-100 h-100 mb-3 rounded-sm shadow-lg"
         />{" "}
         <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
           {item.title}
@@ -43,6 +43,7 @@ export default function ProductCard({ item }) {
         </div>
         <BtnCopyLink url={linkProduct} />
       </div>
+      <ToastContainer />
     </div>
   );
 }
