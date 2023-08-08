@@ -13,6 +13,12 @@ import ButtonSubmit from "@/components/Shared/ButtonSubmit";
 import notify from "@/hooks/Global/useNotifaction";
 import displayErrors from "@/hooks/Global/useDisplayErrors";
 import { ToastContainer } from "react-toastify";
+import DisplayImages from "./DisplayImages";
+import ListImages from "../FileManager/ListImages";
+import FileManagerServeice from "@/lib/FileManager";
+import { store } from "@/Redux/store";
+import { setDetaileProduct } from "@/Redux/productsSlice/ProductsSlice";
+import { setFiles } from "@/Redux/FileManager/FileManagerSlice";
 
 export default function ProductForm({ type, product }) {
   const router = useRouter();
@@ -23,6 +29,7 @@ export default function ProductForm({ type, product }) {
   //   );
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [model, setModel] = useState<boolean>(false);
   const [form, setForm] = useState({
     title: product?.title || "",
     quantity: product?.quantity || "",
@@ -37,6 +44,7 @@ export default function ProductForm({ type, product }) {
   const handleStateChange = (fieldName, value: string | File) => {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
   };
+
   const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
@@ -46,7 +54,6 @@ export default function ProductForm({ type, product }) {
 
     if (!file.type.includes("image")) {
       alert("Please upload an image!");
-
       return;
     }
     handleStateChange("image", file);
@@ -65,27 +72,44 @@ export default function ProductForm({ type, product }) {
     e.preventDefault();
     setSubmitting(true);
 
-    const formData = new FormData();
-
-    if ( form.image !== product.image) {
-      formData.append("image", form.image);
+    //valiadator
+    if (form.title.trim().length <= 3) {
+      notify("title should be longer", "success");
+      return;
     }
+
+    if (form.description.trim().length <= 30) {
+      notify("description should be longer", "success");
+      return;
+    }
+
+    const formData = new FormData();
 
     if (type === "create") {
       formData.append("image", form.image);
     }
+
+    //check in edit mode if user remove image without
+    //add new one if true dosen't send image to server keep old one
+    if (form.image !== "") {
+      formData.append("image", form.image);
+    }
     formData.append("title", form.title);
     formData.append("description", form.description);
-    formData.append("quantity", +form.quantity);
-    formData.append("price", +form.price);
+    formData.append("quantity", form.quantity);
+    formData.append("price", form.price);
     formData.append("seo", form.seo);
 
     try {
       if (type === "create") {
         const result = await ProductService.create(formData);
 
-        if (result.errors) return displayErrors(result);
-        else {
+        if (result.errors) {
+          setSubmitting(false);
+          displayErrors(result);
+
+          return;
+        } else {
           notify("Created", "success");
           router.push("/admin/products");
         }
@@ -95,11 +119,13 @@ export default function ProductForm({ type, product }) {
         const result = await ProductService.update(formData, product.id);
 
         if (result.errors) {
-          return displayErrors(result);
+          displayErrors(result);
+          setSubmitting(false);
+          return;
+        } else {
+          notify("edited Done", "success");
+          router.refresh();
         }
-      } else {
-        notify("Done Edit", "success");
-        router.refresh();
       }
     } catch (error) {
       notify(
@@ -113,16 +139,22 @@ export default function ProductForm({ type, product }) {
     }
   };
 
+  const onModal = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setModel((previous) => !previous);
+  };
+
   return (
     <div className="relative">
-      {/* {updateFunctions.isloading ? <Loader /> : null}
-      {updateFunctions.error ? <Error /> : null} */}
+      {!product?.title && type === "edit" ? <Loader /> : null}
+
       <h2 className="font-extrabold py-4">تفاصيل المنتج</h2>
       <form onSubmit={(e) => handleFormSubmit(e)}>
         <div className="grid grid-rows-2 grid-cols-4 gap-4     ">
           {/* Product Details */}
           <section className="col-span-4 xl:col-span-2  w-full bg-white h-full min-h-[500px] rounded-md shadow p-4 justify-center items-center">
-            <h3 className="font-extrabold py-4">حالة الطلب</h3>
+            <h3 className="font-extrabold py-4">معلومات المنتج</h3>
 
             <ButtonSubmit
               title={
@@ -136,7 +168,7 @@ export default function ProductForm({ type, product }) {
 
             <div className="mb-6">
               <FormField
-                title="Title"
+                title="اسم المنتج:"
                 state={form.title}
                 placeholder="Flexibble"
                 setState={(value) => handleStateChange("title", value)}
@@ -144,7 +176,8 @@ export default function ProductForm({ type, product }) {
             </div>
             <div className="mb-6">
               <FormField
-                title="Price"
+                title="سعر:"
+                type="number"
                 state={form.price}
                 placeholder="add price"
                 setState={(value) => handleStateChange("price", value)}
@@ -152,7 +185,8 @@ export default function ProductForm({ type, product }) {
             </div>
             <div className="mb-6">
               <FormField
-                title="Quantity"
+                title="كمية:"
+                type="number"
                 state={form.quantity}
                 placeholder="add quantity"
                 setState={(value) => handleStateChange("quantity", value)}
@@ -162,7 +196,7 @@ export default function ProductForm({ type, product }) {
 
             <div className="mb-6">
               <FormField
-                title="Seo Description"
+                title="وصف المنتج في محرك البحث:"
                 state={form.seo}
                 placeholder="Showcase and discover remarkable developer projects."
                 isTextArea
@@ -174,7 +208,7 @@ export default function ProductForm({ type, product }) {
           {/* Order Status */}
 
           <section className=" col-span-4 xl:col-span-2 w-full bg-white  rounded-md shadow p-4">
-            <h3 className="font-extrabold py-4"> تحسين محركات البحث</h3>
+            <h3 className="font-extrabold py-4">الصورة الرئيسية:</h3>
             <div className="flex flex-col gap-5 ">
               <label
                 htmlFor="poster"
@@ -245,9 +279,16 @@ export default function ProductForm({ type, product }) {
           </section>
 
           {/* Description*/}
-          <section className=" col-span-4 xl:col-span-4   min-h-[500px]  p-4  bg-white dark:bg-gray-800 rounded-lg shadow-lg ">
-            <h3 className="font-extrabold py-4">وصف المنتج</h3>
+          <section className="relative col-span-4 xl:col-span-4   min-h-[500px]  p-4  bg-white dark:bg-gray-800 rounded-lg shadow-lg ">
+            <div className="flex justify-between">
+              {" "}
+              <h3 className="font-extrabold py-4">وصف المنتج:</h3>
+              <div>
+                <button onClick={(e) => onModal(e)}>Display Images</button>
 
+                {model && <p className="fixed top-40">poup images</p>}
+              </div>
+            </div>
             <JoditEditor
               ref={editor}
               value={form.description}

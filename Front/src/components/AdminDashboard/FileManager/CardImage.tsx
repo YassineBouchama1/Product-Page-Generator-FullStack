@@ -15,12 +15,12 @@ export default function CardImage({ item }) {
         className="w-full h-[80%] mb-3  shadow-lg"
       />
 
-      <div className="flex mt-4 space-x-3 md:mt-6 gap-2">
+      <div className="flex  space-x-3 md:mt-6 gap-2">
         <button
           onClick={(e) => Functions.onDelete(item._id, e)}
-          className="inline-flex items-center px-4 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className=" items-center px-4 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          Delete
+          الحذف
         </button>
         <BtnCopyLink url={item.image} />
       </div>

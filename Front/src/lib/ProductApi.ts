@@ -18,23 +18,6 @@ async function findAll(page?) {
   return res.json();
 }
 
-async function findById(id: any) {
-  const res = await fetch(`http://127.0.0.1:4000/api/v1/Products/${id}`, {
-    cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8",
-    },
-  });
-  if (res.status === 404) {
-    console.log("error");
-  }
-
-  return res.json();
-}
-
 const create = async (formData: any) => {
   try {
     const response = await fetch(`http://127.0.0.1:4000/api/v1/products`, {
@@ -89,6 +72,25 @@ const deleteById = async (id: any) => {
   }
 
   return res.json();
+};
+
+const findById = async (id: string) => {
+  try {
+    const response = await fetch(
+      `http://127.0.0.1:4000/api/v1/Products/${id}`,
+      {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8",
+        },
+      }
+    );
+
+    return response.json();
+  } catch (err) {
+    console.log("error");
+    throw err;
+  }
 };
 
 const ProductService = {

@@ -10,7 +10,7 @@ function UploaderForm() {
         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         htmlFor="file_input"
       >
-        Upload file
+        رفع ملف
       </label>
 
       <input
@@ -26,7 +26,7 @@ dark:border-gray-600 dark:placeholder-gray-400"
         onClick={(e) => FormFinctions.onSubmit(e)}
         className="w-full h-14 bg-green-600 text-white rounded-md"
       >
-        Upload
+        رفع
       </button>
     </>
   );
