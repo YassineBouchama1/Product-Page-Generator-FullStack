@@ -6,6 +6,7 @@ import OrderService from "@/lib/OrdersApi";
 import Error from "@/components/Shared/Error";
 import ProductService from "@/lib/ProductApi";
 import { ToastContainer } from "react-toastify";
+import Customer from "@/components/AdminDashboard/Order/OrderDetails/Customer";
 
 export default async function page({
   params: { id },
@@ -20,14 +21,38 @@ export default async function page({
 
   if (!order?.data) return <Error />;
 
+  function customMapping(value) {
+    if (value.isDelivered === true) {
+      return (
+        <span className="bg-green-600 text-white rounded-xl px-2 py-1">
+          تم إستلام
+        </span>
+      );
+    } else if (value.isShipped === true) {
+      return (
+        <span className="bg-Emerald-600 text-white rounded-xl px-2 ">
+          تم شحن
+        </span>
+      );
+    } else if (value.isConfirmed === true) {
+      return (
+        <span className="bg-Violet-500 text-white rounded-xl px-2 h-[30px] ">
+          تم تأكيد الطلب
+        </span>
+      );
+    } else {
+      return (
+        <span className="bg-blue-400 text-white rounded-xl px-2 py-1">
+          في انتظار تأكيد
+        </span>
+      );
+    }
+  }
+
   return (
     <div>
       <h2 className="font-extrabold py-4">تفاصيل الطلب</h2>
-      {/* Order Status */}
-      <section className=" w-full h-full  p-4 flex  justify-center">
-        <h3 className="font-extrabold py-4 pl-5">حالة الطلب</h3>
-        <OrderHistory order={order.data} />
-      </section>
+
       <div className="grid grid-rows-2 grid-cols-4 gap-4     ">
         {/* Product Details */}
         <section className="col-span-4 xl:col-span-3  w-full bg-white h-full min-h-[500px] rounded-md shadow p-4 justify-center items-center">
@@ -35,22 +60,22 @@ export default async function page({
             <Image
               src={prduct.data.image}
               alt="image name"
-              width="200"
-              height="200"
-              className=" mb-3 rounded-full shadow-lg"
+              width="300"
+              height="300"
+              className=" mb-3  shadow-lg h-auto"
             />{" "}
-            <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+            <h5 className="mb-1 text-xl font-medium text-gray-900 ">
               {order.data.cartItems[0].productID.title}
             </h5>
-            <div className="flex mt-4 space-x-3 md:mt-6 gap-2">
+            <div className="flex mt-4 space-x-3 md:mt-6 gap-2 justify-end items-end">
               <p>سعر المنتج:</p>
-              <p className=" text-sm text-gray-500 dark:text-gray-400">
+              <p className=" text-sm text-gray-500 ">
                 ${order.data.cartItems[0].price}
               </p>
             </div>
             <div className="flex mt-4 space-x-3 md:mt-6 gap-2">
               <p>كمية:</p>
-              <p className=" text-sm text-gray-500 dark:text-gray-400">
+              <p className=" text-sm text-gray-500 ">
                 {order.data.cartItems[0].quantity}
               </p>
             </div>
@@ -60,26 +85,12 @@ export default async function page({
             </div>
           </div>
         </section>
-
-        {/* Address*/}
-        <section className="col-span-4 xl:col-span-1 w-full bg-white h-full min-h-[500px] rounded-md shadow p-4">
-          <h3 className="font-extrabold py-4">عنوان الشحن</h3>
-          <div className="flex flex-col gap-8">
-            <div>
-              <span className="font-black">اسم:</span>
-              <span>{order.data.shippingAddress.name}</span>
-            </div>
-            <div>
-              <span className="font-black">عنوان:</span>
-              <span>{order.data.shippingAddress.address}</span>
-            </div>
-
-            <div>
-              <span className="font-black">رقم الهاتف:</span>
-              <span>{order.data.shippingAddress.phone}</span>
-            </div>
-          </div>
+        {/* Order Status */}
+        <section className="col-span-4 xl:col-span-1 w-full bg-white h-full  rounded-md shadow p-4   flex item-start justify-start">
+          <Customer shipping={order.data.shippingAddress} />
         </section>
+        {/* Address*/}
+        <section className="col-span-4 xl:col-span-4 w-full bg-white h-[200px] rounded-md shadow p-4"></section>
       </div>
       <ToastContainer />
     </div>
