@@ -1,8 +1,8 @@
 "use client";
 import FileManagerServeice from "@/lib/FileManager";
-import notify from "@/hooks/Global/useNotifaction";
+import notify from "@/hooks/useNotifaction";
 import { useRouter } from "next/navigation";
-const DeleteFileHook = () => {
+const CardImageHook = () => {
   const router = useRouter();
 
   const onDelete = async (
@@ -40,4 +40,4 @@ const DeleteFileHook = () => {
   };
 };
 
-export default DeleteFileHook;
+export default CardImageHook;

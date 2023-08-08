@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 
 import UserLayout from "@/components/Layout/UserLayout";
 import Link from "next/link";
-import RegisterHook from "@/Hook/Auth/registerHook";
+import RegisterHook from "@/app/(auth)/register/registerHook";
 // eslint-disable-next-line @next/next/no-async-client-component
 export default function Register() {
   const RegesterLogic = RegisterHook();

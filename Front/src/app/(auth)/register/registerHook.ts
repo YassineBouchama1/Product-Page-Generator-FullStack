@@ -3,26 +3,32 @@
 import Joi from "joi-browser";
 import AuthService from "@/lib/AuthApi";
 import { useRouter } from "next/navigation";
-import useValidator from "../../hooks/Global/useFormValidator";
+import useValidator from "@/hooks/useFormValidator";
 
-import notify from "@/hooks/Global/useNotifaction";
+import notify from "@/hooks/useNotifaction";
 
 interface initialData {
+  nameStore: string;
   email: string;
   password: string;
+  passwordConfirm: string;
 }
 
-export default function LoginHook() {
+export default function RegisterHook() {
   const router = useRouter();
   const initialData: initialData = {
+    nameStore: "",
     email: "",
     password: "",
+    passwordConfirm: "",
   };
 
   // this schema from joi to add requires
   const schema = {
+    nameStore: Joi.string().required().label("nameStore"),
     email: Joi.string().email().required().label("email"),
     password: Joi.string().min(6).required().label("password"),
+    passwordConfirm: Joi.ref("password"),
   };
 
   // this for validate data from user
@@ -41,8 +47,8 @@ export default function LoginHook() {
     } else {
       console.log("data  valid");
       //send inputs to server fro create accont
-      const result = await AuthService.login(data);
-      console.log(result);
+      const result = await AuthService.signup(data);
+
       // handdle result came from server
       if (result) {
         //@ if login succesful
@@ -60,8 +66,12 @@ export default function LoginHook() {
           localStorage.removeItem("token");
           localStorage.removeItem("user");
 
-          if (result.message) {
-            notify(result.message, "error");
+          if (result.errors) {
+            const errorsList = await result.errors;
+            //loop oon array of errores and display it
+            errorsList.forEach((element: any) => {
+              notify(element.msg, "error");
+            });
           }
         }
       }

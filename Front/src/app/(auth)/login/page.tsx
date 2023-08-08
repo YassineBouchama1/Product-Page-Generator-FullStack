@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import LoginHook from "@/Hook/Auth/loginHook";
+import LoginHook from "@/app/(auth)/login/loginHook";
 import { ToastContainer } from "react-toastify";
 
 export default function Login() {

@@ -1,6 +1,6 @@
 "use client";
 import FileManagerServeice from "@/lib/FileManager";
-import notify from "@/hooks/Global/useNotifaction";
+import notify from "@/hooks/useNotifaction";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 const UploaderFormHook = () => {

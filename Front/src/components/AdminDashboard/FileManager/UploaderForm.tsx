@@ -1,6 +1,6 @@
 "use client";
-import UploaderFormHook from "@/Hook/FileManager/UploaderFormHook";
-import useInsertFile from "@/Hook/FileManager/UploaderFormHook";
+import UploaderFormHook from "@/components/AdminDashboard/FileManager/UploaderFormHook";
+import useInsertFile from "@/components/AdminDashboard/FileManager/UploaderFormHook";
 
 function UploaderForm() {
   const FormFinctions = UploaderFormHook();

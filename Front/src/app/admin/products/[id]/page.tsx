@@ -1,8 +1,5 @@
 import ProductForm from "@/components/AdminDashboard/Product/ProductForm";
-import Preloader from "@/components/Preloader";
 import ProductService from "@/lib/ProductApi";
-import { setDetaileProduct } from "@/Redux/productsSlice/ProductsSlice";
-import { store } from "@/Redux/store";
 
 export default async function Edit({
   params: { id },

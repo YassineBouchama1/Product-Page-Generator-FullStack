@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import DeleteFileHook from "@/Hook/FileManager/deleteFileHook";
+import CardImageHook from "./CardImageHook";
 import BtnCopyLink from "@/components/Shared/BtnCopyLink";
 export default function CardImage({ item }) {
-  const Functions = DeleteFileHook();
+  const Functions = CardImageHook();
 
   return (
     <div className="h-[300px] flex flex-col items-center p-10  border border-gray-200 rounded-lg shadow">

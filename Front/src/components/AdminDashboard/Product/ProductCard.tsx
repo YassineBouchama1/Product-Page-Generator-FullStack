@@ -5,7 +5,7 @@ import pic from "../../../../public/p.png";
 import Link from "next/link";
 
 import BtnCopyLink from "@/components/Shared/BtnCopyLink";
-import ProductCardHook from "@/Hook/Product/ProductCardHook";
+import ProductCardHook from "@/components/AdminDashboard/Product/ProductCardHook";
 import { ToastContainer } from "react-toastify";
 
 export default function ProductCard({ item }) {

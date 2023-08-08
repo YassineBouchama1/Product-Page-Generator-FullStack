@@ -1,4 +1,4 @@
-import notify from "@/hooks/Global/useNotifaction";
+import notify from "@/hooks/useNotifaction";
 
 //to make notifactio to any componentet
 const displayErrors = async (result) => {

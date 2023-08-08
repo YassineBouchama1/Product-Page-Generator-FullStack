@@ -1,9 +1,14 @@
-import OrderList from "@/components/AdminDashboard/utilis/OrderList";
-import Pagination from "@/components/AdminDashboard/utilis/Pagination";
-import Status from "@/components/AdminDashboard/utilis/Status";
+import OrderList from "@/components/AdminDashboard/Order/OrderList";
+import Pagination from "@/components/Shared/Pagination";
+import Status from "@/components/AdminDashboard/Status/StatusCard";
+import Error from "@/components/Shared/Error";
+import OrderService from "@/lib/OrdersApi";
 import React from "react";
 
-export default function OrderPage() {
+export default async function OrderPage() {
+  const orders = await OrderService.findAll();
+
+  if (!orders?.data) return <Error />;
   return (
     <div className=" ">
       <h2 className="font-extrabold p-x-5">إدارة الطلبات</h2>
@@ -17,7 +22,7 @@ export default function OrderPage() {
             type="text"
           ></input>{" "}
         </div>
-        <OrderList />
+        <OrderList orders={orders} />
       </section>
       <Pagination />
     </div>

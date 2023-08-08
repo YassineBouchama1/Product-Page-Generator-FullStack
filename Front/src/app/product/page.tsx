@@ -12,8 +12,8 @@ export default async function ProductPage({
   params: { id: string };
 }) {
   const files = await FileManagerServeice.findById(id);
-  console.log(files);
-  if (!files?.data) return <Error />;
+
+  if (!files.data) return <Error />;
   return (
     <div className="container mx-auto">
       <NavBarStore />

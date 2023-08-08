@@ -1,156 +1,28 @@
 "use client";
 import React, { ChangeEvent, useRef, useState } from "react";
-
 import JoditEditor from "jodit-react";
 import Loader from "@/components/Shared/Loader";
-import Error from "@/components/Shared/Error";
-
 import { useRouter } from "next/navigation";
 import ProductService from "@/lib/ProductApi";
 import Image from "next/image";
 import FormField from "@/components/Shared/FormField";
 import ButtonSubmit from "@/components/Shared/ButtonSubmit";
-import notify from "@/hooks/Global/useNotifaction";
-import displayErrors from "@/hooks/Global/useDisplayErrors";
+import notify from "@/hooks/useNotifaction";
+import displayErrors from "@/hooks/useDisplayErrors";
 import { ToastContainer } from "react-toastify";
-import DisplayImages from "./DisplayImages";
-import ListImages from "../FileManager/ListImages";
-import FileManagerServeice from "@/lib/FileManager";
-import { store } from "@/Redux/store";
-import { setDetaileProduct } from "@/Redux/productsSlice/ProductsSlice";
-import { setFiles } from "@/Redux/FileManager/FileManagerSlice";
+import ProductFormHook from "./ProductFormHook";
+
 
 export default function ProductForm({ type, product }) {
-  const router = useRouter();
 
-  // call state redux
-  //   const product = useAppSelector(
-  //     (state) => state.products.GetOneProduct
-  //   );
-
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const [model, setModel] = useState<boolean>(false);
-  const [form, setForm] = useState({
-    title: product?.title || "",
-    quantity: product?.quantity || "",
-    price: product?.price || "",
-    seo: product?.seo || "",
-    image: product?.image || "",
-    display: product?.image || "",
-    description: product?.description || "",
-    id: product?._id || "",
-  });
-
-  const handleStateChange = (fieldName, value: string | File) => {
-    setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
-  };
-
-  const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
-    const file = e.target.files?.[0];
-
-    if (!file) return;
-
-    if (!file.type.includes("image")) {
-      alert("Please upload an image!");
-      return;
-    }
-    handleStateChange("image", file);
-    handleStateChange("display", URL.createObjectURL(file));
-  };
-
-  ///Start config textRich
-  const editor = useRef(null);
-  const config = {
-    placeholder: "Start typings...",
-    height: "500",
-  };
-  ///End config textRich
-
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSubmitting(true);
-
-    //valiadator
-    if (form.title.trim().length <= 3) {
-      notify("title should be longer", "success");
-      return;
-    }
-
-    if (form.description.trim().length <= 30) {
-      notify("description should be longer", "success");
-      return;
-    }
-
-    const formData = new FormData();
-
-    if (type === "create") {
-      formData.append("image", form.image);
-    }
-
-    //check in edit mode if user remove image without
-    //add new one if true dosen't send image to server keep old one
-    if (form.image !== "") {
-      formData.append("image", form.image);
-    }
-    formData.append("title", form.title);
-    formData.append("description", form.description);
-    formData.append("quantity", form.quantity);
-    formData.append("price", form.price);
-    formData.append("seo", form.seo);
-
-    try {
-      if (type === "create") {
-        const result = await ProductService.create(formData);
-
-        if (result.errors) {
-          setSubmitting(false);
-          displayErrors(result);
-
-          return;
-        } else {
-          notify("Created", "success");
-          router.push("/admin/products");
-        }
-      }
-
-      if (type === "edit") {
-        const result = await ProductService.update(formData, product.id);
-
-        if (result.errors) {
-          displayErrors(result);
-          setSubmitting(false);
-          return;
-        } else {
-          notify("edited Done", "success");
-          router.refresh();
-        }
-      }
-    } catch (error) {
-      notify(
-        `Failed to ${
-          type === "create" ? "create" : "edit"
-        } a project. Try again!`,
-        "error"
-      );
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const onModal = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    setModel((previous) => !previous);
-  };
+const logic = ProductFormHook({ type, product })
 
   return (
     <div className="relative">
       {!product?.title && type === "edit" ? <Loader /> : null}
 
       <h2 className="font-extrabold py-4">تفاصيل المنتج</h2>
-      <form onSubmit={(e) => handleFormSubmit(e)}>
+      <form onSubmit={(e) => logic.handleFormSubmit(e)}>
         <div className="grid grid-rows-2 grid-cols-4 gap-4     ">
           {/* Product Details */}
           <section className="col-span-4 xl:col-span-2  w-full bg-white h-full min-h-[500px] rounded-md shadow p-4 justify-center items-center">
@@ -158,38 +30,38 @@ export default function ProductForm({ type, product }) {
 
             <ButtonSubmit
               title={
-                submitting
+                logic.submitting
                   ? `${type === "create" ? "Creating" : "Editing"}`
                   : `${type === "create" ? "Create" : "Edit"}`
               }
               type="submit"
-              submitting={submitting}
+              submitting={logic.submitting}
             />
 
             <div className="mb-6">
               <FormField
                 title="اسم المنتج:"
-                state={form.title}
+                state={logic.form.title}
                 placeholder="Flexibble"
-                setState={(value) => handleStateChange("title", value)}
+                setState={(value) => logic.handleStateChange("title", value)}
               />
             </div>
             <div className="mb-6">
               <FormField
                 title="سعر:"
                 type="number"
-                state={form.price}
+                state={logic.form.price}
                 placeholder="add price"
-                setState={(value) => handleStateChange("price", value)}
+                setState={(value) => logic.handleStateChange("price", value)}
               />
             </div>
             <div className="mb-6">
               <FormField
                 title="كمية:"
                 type="number"
-                state={form.quantity}
+                state={logic.form.quantity}
                 placeholder="add quantity"
-                setState={(value) => handleStateChange("quantity", value)}
+                setState={(value) => logic.handleStateChange("quantity", value)}
               />
             </div>
             <h3 className="font-extrabold py-4"> تحسين محركات البحث</h3>
@@ -197,10 +69,10 @@ export default function ProductForm({ type, product }) {
             <div className="mb-6">
               <FormField
                 title="وصف المنتج في محرك البحث:"
-                state={form.seo}
+                state={logic.form.seo}
                 placeholder="Showcase and discover remarkable developer projects."
                 isTextArea
-                setState={(value) => handleStateChange("seo", value)}
+                setState={(value) => logic.handleStateChange("seo", value)}
               />
             </div>
           </section>
@@ -214,18 +86,18 @@ export default function ProductForm({ type, product }) {
                 htmlFor="poster"
                 className="flex justify-center items-center  h-[300px]"
               >
-                {!form.image && "Choose a poster for your project"}
-                {form.image && (
+                {!logic.form.image && "Choose a poster for your project"}
+                {logic.form.image && (
                   <div>
                     <button
-                      onClick={() => handleStateChange("image", "")}
+                      onClick={() => logic.handleStateChange("image", "")}
                       className="text-red-800"
                     >
                       x
                     </button>
                     <div className="w-full h-[300px] mb-3 rounded-sm shadow-lg">
                       <Image
-                        src={form.display}
+                        src={logic.form.display}
                         alt="image name"
                         width="70"
                         height="10"
@@ -264,7 +136,7 @@ export default function ProductForm({ type, product }) {
                     >
                       Browse file
                       <input
-                        onChange={(e) => handleChangeImage(e)}
+                        onChange={(e) => logic.handleChangeImage(e)}
                         className="hidden"
                         id="image"
                         type="file"
@@ -284,16 +156,16 @@ export default function ProductForm({ type, product }) {
               {" "}
               <h3 className="font-extrabold py-4">وصف المنتج:</h3>
               <div>
-                <button onClick={(e) => onModal(e)}>Display Images</button>
+                <button onClick={(e) => logic.onModal(e)}>Display Images</button>
 
-                {model && <p className="fixed top-40">poup images</p>}
+                {logic.model && <p className="fixed top-40">poup images</p>}
               </div>
             </div>
             <JoditEditor
-              ref={editor}
-              value={form.description}
-              config={config}
-              onBlur={(value) => handleStateChange("description", value)} // preferred to use only this option to update the content for performance reasons
+              ref={logic.editor}
+              value={logic.form.description}
+              config={logic.config}
+              onBlur={(value) => logic.handleStateChange("description", value)} // preferred to use only this option to update the content for performance reasons
             />
           </section>
         </div>

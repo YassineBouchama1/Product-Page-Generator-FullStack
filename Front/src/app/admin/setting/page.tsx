@@ -1,4 +1,4 @@
-import TitlePage from "@/components/AdminDashboard/utilis/TitlePage";
+import TitlePage from "@/components/Shared/TitlePage";
 import React from "react";
 import ChangePassword from "@/components/AdminDashboard/Setting/ChangePassword";
 export default function SettingPage() {

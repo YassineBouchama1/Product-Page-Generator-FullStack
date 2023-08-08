@@ -1,7 +1,7 @@
 "use client";
 import ProductService from "@/lib/ProductApi";
 
-import notify from "@/hooks/Global/useNotifaction";
+import notify from "@/hooks/useNotifaction";
 
 import { useRouter } from "next/navigation";
 const ProductCardHook = () => {
