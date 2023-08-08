@@ -8,7 +8,7 @@ export default async function ProductPage() {
   const products = await ProductService.findAll();
 
   return (
-    <div className=" flex flex-col gap-y-5 ">
+    <div className=" flex flex-col gap-y-5 overflow-hidden rounded-xl bg-white p-8 shadow">
       <h2 className="font-extrabold ">إدارة المنتجات</h2>
       <section className="w-full bg-white p-4 rounded-md flex justify-between lg:flex-row flex-col gap-5 ">
         <Link

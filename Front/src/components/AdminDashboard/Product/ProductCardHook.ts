@@ -19,10 +19,14 @@ const ProductCardHook = () => {
 
     if (result.status === "error") {
       notify("there is pb repeat", "warn");
-    } else {
+    }
+    if (result.data) {
       router.refresh();
       // router.push("/admin/products");
-      notify("Removed Success", "success");
+      notify("Removed", "success");
+    }
+    else{
+      notify("field request", "warn");
     }
   };
 

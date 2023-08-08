@@ -12,13 +12,11 @@ import displayErrors from "@/hooks/useDisplayErrors";
 import { ToastContainer } from "react-toastify";
 import ProductFormHook from "./ProductFormHook";
 
-
 export default function ProductForm({ type, product }) {
-
-const logic = ProductFormHook({ type, product })
+  const logic = ProductFormHook({ type, product });
 
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden rounded-xl bg-white px-8 shadow">
       {!product?.title && type === "edit" ? <Loader /> : null}
 
       <h2 className="font-extrabold py-4">تفاصيل المنتج</h2>
@@ -156,7 +154,9 @@ const logic = ProductFormHook({ type, product })
               {" "}
               <h3 className="font-extrabold py-4">وصف المنتج:</h3>
               <div>
-                <button onClick={(e) => logic.onModal(e)}>Display Images</button>
+                <button onClick={(e) => logic.onModal(e)}>
+                  Display Images
+                </button>
 
                 {logic.model && <p className="fixed top-40">poup images</p>}
               </div>

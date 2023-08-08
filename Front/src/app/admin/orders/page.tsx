@@ -10,8 +10,8 @@ export default async function OrderPage() {
 
   if (!orders?.data) return <Error />;
   return (
-    <div className=" ">
-      <h2 className="font-extrabold p-x-5">إدارة الطلبات</h2>
+    <div className="overflow-hidden rounded-xl bg-white p-8 shadow">
+      <h2 className="font-extrabold p-x-5 ">إدارة الطلبات</h2>
 
       <section className="  min-h-[70vh] w-full  rounded-md p-4">
         <div className="w-full  bg-gray-50 p-2 border-b flex justify-between   shadow-md rounded-t-lg">

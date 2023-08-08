@@ -15,7 +15,7 @@ export default async function page({
 }) {
   const order = await OrderService.findById(id); // fetch data
 
-  const prduct = await ProductService.findById(
+  const product = await ProductService.findById(
     order.data.cartItems[0].productID.id
   ); // fetch data product or we can send url with order to less requests
 
@@ -24,7 +24,7 @@ export default async function page({
   function customMapping(value) {
     if (value.isDelivered === true) {
       return (
-        <span className="bg-green-600 text-white rounded-xl px-2 py-1">
+        <span className="bg-green-600 text-white rounded-xl w-20 px-2 py-1">
           تم إستلام
         </span>
       );
@@ -42,7 +42,7 @@ export default async function page({
       );
     } else {
       return (
-        <span className="bg-blue-400 text-white rounded-xl px-2 py-1">
+        <span className="bg-blue-400 text-white rounded-xl px-2 py-1 ">
           في انتظار تأكيد
         </span>
       );
@@ -50,38 +50,32 @@ export default async function page({
   }
 
   return (
-    <div>
-      <h2 className="font-extrabold py-4">تفاصيل الطلب</h2>
+    <div className="">
+      <h2 className="font-extrabold py-4 overflow-hidden ">تفاصيل الطلب</h2>
 
       <div className="grid grid-rows-2 grid-cols-4 gap-4     ">
         {/* Product Details */}
         <section className="col-span-4 xl:col-span-3  w-full bg-white h-full min-h-[500px] rounded-md shadow p-4 justify-center items-center">
-          <div className="flex flex-col items-center p-10">
-            <Image
-              src={prduct.data.image}
-              alt="image name"
-              width="300"
-              height="300"
-              className=" mb-3  shadow-lg h-auto"
-            />{" "}
-            <h5 className="mb-1 text-xl font-medium text-gray-900 ">
-              {order.data.cartItems[0].productID.title}
-            </h5>
-            <div className="flex mt-4 space-x-3 md:mt-6 gap-2 justify-end items-end">
-              <p>سعر المنتج:</p>
-              <p className=" text-sm text-gray-500 ">
-                ${order.data.cartItems[0].price}
-              </p>
-            </div>
-            <div className="flex mt-4 space-x-3 md:mt-6 gap-2">
-              <p>كمية:</p>
-              <p className=" text-sm text-gray-500 ">
-                {order.data.cartItems[0].quantity}
-              </p>
-            </div>
-            <div className="flex mt-4 space-x-3 md:mt-6 gap-2">
-              <p>إجمالي المبلغ :</p>
-              <p>$${order.data.totalOrderPrice}</p>
+          <div className="flex justify-end ">{customMapping(order.data)}</div>
+
+          <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
+            <div className="flex flex-col rounded-lg bg-white sm:flex-row">
+              <img
+                className="m-2 h-24 w-28 rounded-md border object-cover object-center"
+                src={product.data.image}
+                alt=""
+              />
+              <div className="flex w-full flex-col px-4 py-4">
+                <span className="font-semibold">
+                  {order.data.cartItems[0].productID.title}
+                </span>
+                <span className="float-right text-gray-400">
+                  كمية : {order.data.cartItems[0].quantity}
+                </span>
+                <span className="float-right text-gray-400">
+                  سعر المنتج : {order.data.cartItems[0].quantity}
+                </span>
+              </div>
             </div>
           </div>
         </section>

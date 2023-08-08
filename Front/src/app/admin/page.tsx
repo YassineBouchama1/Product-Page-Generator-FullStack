@@ -15,10 +15,8 @@ export default async function AdminPage() {
 
   if (!orders?.data) return <Error />;
 
-
-
   return (
-    <div className="flex flex-col gap-y-10">
+    <div className="flex flex-col gap-y-10 overflow-hidden rounded-xl bg-white p-8 shadow">
       <h2 className="font-extrabold bg-white p-3">إضافة منتج جديد</h2>
 
       <section className="grid md:grid-cols-3 sm:grid-cols-1 gap-5 ">
@@ -32,7 +30,11 @@ export default async function AdminPage() {
           status={useConvertor.undeliveredCount(orders?.data)}
           icon={Icons.IconCanceld}
         />
-        <StatusCard title="دخل" status={`$ ${useConvertor.income(orders?.data)}`} icon={Icons.IconIncom} />
+        <StatusCard
+          title="دخل"
+          status={`$ ${useConvertor.income(orders?.data)}`}
+          icon={Icons.IconIncom}
+        />
       </section>
 
       <section className=" bg-white  w-full ">
