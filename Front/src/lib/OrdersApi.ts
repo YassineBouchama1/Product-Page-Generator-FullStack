@@ -1,94 +1,87 @@
 import notify from "@/hooks/useNotifaction";
 
-async function findAll(limit?, page?) {
-  const res = await fetch(
-    `http://127.0.0.1:4000/api/v1/Orders?limit=${limit}&page=${page}`,
-    {
+const API_URL = "http://127.0.0.1:4000/api/v1/Orders";
+const TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8";
+async function findAll(limit?: number, page?: number) {
+  try {
+    const res = await fetch(`${API_URL}?limit=${limit}&page=${page}`, {
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
-
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8",
+        Authorization: `Bearer ${TOKEN}`,
       },
-    }
-  );
-  if (res.status === 404) {
-    console.log("prbel");
-  }
+    });
 
-  return res.json();
+    return res.json();
+  } catch (err) {
+    notify("Error fetching data", "error");
+    throw err;
+  }
 }
 
 const create = async (formData: any) => {
   try {
-    const response = await fetch(`http://127.0.0.1:4000/api/v1/Orders`, {
+    const response = await fetch(`${API_URL}`, {
       method: "POST",
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8",
+        Authorization: `Bearer ${TOKEN}`,
       },
       body: formData,
     });
 
     return response.json();
   } catch (err) {
-    notify("error fetch", "error");
+    notify("Error fetching data", "error");
     throw err;
   }
 };
 
 const updateStatus = async (id: any, formData: any) => {
   try {
-    const response = await fetch(
-      `http://127.0.0.1:4000/api/v1/Orders/${id}/statusOrder`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8",
-        },
-        body: formData,
-      }
-    );
+    const response = await fetch(`${API_URL}/${id}/statusOrder`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+      },
+      body: formData,
+    });
 
     return response.json();
   } catch (err) {
-    notify("error fetch", "error");
+    notify("Error fetching data", "error");
     throw err;
   }
 };
 
 const deleteById = async (id: any) => {
-  const res = await fetch(`http://127.0.0.1:4000/api/v1/Orders/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
+  try {
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
 
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8",
-    },
-  });
-  if (res.status === 404) {
-    // This will activate the closest `error.js` Error Boundary
-    console.log("prbel");
+    return res.json();
+  } catch (err) {
+    notify("Error fetching data", "error");
+    throw err;
   }
-
-  return res.json();
 };
 
 const findById = async (id: string) => {
   try {
-    const response = await fetch(`http://127.0.0.1:4000/api/v1/Orders/${id}`, {
+    const response = await fetch(`${API_URL}/${id}`, {
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8",
+        Authorization: `Bearer ${TOKEN}`,
       },
     });
 
     return response.json();
   } catch (err) {
-    notify("error fetch", "error");
+    notify("Error fetching data", "error");
     throw err;
   }
 };

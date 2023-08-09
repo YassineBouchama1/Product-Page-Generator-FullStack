@@ -2,6 +2,7 @@
 
 import useConvertor from "@/hooks/useConvertor";
 import notify from "@/hooks/useNotifaction";
+import customMapping from "@/hooks/useStatusOrder";
 import OrderService from "@/lib/OrdersApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -29,37 +30,6 @@ export default function OrderTable({ order }) {
     }
   };
 
-  function customMapping(value) {
-    if (value.statusOrder === "Delivered") {
-      return (
-        <span className="bg-green-600 text-white rounded-xl px-2 py-1">
-          تم إستلام
-        </span>
-      );
-    } else if (value.statusOrder === "Shipped") {
-      return (
-        <span className="bg-green-600 text-white rounded-xl px-2 py-1">
-          تم شحن
-        </span>
-      );
-    } else if (value.statusOrder === "Confirmed") {
-      return (
-        <span className="bg-blue-500 text-white rounded-xl px-2 py-1">
-          تم تأكيد الطلب
-        </span>
-      );
-    } else if (value.statusOrder === "Cancelled") {
-      return (
-        <span className="bg-red-500 text-white rounded-xl px-2 py-1">ملغى</span>
-      );
-    } else {
-      return (
-        <span className="bg-blue-400 text-white rounded-xl px-2 py-1">
-          في انتظار تأكيد
-        </span>
-      );
-    }
-  }
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <th
