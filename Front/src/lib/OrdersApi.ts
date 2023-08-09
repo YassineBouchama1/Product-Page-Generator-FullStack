@@ -38,36 +38,17 @@ const create = async (formData: any) => {
   }
 };
 
-const updateDelivereed = async (id: any) => {
+const updateStatus = async (id: any, formData: any) => {
   try {
     const response = await fetch(
-      `http://127.0.0.1:4000/api/v1/Orders/${id}/delivered`,
+      `http://127.0.0.1:4000/api/v1/Orders/${id}/statusOrder`,
       {
         method: "PUT",
         headers: {
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8",
         },
-      }
-    );
-
-    return response.json();
-  } catch (err) {
-    notify("error fetch", "error");
-    throw err;
-  }
-};
-
-const updateShipped = async (id: any) => {
-  try {
-    const response = await fetch(
-      `http://127.0.0.1:4000/api/v1/Orders/${id}/shipped`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8",
-        },
+        body: formData,
       }
     );
 
@@ -116,8 +97,7 @@ const OrderService = {
   findAll,
   findById,
   create,
-  updateShipped,
-  updateDelivereed,
+  updateStatus,
   deleteById,
 };
 

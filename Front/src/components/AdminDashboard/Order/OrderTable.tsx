@@ -30,23 +30,27 @@ export default function OrderTable({ order }) {
   };
 
   function customMapping(value) {
-    if (value.isDelivered === true) {
+    if (value.statusOrder === "Delivered") {
       return (
         <span className="bg-green-600 text-white rounded-xl px-2 py-1">
           تم إستلام
         </span>
       );
-    } else if (value.isShipped === true) {
+    } else if (value.statusOrder === "Shipped") {
       return (
-        <span className="bg-Emerald-600 text-white rounded-xl px-2 py-1">
+        <span className="bg-green-600 text-white rounded-xl px-2 py-1">
           تم شحن
         </span>
       );
-    } else if (value.isConfirmed === true) {
+    } else if (value.statusOrder === "Confirmed") {
       return (
-        <span className="bg-Violet-500 text-white rounded-xl px-2 py-1">
+        <span className="bg-blue-500 text-white rounded-xl px-2 py-1">
           تم تأكيد الطلب
         </span>
+      );
+    } else if (value.statusOrder === "Cancelled") {
+      return (
+        <span className="bg-red-500 text-white rounded-xl px-2 py-1">ملغى</span>
       );
     } else {
       return (
@@ -62,7 +66,7 @@ export default function OrderTable({ order }) {
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
       >
-        #2
+        #{order._id.slice(-4)}
       </th>
       <th
         scope="row"
