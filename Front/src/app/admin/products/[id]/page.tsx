@@ -1,4 +1,4 @@
-import ProductForm from "@/components/AdminDashboard/Product/ProductForm";
+import ProductForm from "@/components/AdminDashboard/Product/ProductForm/ProductForm";
 import ProductService from "@/lib/ProductApi";
 
 export default async function Edit({

@@ -1,8 +1,7 @@
-'use client'
-function customMapping(value) {
+function StatusOrder(value) {
   let bgColor, text;
 
-  switch (value.statusOrder) {
+  switch (value.status) {
     case "Delivered":
       bgColor = "bg-green-600";
       text = `تم إستلام `;
@@ -28,4 +27,4 @@ function customMapping(value) {
     <span className={`text-white rounded-xl px-2 py-1 ${bgColor}`}>{text}</span>
   );
 }
-export default customMapping;
+export default StatusOrder;

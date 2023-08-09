@@ -2,8 +2,9 @@
 import Image from "next/image";
 import CardImageHook from "./CardImageHook";
 import BtnCopyLink from "@/components/Shared/BtnCopyLink";
+import useCardImage from "./CardImageHook";
 export default function CardImage({ item }) {
-  const Functions = CardImageHook();
+  const { onDelete } = useCardImage();
 
   return (
     <div className="h-[300px] flex flex-col items-center p-10  border border-gray-200 rounded-lg shadow">
@@ -17,7 +18,7 @@ export default function CardImage({ item }) {
 
       <div className="flex  space-x-3 md:mt-6 gap-2">
         <button
-          onClick={(e) => Functions.onDelete(item._id, e)}
+          onClick={(e) => onDelete(item._id, e)}
           className=" items-center px-4 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           الحذف

@@ -24,16 +24,12 @@ const ProductCardHook = () => {
       router.refresh();
       // router.push("/admin/products");
       notify("Removed", "success");
-    }
-    else{
+    } else {
       notify("field request", "warn");
     }
   };
 
-  const productFun = {
-    onDelete,
-  };
-  return productFun;
+  return { onDelete };
 };
 
 export default ProductCardHook;

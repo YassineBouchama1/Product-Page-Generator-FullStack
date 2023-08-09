@@ -37,14 +37,15 @@ const create = async (formData: any) => {
   }
 };
 
-const updateStatus = async (id: any, formData: any) => {
+//Update Status Order 
+const updateStatus = async (id: any, data: any) => {
   try {
-    const response = await fetch(`${API_URL}/${id}/statusOrder`, {
+    const response = await fetch(`${API_URL}/${id}/status`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${TOKEN}`,
       },
-      body: formData,
+      body: JSON.stringify({ status: "Confirmed" }),
     });
 
     return response.json();
@@ -74,6 +75,7 @@ const deleteById = async (id: any) => {
 const findById = async (id: string) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
+      cache: "no-store",
       headers: {
         Authorization: `Bearer ${TOKEN}`,
       },

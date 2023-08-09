@@ -1,15 +1,15 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import pic from "../../../../public/p.png";
 import Link from "next/link";
 
 import BtnCopyLink from "@/components/Shared/BtnCopyLink";
-import ProductCardHook from "@/components/AdminDashboard/Product/ProductCardHook";
+
 import { ToastContainer } from "react-toastify";
+import ProductCardHook from "./ProductCardHook";
 
 export default function ProductCard({ item }) {
-  const functi = ProductCardHook();
+  const {onDelete} = ProductCardHook();
   const linkProduct = `http://localhost:3000/${item._id}`;
   return (
     <div className="min-w-sm max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -29,7 +29,7 @@ export default function ProductCard({ item }) {
         </span>
         <div className="flex mt-4 space-x-3 md:mt-6 gap-2 justify-center items-center">
           <button
-            onClick={(e) => functi.onDelete(item.id, e)}
+            onClick={(e) => onDelete(item.id, e)}
             className="inline-flex items-center px-4 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             الحذف

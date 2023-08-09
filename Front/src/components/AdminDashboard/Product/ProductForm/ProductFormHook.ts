@@ -1,6 +1,5 @@
-"use client";
 import React, { ChangeEvent, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import ProductService from "@/lib/ProductApi";
 import notify from "@/hooks/useNotifaction";
 import displayErrors from "@/hooks/useDisplayErrors";
@@ -9,7 +8,6 @@ export default function ProductFormHook({ type, product }) {
   const router = useRouter();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
-
   const [model, setModel] = useState<boolean>(false);
 
   const [form, setForm] = useState({
@@ -23,11 +21,11 @@ export default function ProductFormHook({ type, product }) {
     id: product?._id || "",
   });
 
-  const handleStateChange = (fieldName, value: string | File) => {
+  const handleStateChange = (fieldName, value) => {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
   };
 
-
+  
   const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
@@ -41,27 +39,25 @@ export default function ProductFormHook({ type, product }) {
     handleStateChange("display", URL.createObjectURL(file));
   };
 
-  ///Start config textRich
+
+//For Text Rich
   const editor = useRef(null);
   const config = {
-    placeholder: "Start typings...",
+    placeholder: "Start typing...",
     height: "500",
   };
-  ///End config textRich
-
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
 
-    //valiadator
     if (form.title.trim().length <= 3) {
-      notify("title should be longer", "success");
+      notify("Title should be longer", "success");
       return;
     }
 
     if (form.description.trim().length <= 30) {
-      notify("description should be longer", "success");
+      notify("Description should be longer", "success");
       return;
     }
 
@@ -71,11 +67,10 @@ export default function ProductFormHook({ type, product }) {
       formData.append("image", form.image);
     }
 
-    //check in edit mode if user remove image without
-    //add new one if true dosen't send image to server keep old one
     if (form.image !== "") {
       formData.append("image", form.image);
     }
+
     formData.append("title", form.title);
     formData.append("description", form.description);
     formData.append("quantity", form.quantity);
@@ -89,7 +84,6 @@ export default function ProductFormHook({ type, product }) {
         if (result.errors) {
           setSubmitting(false);
           displayErrors(result);
-
           return;
         } else {
           notify("Created", "success");
@@ -105,15 +99,13 @@ export default function ProductFormHook({ type, product }) {
           setSubmitting(false);
           return;
         } else {
-          notify("edited Done", "success");
-          router.refresh();
+          notify("Edited Done", "success");
+          router.reload();
         }
       }
     } catch (error) {
       notify(
-        `Failed to ${
-          type === "create" ? "create" : "edit"
-        } a project. Try again!`,
+        `Failed to ${type === "create" ? "create" : "edit"} a project. Try again!`,
         "error"
       );
     } finally {
@@ -121,19 +113,12 @@ export default function ProductFormHook({ type, product }) {
     }
   };
 
-
-
-
-  const onModal = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-
     setModel((previous) => !previous);
   };
 
-
-
-  
-  const logic = {
+  return {
     submitting,
     form,
     model,
@@ -144,6 +129,4 @@ export default function ProductFormHook({ type, product }) {
     handleFormSubmit,
     onModal,
   };
-
-  return logic;
 }

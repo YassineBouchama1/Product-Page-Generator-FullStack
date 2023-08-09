@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Joi from "joi-browser";
 import notify from "./useNotifaction";
 
-const useValidator = (initialData: any, schema: any) => {
+const Validator = (initialData: any, schema: any) => {
   const [data, setData] = useState(initialData);
   const [errorsValidator, setErrorsValidator] = useState([]);
 
@@ -41,4 +41,4 @@ const useValidator = (initialData: any, schema: any) => {
   return { data, errorsValidator, handleChange, validateData };
 };
 
-export default useValidator;
+export default Validator;

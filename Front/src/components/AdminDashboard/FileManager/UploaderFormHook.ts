@@ -1,43 +1,40 @@
-"use client";
+import React, { useState } from "react";
 import FileManagerServeice from "@/lib/FileManager";
 import notify from "@/hooks/useNotifaction";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-const UploaderFormHook = () => {
+
+const useUploaderForm = () => {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
 
-  //function works when click upload
   const onSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    //check if user select image
-    if (file === null) {
-      notify("select image first", "warn");
+    if (!file) {
+      notify("Please select an image", "warn");
       return;
-    } else {
-      //convert image to fromdata
-      const formData = new FormData();
-      formData.append("image", file);
-      //fetch image to server
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
       const result = await FileManagerServeice.create(formData);
 
       if (result.status === "error") {
-        notify("there is pb repeat", "warn");
+        notify("There is a problem. Please try again.", "warn");
       } else {
         router.refresh();
-        // router.push("/admin/products");
-        notify("done", "success");
+        notify("Upload successful", "success");
         setFile(null);
       }
+    } catch (error) {
+      notify("An error occurred. Please try again later.", "error");
+      console.error("Error uploading image:", error);
     }
   };
 
-  return {
-    onSubmit,
-    setFile,
-    file,
-  };
+  return { onSubmit, setFile };
 };
 
-export default UploaderFormHook;
+export default useUploaderForm;

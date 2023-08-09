@@ -2,7 +2,7 @@
 
 import useConvertor from "@/hooks/useConvertor";
 import notify from "@/hooks/useNotifaction";
-import customMapping from "@/hooks/useStatusOrder";
+import StatusOrder from "@/hooks/useStatusOrder";
 import OrderService from "@/lib/OrdersApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -47,7 +47,7 @@ export default function OrderTable({ order }) {
       <td className="px-6 py-4">{order.cartItems[0].quantity}</td>
       <td className="px-6 py-4">{useConvertor.date(order.created_at)}</td>
       <td className="px-6 py-4">${order.cartItems[0].price}</td>
-      <td className="px-6 py-4">{customMapping(order)}</td>
+      <td className="px-6 py-4">{StatusOrder(order)}</td>
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">

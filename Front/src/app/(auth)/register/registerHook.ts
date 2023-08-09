@@ -3,7 +3,7 @@
 import Joi from "joi-browser";
 import AuthService from "@/lib/AuthApi";
 import { useRouter } from "next/navigation";
-import useValidator from "@/hooks/useFormValidator";
+import Validator from "@/hooks/useFormValidator";
 
 import notify from "@/hooks/useNotifaction";
 
@@ -32,7 +32,7 @@ export default function RegisterHook() {
   };
 
   // this for validate data from user
-  const { data, errorsValidator, handleChange, validateData } = useValidator(
+  const { data, errorsValidator, handleChange, validateData } = Validator(
     initialData,
     schema
   );

@@ -1,7 +1,3 @@
-import React, { useState } from "react";
-import pic from "../../../../../public/pjpg.jpg";
-import Image from "next/image";
-import OrderHistory from "@/components/AdminDashboard/Order/OrderDetails/OrderHistory";
 import OrderService from "@/lib/OrdersApi";
 import Error from "@/components/Shared/Error";
 import ProductService from "@/lib/ProductApi";
@@ -9,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import Customer from "@/components/AdminDashboard/Order/OrderDetails/Customer";
 import OrderField from "@/components/AdminDashboard/Order/OrderDetails/OrderField";
 import OrderStatus from "@/components/AdminDashboard/Order/OrderDetails/OrderStatus";
+import StatusOrder from "@/hooks/useStatusOrder";
 
 export default async function page({
   params: { id },
@@ -23,34 +20,6 @@ export default async function page({
 
   if (!order?.data) return <Error />;
 
-  function customMapping(value) {
-    if (value.isDelivered === true) {
-      return (
-        <span className="bg-green-600 text-white rounded-xl  px-2 py-1">
-          تم إستلام
-        </span>
-      );
-    } else if (value.isShipped === true) {
-      return (
-        <span className="bg-blue-600 text-white rounded-xl  px-2 py-1">
-          تم شحن
-        </span>
-      );
-    } else if (value.isConfirmed === true) {
-      return (
-        <span className="bg-green-600 text-white rounded-xl  px-2 py-1">
-          تم تأكيد الطلب
-        </span>
-      );
-    } else {
-      return (
-        <span className="bg-green-600 text-white rounded-xl  px-2 py-1">
-          في انتظار تأكيد
-        </span>
-      );
-    }
-  }
-
   return (
     <main>
       <h2 className="font-extrabold py-4 overflow-hidden ">تفاصيل الطلب</h2>
@@ -60,7 +29,7 @@ export default async function page({
         <section className="col-span-4 xl:col-span-3  w-full bg-white h-full min-h-[200px] rounded-md shadow p-4 justify-center items-center">
           <div className="flex justify-between border-b items-center py-2 ">
             <h3 className="font-bold">{order.data._id.slice(-4)}#</h3>
-            {customMapping(order.data)}
+            {StatusOrder(order.data)}
           </div>
 
           <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
@@ -74,7 +43,7 @@ export default async function page({
           <div className="border-t py-4 px-5">
             {" "}
             <h2 className="font-bold  mb-4">حالة الطلب</h2>
-            <OrderStatus id={id} />
+            <OrderStatus orderId={id} />
           </div>
         </section>
       </div>

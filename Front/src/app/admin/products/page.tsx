@@ -1,4 +1,4 @@
-import ProductCard from "@/components/AdminDashboard/Product/ProductCard";
+import ProductCard from "@/components/AdminDashboard/Product/ProductCard/ProductCard";
 import ProductService from "@/lib/ProductApi";
 import Link from "next/link";
 import React from "react";

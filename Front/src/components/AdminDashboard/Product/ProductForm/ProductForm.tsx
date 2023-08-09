@@ -1,26 +1,31 @@
 "use client";
-import React, { ChangeEvent, useRef, useState } from "react";
 import JoditEditor from "jodit-react";
 import Loader from "@/components/Shared/Loader";
-import { useRouter } from "next/navigation";
-import ProductService from "@/lib/ProductApi";
 import Image from "next/image";
 import FormField from "@/components/Shared/FormField";
 import ButtonSubmit from "@/components/Shared/ButtonSubmit";
-import notify from "@/hooks/useNotifaction";
-import displayErrors from "@/hooks/useDisplayErrors";
 import { ToastContainer } from "react-toastify";
 import ProductFormHook from "./ProductFormHook";
 
 export default function ProductForm({ type, product }) {
-  const logic = ProductFormHook({ type, product });
+  const {
+    submitting,
+    form,
+    model,
+    handleStateChange,
+    editor,
+    config,
+    handleChangeImage,
+    handleFormSubmit,
+    onModal,
+  } = ProductFormHook({ type, product });
 
   return (
     <div className="relative overflow-hidden rounded-xl bg-white px-8 shadow">
       {!product?.title && type === "edit" ? <Loader /> : null}
 
       <h2 className="font-extrabold py-4">تفاصيل المنتج</h2>
-      <form onSubmit={(e) => logic.handleFormSubmit(e)}>
+      <form onSubmit={(e) => handleFormSubmit(e)}>
         <div className="grid grid-rows-2 grid-cols-4 gap-4     ">
           {/* Product Details */}
           <section className="col-span-4 xl:col-span-2  w-full bg-white h-full min-h-[500px] rounded-md shadow p-4 justify-center items-center">
@@ -28,38 +33,38 @@ export default function ProductForm({ type, product }) {
 
             <ButtonSubmit
               title={
-                logic.submitting
+                submitting
                   ? `${type === "create" ? "Creating" : "Editing"}`
                   : `${type === "create" ? "Create" : "Edit"}`
               }
               type="submit"
-              submitting={logic.submitting}
+              submitting={submitting}
             />
 
             <div className="mb-6">
               <FormField
                 title="اسم المنتج:"
-                state={logic.form.title}
+                state={form.title}
                 placeholder="Flexibble"
-                setState={(value) => logic.handleStateChange("title", value)}
+                setState={(value) => handleStateChange("title", value)}
               />
             </div>
             <div className="mb-6">
               <FormField
                 title="سعر:"
                 type="number"
-                state={logic.form.price}
+                state={form.price}
                 placeholder="add price"
-                setState={(value) => logic.handleStateChange("price", value)}
+                setState={(value) => handleStateChange("price", value)}
               />
             </div>
             <div className="mb-6">
               <FormField
                 title="كمية:"
                 type="number"
-                state={logic.form.quantity}
+                state={form.quantity}
                 placeholder="add quantity"
-                setState={(value) => logic.handleStateChange("quantity", value)}
+                setState={(value) => handleStateChange("quantity", value)}
               />
             </div>
             <h3 className="font-extrabold py-4"> تحسين محركات البحث</h3>
@@ -67,10 +72,10 @@ export default function ProductForm({ type, product }) {
             <div className="mb-6">
               <FormField
                 title="وصف المنتج في محرك البحث:"
-                state={logic.form.seo}
+                state={form.seo}
                 placeholder="Showcase and discover remarkable developer projects."
                 isTextArea
-                setState={(value) => logic.handleStateChange("seo", value)}
+                setState={(value) => handleStateChange("seo", value)}
               />
             </div>
           </section>
@@ -84,18 +89,18 @@ export default function ProductForm({ type, product }) {
                 htmlFor="poster"
                 className="flex justify-center items-center  h-[300px]"
               >
-                {!logic.form.image && "Choose a poster for your project"}
-                {logic.form.image && (
+                {!form.image && "Choose a poster for your project"}
+                {form.image && (
                   <div>
                     <button
-                      onClick={() => logic.handleStateChange("image", "")}
+                      onClick={() => handleStateChange("image", "")}
                       className="text-red-800"
                     >
                       x
                     </button>
                     <div className="w-full h-[300px] mb-3 rounded-sm shadow-lg">
                       <Image
-                        src={logic.form.display}
+                        src={form.display}
                         alt="image name"
                         width="70"
                         height="10"
@@ -134,7 +139,7 @@ export default function ProductForm({ type, product }) {
                     >
                       Browse file
                       <input
-                        onChange={(e) => logic.handleChangeImage(e)}
+                        onChange={(e) => handleChangeImage(e)}
                         className="hidden"
                         id="image"
                         type="file"
@@ -154,18 +159,16 @@ export default function ProductForm({ type, product }) {
               {" "}
               <h3 className="font-extrabold py-4">وصف المنتج:</h3>
               <div>
-                <button onClick={(e) => logic.onModal(e)}>
-                  Display Images
-                </button>
+                <button onClick={(e) => onModal(e)}>Display Images</button>
 
-                {logic.model && <p className="fixed top-40">poup images</p>}
+                {model && <p className="fixed top-40">poup images</p>}
               </div>
             </div>
             <JoditEditor
-              ref={logic.editor}
-              value={logic.form.description}
-              config={logic.config}
-              onBlur={(value) => logic.handleStateChange("description", value)} // preferred to use only this option to update the content for performance reasons
+              ref={editor}
+              value={form.description}
+              config={config}
+              onBlur={(value) => handleStateChange("description", value)} // preferred to use only this option to update the content for performance reasons
             />
           </section>
         </div>

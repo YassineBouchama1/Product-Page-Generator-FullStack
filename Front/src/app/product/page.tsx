@@ -3,6 +3,7 @@ import FormBuy from "@/components/ProductPage/formBuy";
 
 import Error from "@/components/Shared/Error";
 import FileManagerServeice from "@/lib/FileManager";
+import OrderService from "@/lib/OrdersApi";
 import Image from "next/image";
 import React from "react";
 
@@ -11,9 +12,9 @@ export default async function ProductPage({
 }: {
   params: { id: string };
 }) {
-  const files = await FileManagerServeice.findById(id);
-
-  if (!files.data) return <Error />;
+  const files = await OrderService.findById(id);
+  console.log(files);
+  if (!files?.data) return <Error />;
   return (
     <div className="container mx-auto">
       <NavBarStore />
