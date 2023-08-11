@@ -1,10 +1,8 @@
-
 async function signup(body: Promise<any>) {
   const res = await fetch("http://127.0.0.1:4000/api/v1/auth/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "API-Key": process.env.DATA_API_KEY,
     },
     body: JSON.stringify(body),
   });
@@ -24,7 +22,6 @@ async function login(body: Promise<any>) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "API-Key": process.env.DATA_API_KEY,
     },
     body: JSON.stringify(body),
   });

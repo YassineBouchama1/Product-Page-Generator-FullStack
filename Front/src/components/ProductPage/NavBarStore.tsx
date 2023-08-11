@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function NavBarStore() {
+export default function NavBarStore({ name }) {
   return (
     <div className="bg-white lg:pb-12   ">
       <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
@@ -22,7 +22,7 @@ export default function NavBarStore() {
                   fill="currentColor"
                 />
               </svg>
-              Store
+              {name}
             </Link>
           </nav>
         </header>

@@ -6,7 +6,7 @@ import Link from "next/link";
 import RegisterHook from "@/app/(auth)/register/registerHook";
 // eslint-disable-next-line @next/next/no-async-client-component
 export default function Register() {
-  const RegesterLogic = RegisterHook();
+  const { handleChange, onSubmit } = RegisterHook();
   return (
     <>
       <UserLayout>
@@ -25,7 +25,7 @@ export default function Register() {
                       </label>
                       <input
                         type="text"
-                        onChange={RegesterLogic.handleChange}
+                        onChange={handleChange}
                         name="nameStore"
                         className="w-full rounded border  bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
                       ></input>
@@ -40,7 +40,7 @@ export default function Register() {
                       </label>
                       <input
                         type="email"
-                        onChange={RegesterLogic.handleChange}
+                        onChange={handleChange}
                         name="email"
                         className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
                       ></input>
@@ -56,7 +56,7 @@ export default function Register() {
                         كلمة المرور
                       </label>
                       <input
-                        onChange={RegesterLogic.handleChange}
+                        onChange={handleChange}
                         name="password"
                         type="password"
                         className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
@@ -71,7 +71,7 @@ export default function Register() {
                         تأكيد كلمة المرور
                       </label>
                       <input
-                        onChange={RegesterLogic.handleChange}
+                        onChange={handleChange}
                         type="password"
                         name="passwordConfirm"
                         className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
@@ -80,7 +80,7 @@ export default function Register() {
                   </div>
 
                   <button
-                    onClick={RegesterLogic.onSubmit}
+                    onClick={onSubmit}
                     className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base"
                   >
                     أنشئ حسابك

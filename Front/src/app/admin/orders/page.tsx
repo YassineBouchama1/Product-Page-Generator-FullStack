@@ -6,6 +6,7 @@ import React from "react";
 
 export default async function OrderPage() {
   const orders = await OrderService.findAll();
+  console.log(orders);
   if (!orders?.data) return <Error />;
 
   return (

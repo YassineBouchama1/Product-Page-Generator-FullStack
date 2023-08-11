@@ -69,10 +69,8 @@ export default function LoginHook() {
     }
   };
 
-  const RegesterLogic = {
+  return {
     handleChange,
     onSubmit,
   };
-
-  return RegesterLogic;
 }

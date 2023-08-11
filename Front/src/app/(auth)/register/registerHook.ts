@@ -79,10 +79,10 @@ export default function RegisterHook() {
     }
   };
 
-  const RegesterLogic = {
+
+
+  return {
     handleChange,
     onSubmit,
   };
-
-  return RegesterLogic;
 }

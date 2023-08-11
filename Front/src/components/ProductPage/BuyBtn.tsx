@@ -1,7 +1,10 @@
-export default function BuyNow() {
+export default function BuyNow({ onSubmit }) {
   return (
     <div className="w-full flex justify-center">
-      <button className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base">
+      <button
+        onClick={(e) => onSubmit(e)}
+        className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base"
+      >
         اطلب الان
       </button>
 

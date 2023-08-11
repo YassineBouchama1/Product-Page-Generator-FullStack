@@ -1,3 +1,8 @@
+import Cookies from "js-cookie";
+
+const TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGQ2NjZhZWRjZTk3NjM5MTBhMTZkYTkiLCJpYXQiOjE2OTE3NzI2MDEsImV4cCI6MTY5OTU0ODYwMX0.VHYXOZFOiNU7pI9mmLOujVC0MCSoZ31dS9cQdZ3vcP8";
+
 export const findAll = async (page?: string) => {
   try {
     const response = await fetch(
@@ -8,8 +13,7 @@ export const findAll = async (page?: string) => {
         headers: {
           "Content-Type": "application/json",
 
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTEyMzg0NzgsImV4cCI6MTY5OTAxNDQ3OH0.0DKS5MiWyy9vC7ovBB5ztIqalNZv6g37lSoy7oa8OJ0",
+          Authorization: `Bearer ${TOKEN}`,
         },
       }
     );
@@ -30,8 +34,7 @@ const create = async (formData: any) => {
   const res = await fetch("http://127.0.0.1:4000/api/v1/uploader", {
     method: "POST",
     headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTEyMzg0NzgsImV4cCI6MTY5OTAxNDQ3OH0.0DKS5MiWyy9vC7ovBB5ztIqalNZv6g37lSoy7oa8OJ0",
+      Authorization: `Bearer ${TOKEN}`,
     },
     body: formData,
   });
@@ -54,8 +57,7 @@ const deleteById = async (id: any) => {
         headers: {
           "Content-Type": "application/json",
 
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTEyMzg0NzgsImV4cCI6MTY5OTAxNDQ3OH0.0DKS5MiWyy9vC7ovBB5ztIqalNZv6g37lSoy7oa8OJ0",
+          Authorization: `Bearer ${TOKEN}`,
         },
       }
     );

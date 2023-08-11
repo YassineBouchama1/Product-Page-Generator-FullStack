@@ -1,8 +1,10 @@
-import { ApiResponse, Product,ErrorResponse } from "@/types/ProductType";
+import { ApiResponse, Product, ErrorResponse } from "@/types/ProductType";
+import Cookies from "js-cookie";
 const API_URL = "http://127.0.0.1:4000/api/v1/products";
+
 const TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8";
-async function findAll(page?: number): Promise<ApiResponse|any> {
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGQ2NjZhZWRjZTk3NjM5MTBhMTZkYTkiLCJpYXQiOjE2OTE3NzI2MDEsImV4cCI6MTY5OTU0ODYwMX0.VHYXOZFOiNU7pI9mmLOujVC0MCSoZ31dS9cQdZ3vcP8";
+async function findAll(page?: number) {
   try {
     const res = await fetch(`${API_URL}?limit=6&page=${page}`, {
       cache: "no-store",
@@ -22,7 +24,7 @@ async function findAll(page?: number): Promise<ApiResponse|any> {
   }
 }
 
-const create = async (formData: any): Promise<Product|any> => {
+const create = async (formData: any) => {
   try {
     const response = await fetch(`${API_URL}`, {
       method: "POST",
@@ -38,7 +40,7 @@ const create = async (formData: any): Promise<Product|any> => {
   }
 };
 
-const update = async (id: any, formData: any): Promise<Product|any> => {
+const update = async (id: any, formData: any) => {
   try {
     const response = await fetch(`${API_URL}/${formData}`, {
       method: "PUT",
@@ -55,7 +57,7 @@ const update = async (id: any, formData: any): Promise<Product|any> => {
   }
 };
 
-const deleteById = async (id: any): Promise<Product|any> => {
+const deleteById = async (id: any) => {
   try {
     const res = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
@@ -75,7 +77,7 @@ const deleteById = async (id: any): Promise<Product|any> => {
   }
 };
 
-const findById = async (id: string): Promise<Product | ErrorResponse> => {
+const findById = async (id: string) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       headers: {
