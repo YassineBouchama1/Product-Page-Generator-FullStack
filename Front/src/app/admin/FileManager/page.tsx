@@ -1,5 +1,5 @@
-import CardImage from "@/components/AdminDashboard/FileManager/CardImage";
-import UploaderForm from "@/components/AdminDashboard/FileManager/UploaderForm";
+import CardImage from "@/components/AdminDashboard/FileManager/CardImage/CardImage";
+import UploaderForm from "@/components/AdminDashboard/FileManager/UploaderForm/UploaderForm";
 
 import Error from "@/components/Shared/Error";
 import FileManagerServeice from "@/lib/FileManager";
@@ -11,7 +11,7 @@ async function page() {
 
   if (!files?.data) return <Error />;
   return (
-    <section className="bg-white rounded-md flex flex-col  overflow-hidden rounded-xl bg-white px-8 shadow">
+    <section className="bg-white rounded-md flex flex-col  overflow-hidden px-8 shadow">
       <section className="bg-white rounded-md grid  grid-cols-6">
         <div className="xl:col-span-5 col-span-6 w-full min-h-screen h-full p-5 grid xl:grid-cols-4 grid-cols-2    gap-5 justify-center">
           {files &&

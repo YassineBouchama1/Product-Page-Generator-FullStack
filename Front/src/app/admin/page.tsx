@@ -1,6 +1,6 @@
 import React from "react";
 import Status from "../../components/AdminDashboard/Status/StatusCard";
-import OrderList from "@/components/AdminDashboard/Order/OrderList";
+import OrderList from "@/components/AdminDashboard/Order/OrderList/OrderList";
 
 import Link from "next/link";
 import OrderService from "@/lib/OrdersApi";

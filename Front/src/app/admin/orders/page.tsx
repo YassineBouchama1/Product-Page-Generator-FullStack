@@ -1,4 +1,4 @@
-import OrderList from "@/components/AdminDashboard/Order/OrderList";
+import OrderList from "@/components/AdminDashboard/Order/OrderList/OrderList";
 import Pagination from "@/components/Shared/Pagination";
 import Error from "@/components/Shared/Error";
 import OrderService from "@/lib/OrdersApi";

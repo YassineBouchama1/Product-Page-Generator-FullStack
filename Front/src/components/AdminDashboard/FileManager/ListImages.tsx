@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import CardImage from "./CardImage";
+import CardImage from "./CardImage/CardImage";
 
 export default function ListImages({ files }) {
   return (

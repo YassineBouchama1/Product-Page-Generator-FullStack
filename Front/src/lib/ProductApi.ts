@@ -1,7 +1,8 @@
+import { ApiResponse, Product,ErrorResponse } from "@/types/ProductType";
 const API_URL = "http://127.0.0.1:4000/api/v1/products";
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJkNDkzNGYxZWYxOGFkMmUwYTNiOGQiLCJpYXQiOjE2OTE0NDIxNDgsImV4cCI6MTY5OTIxODE0OH0.57xJEQ3WlnsPyPoD8LZfzCXsuHI9F1SbR3H_oU33pV8";
-async function findAll(page?: number) {
+async function findAll(page?: number): Promise<ApiResponse|any> {
   try {
     const res = await fetch(`${API_URL}?limit=6&page=${page}`, {
       cache: "no-store",
@@ -21,7 +22,7 @@ async function findAll(page?: number) {
   }
 }
 
-const create = async (formData: any) => {
+const create = async (formData: any): Promise<Product|any> => {
   try {
     const response = await fetch(`${API_URL}`, {
       method: "POST",
@@ -37,14 +38,14 @@ const create = async (formData: any) => {
   }
 };
 
-const update = async (id: any, formData: any) => {
+const update = async (id: any, formData: any): Promise<Product|any> => {
   try {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${API_URL}/${formData}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${TOKEN}`,
       },
-      body: formData,
+      body: id,
     });
 
     return response.json();
@@ -54,7 +55,7 @@ const update = async (id: any, formData: any) => {
   }
 };
 
-const deleteById = async (id: any) => {
+const deleteById = async (id: any): Promise<Product|any> => {
   try {
     const res = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
@@ -74,7 +75,7 @@ const deleteById = async (id: any) => {
   }
 };
 
-const findById = async (id: string) => {
+const findById = async (id: string): Promise<Product | ErrorResponse> => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       headers: {

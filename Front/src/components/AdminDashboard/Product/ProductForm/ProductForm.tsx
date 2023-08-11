@@ -6,8 +6,9 @@ import FormField from "@/components/Shared/FormField";
 import ButtonSubmit from "@/components/Shared/ButtonSubmit";
 import { ToastContainer } from "react-toastify";
 import ProductFormHook from "./ProductFormHook";
+import DisplayFiles from "../DisplayFiles";
 
-export default function ProductForm({ type, product }) {
+export default function ProductForm({ type, product, files }) {
   const {
     submitting,
     form,
@@ -159,9 +160,18 @@ export default function ProductForm({ type, product }) {
               {" "}
               <h3 className="font-extrabold py-4">وصف المنتج:</h3>
               <div>
-                <button onClick={(e) => onModal(e)}>Display Images</button>
+                <button
+                  className="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200"
+                  onClick={(e) => onModal(e)}
+                >
+                  عرض مدير الصور
+                </button>
 
-                {model && <p className="fixed top-40">poup images</p>}
+                {model && (
+                  <div className="w-full">
+                    <DisplayFiles onModal={onModal} files={files} />
+                  </div>
+                )}
               </div>
             </div>
             <JoditEditor

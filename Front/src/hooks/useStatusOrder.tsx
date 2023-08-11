@@ -1,21 +1,21 @@
-function StatusOrder(value) {
-  let bgColor, text;
+function StatusOrder(value: string) {
+  let bgColor: string, text: string;
 
-  switch (value.status) {
+  switch (value) {
     case "Delivered":
       bgColor = "bg-green-600";
       text = `تم إستلام `;
       break;
-    case "Shipped":
-      bgColor = "bg-green-600";
+    case "bg-yellow-300":
+      bgColor = "bg-green-400";
       text = `تم شحن `;
       break;
     case "Confirmed":
-      bgColor = "bg-blue-500";
+      bgColor = "bg-amber-400";
       text = `تم تأكيد الطلب `;
       break;
     case "Cancelled":
-      bgColor = "bg-red-500";
+      bgColor = "bg-rose-600";
       text = "ملغى";
       break;
     default:

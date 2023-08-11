@@ -37,15 +37,16 @@ const create = async (formData: any) => {
   }
 };
 
-//Update Status Order 
-const updateStatus = async (id: any, data: any) => {
+//Update Status Order
+const updateStatus = async (orderId: any, status: any) => {
   try {
-    const response = await fetch(`${API_URL}/${id}/status`, {
+    const response = await fetch(`${API_URL}/${orderId}/status`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${TOKEN}`, // Replace with your actual token
       },
-      body: JSON.stringify({ status: "Confirmed" }),
+      body: JSON.stringify({ status }), // Convert the status to JSON
     });
 
     return response.json();

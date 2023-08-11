@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import CardImageHook from "./CardImageHook";
 import BtnCopyLink from "@/components/Shared/BtnCopyLink";
 import useCardImage from "./CardImageHook";
 export default function CardImage({ item }) {

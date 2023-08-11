@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useRef, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import ProductService from "@/lib/ProductApi";
 import notify from "@/hooks/useNotifaction";
 import displayErrors from "@/hooks/useDisplayErrors";
@@ -25,7 +25,6 @@ export default function ProductFormHook({ type, product }) {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
   };
 
-  
   const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
@@ -39,8 +38,7 @@ export default function ProductFormHook({ type, product }) {
     handleStateChange("display", URL.createObjectURL(file));
   };
 
-
-//For Text Rich
+  //For Text Rich
   const editor = useRef(null);
   const config = {
     placeholder: "Start typing...",
@@ -86,6 +84,7 @@ export default function ProductFormHook({ type, product }) {
           displayErrors(result);
           return;
         } else {
+          setSubmitting(false);
           notify("Created", "success");
           router.push("/admin/products");
         }
@@ -100,12 +99,14 @@ export default function ProductFormHook({ type, product }) {
           return;
         } else {
           notify("Edited Done", "success");
-          router.reload();
+          router.refresh();
         }
       }
     } catch (error) {
       notify(
-        `Failed to ${type === "create" ? "create" : "edit"} a project. Try again!`,
+        `Failed to ${
+          type === "create" ? "create" : "edit"
+        } a project. Try again!`,
         "error"
       );
     } finally {

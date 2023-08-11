@@ -7,7 +7,7 @@ import notify from "@/hooks/useNotifaction";
 
 export default function OrderStatus({ orderId }) {
   const [status, setStatus] = useState("");
-
+  const router = useRouter();
   const handleStatusChange = (e) => {
     e.preventDefault();
     setStatus(e.target.value);
@@ -15,33 +15,27 @@ export default function OrderStatus({ orderId }) {
 
   const updateOrderStatus = async (e) => {
     e.preventDefault();
+
     try {
       if (!status) {
         notify("Please select a status", "error");
         return;
       }
 
-      const response = await fetch(
-        `http://127.0.0.1:4000/api/v1/Orders/${orderId}/status`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer YOUR_ACCESS_TOKEN", // Replace with your actual token
-          },
-          body: JSON.stringify({ status }), // Convert the status to JSON
-        }
-      );
+      const response = await OrderService.updateStatus(orderId, status);
 
-      if (response.ok) {
-        const result = await response.json();
-        notify("Order status updated successfully", "success");
-        console.log(result); // Handle the result as needed
+      if (response.status === "error") {
+        notify("There is a problem. Please try again.", "warn");
+      } else if (response.data) {
+        router.refresh();
+
+        notify("Updated successfully", "success");
       } else {
-        notify("Failed to update order status", "error");
+        notify("Failed to process your request", "warn");
       }
     } catch (error) {
-      console.error("Error updating order status:", error);
+      notify("An error occurred. Please try again later.", "error");
+      console.error("Error deleting file:", error);
     }
   };
 
@@ -60,7 +54,6 @@ export default function OrderStatus({ orderId }) {
         value={status}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
       >
-        <option value="">اختر الحالة</option>
         <option value="Confirmed">تم تأكيد الطلب</option>
         <option value="Shipped">تم شحن</option>
         <option value="Delivered">تم استلام</option>

@@ -47,7 +47,7 @@ export default function OrderTable({ order }) {
       <td className="px-6 py-4">{order.cartItems[0].quantity}</td>
       <td className="px-6 py-4">{useConvertor.date(order.created_at)}</td>
       <td className="px-6 py-4">${order.cartItems[0].price}</td>
-      <td className="px-6 py-4">{StatusOrder(order)}</td>
+      <td className="px-6 py-4">{StatusOrder(order.status)}</td>
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">
