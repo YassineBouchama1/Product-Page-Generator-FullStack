@@ -26,7 +26,7 @@ const create = async (form: any) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ form }),
+      body: JSON.stringify(form),
     });
 
     return response.json();

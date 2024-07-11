@@ -70,7 +70,7 @@ export default async function ProductPage({
                   <div className="flex flex-col gap-2.5 pl-10">
                     {product && product.data.description}
                   </div>
-                  <FormBuy product={product} />
+                  <FormBuy product={product.data} />
                 </div>
               </div>
             </div>

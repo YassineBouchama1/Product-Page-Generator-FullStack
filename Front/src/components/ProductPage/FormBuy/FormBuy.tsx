@@ -45,7 +45,7 @@ export default function FormBuy({ product }: FormBuyProps) {
     }
 
     const formData = {
-      cartItems: { productID: product._id, quantity, price: product.price },
+      cartItems: { productID: product.id, quantity: quantity, price: product.price },
       shippingAddress: form,
       totalOrderPrice: product.price * 3,
       user: product.user,
