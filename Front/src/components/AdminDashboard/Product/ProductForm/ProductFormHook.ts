@@ -76,15 +76,16 @@ export default function ProductFormHook({ type, product }) {
     formData.append("price", form.price);
     formData.append("seo", form.seo);
 
+    console.log(form.image)
 
+    setSubmitting(false);
     // bring coockies in client comp
     const token = Cookies.get('token');
-
 
     try {
       if (type === "create") {
         const result = await ProductService.create(token, formData);
-
+        console.log(result)
         if (result.errors) {
           setSubmitting(false);
           displayErrors(result);
@@ -97,7 +98,7 @@ export default function ProductFormHook({ type, product }) {
       }
 
       if (type === "edit") {
-        const result = await ProductService.update(token,formData, product.id);
+        const result = await ProductService.update(token, formData, product.id);
 
         if (result.errors) {
           displayErrors(result);

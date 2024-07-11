@@ -12,7 +12,7 @@ class AddUrl {
 
         this.schema.post('init', (doc) => {
             if (doc.image) {
-                const imageUrl = `${URL}${fileName}/${doc.image}`
+                const imageUrl = `${URL}/${fileName}/${doc.image}`
                 doc.image = imageUrl
             }
 
@@ -24,7 +24,7 @@ class AddUrl {
 
         this.schema.post('save', (doc) => {
             if (doc.image) {
-                const imageUrl = `${URL}${fileName}/${doc.image}`
+                const imageUrl = `${URL}/${fileName}/${doc.image}`
                 doc.image = imageUrl
             }
 

@@ -145,7 +145,7 @@ export default function ProductForm({ type, product, files }) {
                         id="image"
                         type="file"
                         accept="image/*"
-                        // required={type === "create" ? true : false}
+                      // required={type === "create" ? true : false}
                       ></input>
                     </label>
                   </div>

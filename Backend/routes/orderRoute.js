@@ -6,7 +6,7 @@ const AuthService = require('../controller/authController')
 
 
 router.route('/')
-    .post(AuthService.protect, CreateOrder)
+    .post(CreateOrder)
     .get(AuthService.protect, getAllPOrders)
 
 

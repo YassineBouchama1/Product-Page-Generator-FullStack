@@ -3,41 +3,65 @@ const expressAsyncHandler = require('express-async-handler')
 const Product = require('../models/productModel');
 const ApiError = require('../utils/ApiError');
 const factory = require('./handlersFactory')
-
-
-
-
-
-
-
-
 const sharp = require('sharp');
-const { uploadMultImage } = require('../middleWares/uploadImageMiddleWar');
+const { uploadMultImage, uploadSingleImage } = require('../middleWares/uploadImageMiddleWar');
 const ApiFeatures = require('../utils/apiFeatures');
+
+
+
+// // @desc Resize Image That user input
+// exports.resizeImage = expressAsyncHandler(async (req, res, next) => {
+
+//     console.log('resizeImage')
+
+//     if (req.files?.images) {
+//         req.body.images = []
+//         await Promise.all(
+//             req.files.images.map(async (img) => {
+//                 const imageName = `PRODUCT-${req.user._id}-${Date.now()}-${Math.round(Math.random() * 1E9)}.png`
+
+//                 await sharp(img.buffer)
+//                     .resize(1000, 1000)
+//                     .toFormat('png')
+//                     .jpeg({ quality: 90 })
+//                     .toFile(`uploads/products/${imageName}`)
+
+
+//                 req.body.images.push(imageName)
+
+//             })
+//         )
+
+//     }
+//     next()
+// })
+
+
+
+// //@Desc MiddleWare using multer to upload image to server
+// exports.imageUploaderProduct = uploadMultImage([
+
+
+//     { name: 'images', maxCount: 5 }
+
+// ])
+
+
 
 
 
 // @desc Resize Image That user input
 exports.resizeImage = expressAsyncHandler(async (req, res, next) => {
 
-    if (req.files?.images) {
-        req.body.images = []
-        await Promise.all(
-            req.files.images.map(async (img) => {
-                const imageName = `PRODUCT-${req.user._id}-${Date.now()}-${Math.round(Math.random() * 1E9)}.png`
+    const fileName = `${req.user.name}-${Date.now()}-${Math.round(Math.random() * 1E9)}.png`
+    if (req.file) {
 
-                await sharp(img.buffer)
-                    .resize(600, 600)
-                    .toFormat('png')
-                    .jpeg({ quality: 90 })
-                    .toFile(`uploads/products/${imageName}`)
-
-
-                req.body.images.push(imageName)
-
-            })
-        )
-
+        await sharp(req.file.buffer)
+            .resize(900, 900)
+            .toFormat('png')
+            .png({ quality: 90 })
+            .toFile(`uploads/products/${fileName}`)
+        req.body.image = fileName
     }
     next()
 })
@@ -45,13 +69,7 @@ exports.resizeImage = expressAsyncHandler(async (req, res, next) => {
 
 
 //@Desc MiddleWare using multer to upload image to server
-exports.imageUploaderProduct = uploadMultImage([
-
-
-    { name: 'images', maxCount: 5 }
-])
-
-
+exports.imageUploaderProduct = uploadSingleImage('image')
 
 
 

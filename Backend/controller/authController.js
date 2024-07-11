@@ -18,9 +18,11 @@ const SECRET_KEY_JWT = 'Yassine.info'
 
 // create token by passing id user
 const createToken = (payload) =>
-  jwt.sign({ userId: payload }, 'Yassine.info', {
-    expiresIn: '90d'
-  })
+  jwt.sign({ userId: payload }, 'Yassine.info'
+    //   , {
+    //   expiresIn: '90d'
+    // }
+  )
 
 
 exports.signUp = expressAsyncHandler(async (req, res, next) => {
@@ -37,9 +39,9 @@ exports.signUp = expressAsyncHandler(async (req, res, next) => {
 
   //2 create token
 
-  const token = createToken(user._id)
+  // const token = createToken(user._id)
 
-  res.status(201).json({ data: user, token })
+  res.status(201).json({ data: user })
 })
 
 
@@ -62,7 +64,7 @@ exports.login = expressAsyncHandler(async (req, res, next) => {
 
   //3 creeate token 
   const token = await createToken(user._id)
-
+  console.log(token)
   res.status(200).json({ data: user, token })
 
 })

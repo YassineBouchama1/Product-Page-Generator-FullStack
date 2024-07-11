@@ -11,33 +11,32 @@ const ApiFeatures = require('../utils/apiFeatures')
 // @ROUTE GET /API/V1/order
 // @DACCESS Poulic
 exports.CreateOrder = expressAsyncHandler(async (req, res, next) => {
+    console.log(req.body);
 
+    const { product, quantity, price } = req.body.cartItems;
+    const { shippingAddress, totalOrderPrice } = req.body;
 
-    //  1- create Order
-    const newOrder = await Order.create({
-        cartItems: req.body.cartItems,
-        shippingAddress: req.body.shippingAddress,
-        totalOrderPrice: req.body.totalOrderPrice,
-        user: req.user._id
+    // 1- Create Order
+    const newOrder = await OrderModel.create({
+        cartItems: {
+            productID: product,
+            quantity: quantity,
+            price: price
+        },
+        shippingAddress: shippingAddress,
+        totalOrderPrice: totalOrderPrice,
+        user: req.user
+    });
 
-    })
-
-
-
-
-    // 4) After creating order, decrement product quantity, increment product sold
+    // 2- After creating order, decrement product quantity, increment product sold
     if (newOrder) {
-        const bulkOption = newOrder.cartItems.map((item) => ({
-            updateOne: {
-                filter: { _id: item.product },
-                update: { $inc: { quantity: -item.quantity, sold: +item.quantity } },
-            },
-        }));
-        await Product.bulkWrite(bulkOption, {});
-
+        await Product.findByIdAndUpdate(product, {
+            $inc: { quantity: -quantity, sold: quantity }
+        });
     }
+
     res.status(201).json({ status: 'success', data: newOrder });
-})
+});
 
 
 

@@ -1,4 +1,15 @@
-export default function BuyNow({ onSubmit }) {
+export default function BuyNow({ onSubmit, setQuantity, quantity }) {
+
+  const onQuantity = (op = '+') => {
+
+    if (op === '+' ) return setQuantity(quantity++)
+
+
+      if(quantity <= 1) return
+      
+    setQuantity(quantity--)
+
+  }
   return (
     <div className="w-full flex justify-center">
       <button
@@ -9,11 +20,17 @@ export default function BuyNow({ onSubmit }) {
       </button>
 
       <div className="flex items-center gap-4 mx-5 border border-gray-200 rounded">
-        <button className=" text-lg w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75">
+        <button
+          type="button"
+          onClick={() => onQuantity()}
+          className=" text-lg w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75">
           +
         </button>
-        <p>1</p>
-        <button className=" text-lg w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75">
+        <p>{quantity}</p>
+        <button
+          type="button"
+          onClick={() => onQuantity('-')}
+          className=" text-lg w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75">
           -
         </button>
       </div>

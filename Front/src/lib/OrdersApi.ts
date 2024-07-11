@@ -1,9 +1,8 @@
 import notify from "@/hooks/useNotifaction";
-import Cookies from "js-cookie";
+
 const API_URL = "http://127.0.0.1:4000/api/v1/Orders";
-const TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjhmMzUzZDMxYjI0YzliN2ZjOTI4N2QiLCJpYXQiOjE3MjA2NjE5NjJ9.0wR8vAmS5CRz6WuEF9hkhKMjiBWlcB5Doc7r3m-MiBg";
-async function findAll(token:string,limit?: number, page?: number) {
+
+async function findAll(token: string, limit?: number, page?: number) {
   try {
     const res = await fetch(`${API_URL}?limit=${limit}&page=${page}`, {
       cache: "no-store",
@@ -25,7 +24,7 @@ const create = async (form: any) => {
     const response = await fetch(`${API_URL}`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ form }),
     });
@@ -38,13 +37,13 @@ const create = async (form: any) => {
 };
 
 //Update Status Order
-const updateStatus = async (orderId: any, status: any) => {
+const updateStatus = async (token: string, orderId: any, status: any) => {
   try {
     const response = await fetch(`${API_URL}/${orderId}/status`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${TOKEN}`, // Replace with your actual token
+        Authorization: `Bearer ${token}`, // Replace with your actual token
       },
       body: JSON.stringify({ status }), // Convert the status to JSON
     });
@@ -56,13 +55,13 @@ const updateStatus = async (orderId: any, status: any) => {
   }
 };
 
-const deleteById = async (id: any) => {
+const deleteById = async (token: string, id: any) => {
   try {
     const res = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -73,12 +72,12 @@ const deleteById = async (id: any) => {
   }
 };
 
-const findById = async (id: string) => {
+const findById = async (token: string, id: string) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       cache: "no-store",
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 

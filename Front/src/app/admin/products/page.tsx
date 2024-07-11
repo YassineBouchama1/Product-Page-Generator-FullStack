@@ -14,6 +14,11 @@ export default async function ProductPage() {
 
   const products = await ProductService.findAll(token.value);
 
+
+  // display popup if thers is pb fetching
+  if (!products?.data) return <Error message="There is a pb while fetching Products" />;
+
+
   return (
     <div className=" flex flex-col gap-y-5 overflow-hidden rounded-xl bg-white p-8 shadow">
       <h2 className="font-extrabold ">إدارة المنتجات</h2>

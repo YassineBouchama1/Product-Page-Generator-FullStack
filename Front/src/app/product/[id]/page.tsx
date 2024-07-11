@@ -7,13 +7,21 @@ import ProductService from "@/lib/ProductApi";
 import Image from "next/image";
 import React from "react";
 import { ToastContainer } from "react-toastify";
+import { cookies } from "next/headers";
 
 export default async function ProductPage({
   params: { id },
 }: {
   params: { id: string };
 }) {
-  const product = await ProductService.findById(id);
+
+  const cookieStore = cookies()
+  const token = cookieStore.get('token')
+
+  if (!token) return <Error />;
+
+
+  const product = await ProductService.findById(token.value, id);
 
   if (!product?.data) return <Error />;
   return (
@@ -62,7 +70,7 @@ export default async function ProductPage({
                   <div className="flex flex-col gap-2.5 pl-10">
                     {product && product.data.description}
                   </div>
-                  <FormBuy />
+                  <FormBuy product={product} />
                 </div>
               </div>
             </div>

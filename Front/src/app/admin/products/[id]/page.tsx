@@ -4,15 +4,23 @@ import ProductForm from "@/components/AdminDashboard/Product/ProductForm/Product
 import Error from "@/components/Shared/Error";
 import FileManagerServeice from "@/lib/FileManager";
 import ProductService from "@/lib/ProductApi";
+import { cookies } from "next/headers";
 
 export default async function Edit({
   params: { id },
 }: {
   params: { id: string };
 }) {
-  const products = await ProductService.findById(id); // fetch data
+
+
+  const cookieStore = cookies()
+  const token = cookieStore.get('token')
+
+  if (!token) return <Error />;
+
+  const products = await ProductService.findById(token.value, id); // fetch data
   // store.dispatch(setDetaileProduct(products.data)); // pass it to redux to save it in state
-  const files = await FileManagerServeice.findAll();
+  const files = await FileManagerServeice.findAll(token.value);
 
 
   if (!files?.data) return <Error />;

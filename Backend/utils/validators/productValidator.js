@@ -20,7 +20,8 @@ exports.createProductalidator = [
         .isLength({ max: 200000 }).withMessage('to long product price ')
 
     ,
-
+    check('image').notEmpty().withMessage('image is  Required')
+    ,
     check('colors')
         .optional()
         .isArray()

@@ -3,11 +3,19 @@ import Pagination from "@/components/Shared/Pagination";
 import Error from "@/components/Shared/Error";
 import OrderService from "@/lib/OrdersApi";
 import React from "react";
+import { cookies } from "next/headers";
 
 export default async function OrderPage() {
-  const orders = await OrderService.findAll();
-  console.log(orders);
-  if (!orders?.data) return <Error />;
+
+  const cookieStore = cookies()
+  const token = cookieStore.get('token')
+
+  if (!token) return <Error />;
+
+  const orders = await OrderService.findAll(token.value);
+
+
+  if (!orders?.data) return <Error message="There is a pb while fetching orders" />;
 
   return (
     <div className="overflow-hidden  ">

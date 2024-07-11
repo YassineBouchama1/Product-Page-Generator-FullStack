@@ -1,6 +1,7 @@
 
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
+const AddUrl = require('../middleWares/addUrlImg')
 
 dotenv.config({ path: './config.env' })
 
@@ -57,11 +58,13 @@ const productSchema = mongoose.Schema({
     colors: [String],
     size: [String],
 
-    images: {
-        type: [String],
-        required: [true, 'images cover is required']
+    image: String,
 
-    },
+    // images: {
+    //     type: [String],
+    //     required: [true, 'images cover is required']
+
+    // },
 
 
 
@@ -75,31 +78,36 @@ const productSchema = mongoose.Schema({
 
 
 
+const postUrl = new AddUrl(productSchema)
+
+postUrl.post('products')
+postUrl.save('products')
 
 
-const setImageUrl = (doc) => {
 
-    if (doc.images) {
-        // also we can use foreach
-        // eslint-disable-next-line array-callback-return
-        doc.images.map((img, index) => {
+// const setImageUrl = (doc) => {
 
-            const imageUrl = `${URL}products/${img}`
-            doc.images[index] = imageUrl
-        })
+//     if (doc.images) {
+//         // also we can use foreach
+//         // eslint-disable-next-line array-callback-return
+//         doc.images.map((img, index) => {
 
-    }
-}
+//             const imageUrl = `${URL}products/${img}`
+//             doc.images[index] = imageUrl
+//         })
 
-productSchema.post('init', (doc) => {
-    setImageUrl(doc)
+//     }
+// }
 
-});
+// productSchema.post('init', (doc) => {
+//     setImageUrl(doc)
 
-productSchema.post('save', (doc) => {
-    setImageUrl(doc)
+// });
 
-});
+// productSchema.post('save', (doc) => {
+//     setImageUrl(doc)
+
+// });
 
 
 
