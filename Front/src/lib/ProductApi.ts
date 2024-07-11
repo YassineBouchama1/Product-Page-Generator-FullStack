@@ -1,16 +1,15 @@
-import { ApiResponse, Product, ErrorResponse } from "@/types/ProductType";
-import Cookies from "js-cookie";
+
 const API_URL = "http://127.0.0.1:4000/api/v1/products";
 
-const TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGQ2NjZhZWRjZTk3NjM5MTBhMTZkYTkiLCJpYXQiOjE2OTE3NzI2MDEsImV4cCI6MTY5OTU0ODYwMX0.VHYXOZFOiNU7pI9mmLOujVC0MCSoZ31dS9cQdZ3vcP8";
-async function findAll(page?: number) {
+async function findAll(token: string, page?: number) {
+
+
   try {
     const res = await fetch(`${API_URL}?limit=6&page=${page}`, {
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -24,12 +23,12 @@ async function findAll(page?: number) {
   }
 }
 
-const create = async (formData: any) => {
+const create = async (token: string, formData: any) => {
   try {
     const response = await fetch(`${API_URL}`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     });
@@ -40,12 +39,12 @@ const create = async (formData: any) => {
   }
 };
 
-const update = async (id: any, formData: any) => {
+const update = async (token: string, id: any, formData: any) => {
   try {
     const response = await fetch(`${API_URL}/${formData}`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
       body: id,
     });
@@ -57,13 +56,13 @@ const update = async (id: any, formData: any) => {
   }
 };
 
-const deleteById = async (id: any) => {
+const deleteById = async (token: string, id: any) => {
   try {
     const res = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -77,11 +76,11 @@ const deleteById = async (id: any) => {
   }
 };
 
-const findById = async (id: string) => {
+const findById = async (token: string, id: string) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 

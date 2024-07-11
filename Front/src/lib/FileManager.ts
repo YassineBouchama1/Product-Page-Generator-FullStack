@@ -1,9 +1,10 @@
 import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
 
-const TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGQ2NjZhZWRjZTk3NjM5MTBhMTZkYTkiLCJpYXQiOjE2OTE3NzI2MDEsImV4cCI6MTY5OTU0ODYwMX0.VHYXOZFOiNU7pI9mmLOujVC0MCSoZ31dS9cQdZ3vcP8";
 
-export const findAll = async (page?: string) => {
+export const findAll = async (token: string) => {
+
+
   try {
     const response = await fetch(
       `http://127.0.0.1:4000/api/v1/uploader?limit=8`,
@@ -13,14 +14,17 @@ export const findAll = async (page?: string) => {
         headers: {
           "Content-Type": "application/json",
 
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
+
+ 
     if (response.status === 404) {
       // This will activate the closest `error.js` Error Boundary
       console.log("prbel");
     }
+
 
     return response.json();
   } catch (err) {
@@ -28,13 +32,15 @@ export const findAll = async (page?: string) => {
   }
 };
 
-const findById = async (id: any) => {};
+const findById = async (token: string, id: any) => { };
 
-const create = async (formData: any) => {
+const create = async (token: string, formData: any) => {
+
+
   const res = await fetch("http://127.0.0.1:4000/api/v1/uploader", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
     body: formData,
   });
@@ -46,7 +52,7 @@ const create = async (formData: any) => {
   return res.json();
 };
 
-const deleteById = async (id: any) => {
+const deleteById = async (token: string, id: string | number) => {
   try {
     const response = await fetch(
       `http://127.0.0.1:4000/api/v1/uploader/${id}`,
@@ -57,7 +63,7 @@ const deleteById = async (id: any) => {
         headers: {
           "Content-Type": "application/json",
 
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

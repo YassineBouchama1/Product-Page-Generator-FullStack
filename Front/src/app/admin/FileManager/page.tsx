@@ -5,9 +5,15 @@ import Error from "@/components/Shared/Error";
 import FileManagerServeice from "@/lib/FileManager";
 import React from "react";
 import { ToastContainer } from "react-toastify";
+import { cookies } from 'next/headers'
 
 async function page() {
-  const files = await FileManagerServeice.findAll();
+  const cookieStore = cookies()
+  const token = cookieStore.get('token')
+
+  if (!token) return <Error />;
+
+  const files = await FileManagerServeice.findAll(token?.value);
 
   if (!files?.data) return <Error />;
   return (

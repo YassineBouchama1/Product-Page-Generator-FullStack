@@ -3,7 +3,7 @@ import ProductForm from "@/components/AdminDashboard/Product/ProductForm/Product
 export default async function NewProduct() {
   return (
     <>
-      <ProductForm type="create" />
+      <ProductForm type="create" product={undefined} files={undefined} />
     </>
   );
 }

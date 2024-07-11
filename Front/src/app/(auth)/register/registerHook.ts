@@ -1,4 +1,3 @@
-"use client";
 
 import Joi from "joi-browser";
 import AuthService from "@/lib/AuthApi";
@@ -52,12 +51,12 @@ export default function RegisterHook() {
       // handdle result came from server
       if (result) {
         //@ if login succesful
-        if (result.token) {
-          localStorage.setItem("token", result.token);
-          localStorage.setItem("user", JSON.stringify(result.data));
+        if (result.user) {
+          // localStorage.setItem("token", result.token);
+          // localStorage.setItem("user", JSON.stringify(result.data));
           notify("Accoun Created Successfuly", "success");
           setTimeout(() => {
-            router.push("/admin");
+            router.push("/login");
           }, 1100);
         }
 

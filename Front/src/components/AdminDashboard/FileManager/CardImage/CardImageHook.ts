@@ -2,6 +2,7 @@ import React from "react";
 import FileManagerServeice from "@/lib/FileManager";
 import notify from "@/hooks/useNotifaction";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const useCardImage = () => {
   const router = useRouter();
@@ -17,8 +18,11 @@ const useCardImage = () => {
       return;
     }
 
+    // bring coockies in client comp
+    const token = Cookies.get('token');
+
     try {
-      const result = await FileManagerServeice.deleteById(id);
+      const result = await FileManagerServeice.deleteById(token, id);
 
       if (result.status === "error") {
         notify("There is a problem. Please try again.", "warn");

@@ -1,11 +1,18 @@
 import ProductCard from "@/components/AdminDashboard/Product/ProductCard/ProductCard";
+import Error from "@/components/Shared/Error";
 import ProductService from "@/lib/ProductApi";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import React from "react";
 import { ToastContainer } from "react-toastify";
 
 export default async function ProductPage() {
-  const products = await ProductService.findAll();
+  const cookieStore = cookies()
+  const token = cookieStore.get('token')
+
+  if (!token) return <Error />;
+
+  const products = await ProductService.findAll(token.value);
 
   return (
     <div className=" flex flex-col gap-y-5 overflow-hidden rounded-xl bg-white p-8 shadow">

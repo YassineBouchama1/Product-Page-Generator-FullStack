@@ -9,9 +9,15 @@ import Error from "@/components/Shared/Error";
 import StatusCard from "../../components/AdminDashboard/Status/StatusCard";
 import Icons from "@/components/AdminDashboard/icons/MainPage";
 import useConvertor from "@/hooks/useConvertor";
+import { cookies } from "next/headers";
 
 export default async function AdminPage() {
-  const orders = await OrderService.findAll(10);
+  const cookieStore = cookies()
+  const token = cookieStore.get('token')
+
+  if (!token) return <Error />;
+
+  const orders = await OrderService.findAll(token.value, 10);
 
   if (!orders?.data) return <Error />;
 

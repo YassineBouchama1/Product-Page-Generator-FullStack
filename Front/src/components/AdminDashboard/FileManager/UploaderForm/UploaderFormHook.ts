@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FileManagerServeice from "@/lib/FileManager";
 import notify from "@/hooks/useNotifaction";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const useUploaderForm = () => {
   const router = useRouter();
@@ -17,9 +18,14 @@ const useUploaderForm = () => {
 
     const formData = new FormData();
     formData.append("image", file);
+ 
+
+    // bring coockies in client comp
+    const token = Cookies.get('token');
+  
 
     try {
-      const result = await FileManagerServeice.create(formData);
+      const result = await FileManagerServeice.create(token,formData);
 
       if (result.status === "error") {
         notify("There is a problem. Please try again.", "warn");

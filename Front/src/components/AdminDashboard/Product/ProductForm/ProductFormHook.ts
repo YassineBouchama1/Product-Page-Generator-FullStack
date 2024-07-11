@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import ProductService from "@/lib/ProductApi";
 import notify from "@/hooks/useNotifaction";
 import displayErrors from "@/hooks/useDisplayErrors";
+import Cookies from "js-cookie";
 
 export default function ProductFormHook({ type, product }) {
   const router = useRouter();
@@ -75,9 +76,14 @@ export default function ProductFormHook({ type, product }) {
     formData.append("price", form.price);
     formData.append("seo", form.seo);
 
+
+    // bring coockies in client comp
+    const token = Cookies.get('token');
+
+
     try {
       if (type === "create") {
-        const result = await ProductService.create(formData);
+        const result = await ProductService.create(token, formData);
 
         if (result.errors) {
           setSubmitting(false);
@@ -91,7 +97,7 @@ export default function ProductFormHook({ type, product }) {
       }
 
       if (type === "edit") {
-        const result = await ProductService.update(formData, product.id);
+        const result = await ProductService.update(token,formData, product.id);
 
         if (result.errors) {
           displayErrors(result);
@@ -104,8 +110,7 @@ export default function ProductFormHook({ type, product }) {
       }
     } catch (error) {
       notify(
-        `Failed to ${
-          type === "create" ? "create" : "edit"
+        `Failed to ${type === "create" ? "create" : "edit"
         } a project. Try again!`,
         "error"
       );

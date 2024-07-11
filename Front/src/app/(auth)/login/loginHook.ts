@@ -4,6 +4,7 @@ import Joi from "joi-browser";
 import AuthService from "@/lib/AuthApi";
 import { useRouter } from "next/navigation";
 import Validator from "../../../hooks/useFormValidator";
+import Cookies from "js-cookie";
 
 import notify from "@/hooks/useNotifaction";
 
@@ -47,6 +48,10 @@ export default function LoginHook() {
       if (result) {
         //@ if login succesful
         if (result.token) {
+          Cookies.set("token", result.token, { expires: 7 });
+          console.log("Token set:", Cookies.get("token")); // Add this line
+
+
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.data));
           notify("Accoun Created Successfuly", "success");

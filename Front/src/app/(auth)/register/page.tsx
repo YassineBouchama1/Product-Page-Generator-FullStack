@@ -6,6 +6,7 @@ import Link from "next/link";
 import RegisterHook from "@/app/(auth)/register/registerHook";
 // eslint-disable-next-line @next/next/no-async-client-component
 export default function Register() {
+  
   const { handleChange, onSubmit } = RegisterHook();
   return (
     <>

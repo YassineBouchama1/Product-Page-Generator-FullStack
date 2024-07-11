@@ -2,6 +2,7 @@
 import ProductService from "@/lib/ProductApi";
 
 import notify from "@/hooks/useNotifaction";
+import Cookies from "js-cookie";
 
 import { useRouter } from "next/navigation";
 const ProductCardHook = () => {
@@ -13,7 +14,10 @@ const ProductCardHook = () => {
   ) => {
     event.preventDefault();
 
-    const result = await ProductService.deleteById(id);
+    // bring coockies in client comp
+    const token = Cookies.get('token');
+
+    const result = await ProductService.deleteById(token, id);
 
     //IF DONE RUN REDUX DISPATCH REFRICH THAT
 

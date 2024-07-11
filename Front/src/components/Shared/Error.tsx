@@ -1,9 +1,26 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
+import Cookies from "js-cookie";
 
-export default function Error() {
+
+interface ErrorProps {
+  message?: string;
+}
+
+export default function Error({ message = "There is no Token" }: ErrorProps) {
   const router = useRouter();
+
+  const logout = () => {
+
+    // remove all data than redirect to login
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    Cookies.remove('token');
+
+    router.push("/login")
+  }
+
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto" id="my-modal">
       <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -49,7 +66,7 @@ export default function Error() {
               </h3>
               <div className="mt-2">
                 <p className="text-sm text-gray-500">
-                  There was an error processing your request. 
+                  {message}
                 </p>
               </div>
             </div>
@@ -57,9 +74,9 @@ export default function Error() {
           <div className="mt-5 sm:mt-6">
             <button
               className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
-              onClick={() => router.push("/admin/products")}
+              onClick={() => logout()}
             >
-              OK
+              Re Login Again
             </button>
           </div>
         </div>

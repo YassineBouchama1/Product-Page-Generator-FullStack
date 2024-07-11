@@ -2,14 +2,14 @@ import notify from "@/hooks/useNotifaction";
 import Cookies from "js-cookie";
 const API_URL = "http://127.0.0.1:4000/api/v1/Orders";
 const TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGQ2NjZhZWRjZTk3NjM5MTBhMTZkYTkiLCJpYXQiOjE2OTE3NzI2MDEsImV4cCI6MTY5OTU0ODYwMX0.VHYXOZFOiNU7pI9mmLOujVC0MCSoZ31dS9cQdZ3vcP8";
-async function findAll(limit?: number, page?: number) {
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjhmMzUzZDMxYjI0YzliN2ZjOTI4N2QiLCJpYXQiOjE3MjA2NjE5NjJ9.0wR8vAmS5CRz6WuEF9hkhKMjiBWlcB5Doc7r3m-MiBg";
+async function findAll(token:string,limit?: number, page?: number) {
   try {
     const res = await fetch(`${API_URL}?limit=${limit}&page=${page}`, {
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
