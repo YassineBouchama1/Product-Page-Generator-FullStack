@@ -10,7 +10,7 @@ const productsRoute = require('./routes/productRoute')
 const uploaderRoute = require('./routes/uploaderRoute')
 const orderRoute = require('./routes/orderRoute')
 const ApiError = require('./utils/ApiError')
-
+const fs = require('fs');
 const cors = require('cors');
 
 dotenv.config({ path: '.env' })
@@ -35,12 +35,28 @@ app.get('/', (req, res) => {
 })
 //endpoit get all images
 // app.use('/images' , express.static('./uploads'))
-app.use(express.static(path.join(__dirname, 'public/uploads')))
+// app.use(express.static(path.join(__dirname, 'public/uploads')))
 
 app.get("/test", (req, res) => res.send("Express on Vercel"));
 
 
 
+// Create directories
+const directories = ['uploads', 'uploads/products', 'uploads/storage', 'uploads/Uploader'];
+
+directories.forEach((dir) => {
+    fs.mkdir(dir, { recursive: true }, (err) => {
+        if (err) {
+            console.error(`Error creating directory ${dir}:`, err);
+        } else {
+            console.log(`Directory ${dir} created successfully.`);
+        }
+    });
+});
+
+app.use(express.static(path.join(__dirname, 'uploads')));
+
+// ... rest of the code
 
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/user', userRoute)
