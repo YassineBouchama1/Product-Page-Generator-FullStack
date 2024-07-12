@@ -1,5 +1,5 @@
 
-const API_URL = `${process.env.BACKEND_URL}/uploader`;
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploader`;
 
 export const findAll = async (token: string) => {
 

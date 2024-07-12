@@ -1,6 +1,6 @@
 import notify from "@/hooks/useNotifaction";
 
-const API_URL = `${process.env.BACKEND_URL}/Orders`;
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/Orders`;
 
 async function findAll(token: string, limit?: number, page?: number) {
   try {

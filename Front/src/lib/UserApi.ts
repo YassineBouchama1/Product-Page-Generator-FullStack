@@ -1,7 +1,7 @@
 import notify from "@/hooks/useNotifaction";
 import Cookies from "js-cookie";
 
-const API_URL = `${process.env.BACKEND_URL}/user`;
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`;
 
 
 const changePassword = async (token: string, password: string) => {

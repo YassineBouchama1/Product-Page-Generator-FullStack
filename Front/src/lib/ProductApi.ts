@@ -1,5 +1,5 @@
 
-const API_URL = `${process.env.BACKEND_URL}/products`;
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/products`;
 
 async function findAll(token: string, page?: number) {
 
