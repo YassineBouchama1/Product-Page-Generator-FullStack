@@ -62,7 +62,7 @@ exports.deleteOne = (Model, nameModel) => expressAsyncHandler(async (req, res, n
         return next(new ApiError(`the is no document belong this id ${id}`, 400))
     }
 
-    
+
     res.status(202).json({ data: document })
 })
 
@@ -79,5 +79,5 @@ exports.updateOne = (Model) => expressAsyncHandler(async (req, res, next) => {
     // //trigger "save" event when update doc
     // document.save()
 
-    res.status(201).json({ data: document })
+    res.status(201).json({ status: true })
 })

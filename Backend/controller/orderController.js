@@ -35,7 +35,7 @@ exports.CreateOrder = expressAsyncHandler(async (req, res, next) => {
         });
     }
 
-    res.status(201).json({ status: 'success', data: newOrder });
+    res.status(201).json({ status: true });
 });
 
 
