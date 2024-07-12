@@ -20,7 +20,7 @@ dotenv.config({ path: '.env' })
 // Parse JSON bodies
 app.use(express.json())
 
-app.use(cors({ origin: 'http://localhost:3000' }))
+app.use(cors({ origin: 'https://product-page-generator-backend.vercel.app' }))
 
 
 
