@@ -13,7 +13,7 @@ const ApiError = require('./utils/ApiError')
 
 const cors = require('cors');
 
-dotenv.config({ path: './config.env' })
+dotenv.config({ path: '.env' })
 
 
 
