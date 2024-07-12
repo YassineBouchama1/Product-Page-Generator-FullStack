@@ -59,7 +59,7 @@ exports.CreateProduct = expressAsyncHandler(async (req, res, next) => {
     // check if user rich limit to create product
     if (Products.length >= req.user.credit) {
         return next(
-            new ApiError(`You can't create more Product You rich your limit  `, 404)
+            new ApiError(`لا يمكنك إنشاء المزيد من المنتجات، لقد وصلت إلى الحد الأقصى الخاص بك`, 404)
         );
     }
 

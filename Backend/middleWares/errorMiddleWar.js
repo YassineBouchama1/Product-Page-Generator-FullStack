@@ -1,12 +1,14 @@
 
+const dotenv = require('dotenv')
 
+dotenv.config({ path: '.env' })
 // refactor handdle error that built in express  
 globalError = (err, req, res, next) => {
 
     err.statusCode = err.statusCode || 500
     err.status = err.status || 'error'
 
-    const Mode = 'development'
+    const Mode = process.env.MODE
 
     if (Mode === 'development') {
         sendErrorForDev(err, res)
