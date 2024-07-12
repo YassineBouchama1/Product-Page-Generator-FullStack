@@ -20,9 +20,13 @@ dotenv.config({ path: '.env' })
 // Parse JSON bodies
 app.use(express.json())
 
-app.use(cors({ origin: ['http://localhost:3000', 'https://product-page-generator-frontend.vercel.app'] }))
-
-
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://product-page-generator-frontend.vercel.app'],
+    optionsSuccessStatus: 200, // For legacy browser support
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Allow cookies to be sent
+}))
 
 dbContact()
 
