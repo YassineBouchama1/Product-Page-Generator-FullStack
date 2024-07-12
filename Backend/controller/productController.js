@@ -68,6 +68,11 @@ exports.CreateProduct = expressAsyncHandler(async (req, res, next) => {
     req.body.user = await req.user._id;
 
     const newProduct = await Product.create(req.body);
+    if (newProduct) {
+        const user = await userModel.findById(req.user._id)
+        user.credit -= 1
+        await user.save();
+    }
 
     //1) filter Product by userid{get only Product belong this userID}
     // const AllProducts = await Product.find({ user: req.user._id })

@@ -26,7 +26,9 @@ app.use(cors({ origin: 'http://localhost:3000' }))
 
 dbContact()
 
-
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
 //endpoit get all images
 // app.use('/images' , express.static('./uploads'))
 app.use(express.static(path.join(__dirname, 'uploads')))

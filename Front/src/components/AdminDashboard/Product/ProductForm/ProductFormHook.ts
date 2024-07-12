@@ -91,6 +91,8 @@ export default function ProductFormHook({ type, product }) {
         if (result.errors || result.error) {
           setSubmitting(false);
           displayErrors(result);
+          notify(result.message, "warn");
+
           return;
         }
         if (result.success) {
