@@ -1,8 +1,10 @@
 import notify from "@/hooks/useNotifaction";
 import Cookies from "js-cookie";
-const API_URL = "http://127.0.0.1:4000/api/v1/user";
 
-const changePassword = async (token: string,password: string) => {
+const API_URL = `${process.env.BACKEND_URL}/user`;
+
+
+const changePassword = async (token: string, password: string) => {
   try {
     const response = await fetch(`${API_URL}/changeMyPassword`, {
       method: "PUT",

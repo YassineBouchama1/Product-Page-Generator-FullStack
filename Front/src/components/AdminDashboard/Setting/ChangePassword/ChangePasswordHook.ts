@@ -8,13 +8,12 @@ import { useState } from "react";
 export default function ChangePasswordHook() {
   const [password, setPassword] = useState<string>();
   const [passwordConfirm, setPasswordConfirm] = useState<string>("");
-  
+
   Cookies.set("loggedin", "true");
   const onChangePassword = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    console.log(password);
 
     // bring coockies in client comp
     const token = Cookies.get('token');
@@ -25,9 +24,9 @@ export default function ChangePasswordHook() {
     } else if (password === "") {
       notify("add password", "warn");
     } else {
-      const response = await UserService.changePassword(token,password);
+      const response = await UserService.changePassword(token, password);
 
-      if (response.token) {
+      if (response.status) {
         // Set a cookie
         Cookies.set("token", response.token);
 
@@ -41,9 +40,7 @@ export default function ChangePasswordHook() {
         );
         notify("Password changed", "success");
 
-        console.log(JSON.parse(Cookies.get("user")));
       }
-      console.log(response);
     }
   };
   return { onChangePassword, setPassword, setPasswordConfirm };

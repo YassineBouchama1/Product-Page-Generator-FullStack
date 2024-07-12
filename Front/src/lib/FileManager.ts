@@ -1,13 +1,13 @@
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
-
+const API_URL = `${process.env.BACKEND_URL}/uploader`;
 
 export const findAll = async (token: string) => {
 
 
   try {
     const response = await fetch(
-      `http://127.0.0.1:4000/api/v1/uploader?limit=8`,
+      `${API_URL}?limit=8`,
 
       {
         cache: "no-store",
@@ -19,7 +19,7 @@ export const findAll = async (token: string) => {
       }
     );
 
- 
+
     if (response.status === 404) {
       // This will activate the closest `error.js` Error Boundary
       console.log("prbel");
@@ -37,7 +37,7 @@ const findById = async (token: string, id: any) => { };
 const create = async (token: string, formData: any) => {
 
 
-  const res = await fetch("http://127.0.0.1:4000/api/v1/uploader", {
+  const res = await fetch(API_URL, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -55,7 +55,7 @@ const create = async (token: string, formData: any) => {
 const deleteById = async (token: string, id: string | number) => {
   try {
     const response = await fetch(
-      `http://127.0.0.1:4000/api/v1/uploader/${id}`,
+      `${API_URL}/${id}`,
 
       {
         method: "DELETE",

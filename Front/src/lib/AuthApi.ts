@@ -1,5 +1,7 @@
+
+const API_URL = `${process.env.BACKEND_URL}/auth`;
 async function signup(body: Promise<any>) {
-  const res = await fetch("http://127.0.0.1:4000/api/v1/auth/signup", {
+  const res = await fetch(`${API_URL}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -18,7 +20,7 @@ async function signup(body: Promise<any>) {
 }
 
 async function login(body: Promise<any>) {
-  const res = await fetch("http://127.0.0.1:4000/api/v1/auth/login", {
+  const res = await fetch(`${API_URL}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

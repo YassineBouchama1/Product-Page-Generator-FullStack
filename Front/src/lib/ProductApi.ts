@@ -1,5 +1,5 @@
 
-const API_URL = "http://127.0.0.1:4000/api/v1/products";
+const API_URL = `${process.env.BACKEND_URL}/products`;
 
 async function findAll(token: string, page?: number) {
 
