@@ -35,16 +35,16 @@ export default function OrderField({ order, image }) {
             </td>
             <td className="p-2">
               <div className="font-medium text-gray-800">
-                {order.cartItems[0].productID.title}
+                {order.cartItems.productID.title}
               </div>
             </td>
             <td className="p-2">
-              <div className="text-right">{order.cartItems[0].quantity}</div>
+              <div className="text-right">{order.cartItems.quantity}</div>
             </td>
             <td className="p-2">
               <div className="text-right font-medium text-green-500">
                 <span className="text-green-400">$</span>
-                {order.cartItems[0].price}
+                {order.cartItems.price}
               </div>
             </td>
           </tr>
@@ -55,7 +55,7 @@ export default function OrderField({ order, image }) {
         <div className="text-blue-400">
           <span x-text="total.toFixed(2)">
             <span className="text-blue-300">$</span>
-            {order.cartItems[0].price * order.cartItems[0].quantity}
+            {order.cartItems.price * order.cartItems.quantity}
           </span>
         </div>
       </div>

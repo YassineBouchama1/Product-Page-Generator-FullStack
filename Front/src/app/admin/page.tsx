@@ -21,6 +21,8 @@ export default async function AdminPage() {
 
   if (!orders?.data) return <Error />;
 
+
+  console.log(orders)
   return (
     <div className="flex flex-col gap-y-10 overflow-hidden rounded-xl bg-white p-8 shadow">
       <h2 className="font-extrabold bg-white p-3">إضافة منتج جديد</h2>
@@ -28,7 +30,7 @@ export default async function AdminPage() {
       <section className="grid md:grid-cols-3 sm:grid-cols-1 gap-5 ">
         <StatusCard
           title="المنتجات المباعة"
-          status={useConvertor.shippedCount(orders?.data)}
+          status={useConvertor.soldCount(orders?.data)}
           icon={Icons.IconSales}
         />
         <StatusCard
@@ -52,7 +54,7 @@ export default async function AdminPage() {
             </span>
           </Link>
         </div>
-        <OrderList orders={orders} />
+        <OrderList orders={orders.data} />
       </section>
     </div>
   );

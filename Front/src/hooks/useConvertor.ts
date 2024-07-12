@@ -1,25 +1,25 @@
 export const income = (data) => {
+
+
   return data?.reduce((total, order) => {
-    const orderTotal = order.cartItems.reduce(
-      (orderTotal, item) => orderTotal + item.price * item.quantity,
-      0
-    );
-    return total + orderTotal;
+
+
+    return total + order.totalOrderPrice;
   }, 0);
 };
 
 export const undeliveredCount = (data) => {
   return data?.reduce((count, order) => {
-    if (!order.isDelivered) {
+    if (order.status != 'Delivered' && order.status != 'Cancelled') {
       return count + 1;
     }
     return count;
   }, 0);
 };
 
-export const shippedCount = (data) => {
+export const soldCount = (data) => {
   return data?.reduce((count, order) => {
-    if (order.isShipped) {
+    if (order.status === "Delivered") {
       return count + 1;
     }
     return count;
@@ -33,8 +33,8 @@ export const date = (data) => {
     .getDate()
     .toString()
     .padStart(2, "0")}-${(createdAtDate.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}-${createdAtDate.getFullYear()}`;
+      .toString()
+      .padStart(2, "0")}-${createdAtDate.getFullYear()}`;
 
   return formattedCreatedAt;
 };
@@ -47,15 +47,15 @@ export const getProductInfo = (data) => {
     .getDate()
     .toString()
     .padStart(2, "0")}-${(createdAtDate.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}-${createdAtDate.getFullYear()}`;
+      .toString()
+      .padStart(2, "0")}-${createdAtDate.getFullYear()}`;
 
   return formattedCreatedAt;
 };
 
 
 const useConvertor = {
-  shippedCount,
+  soldCount,
   undeliveredCount,
   income,
   date,

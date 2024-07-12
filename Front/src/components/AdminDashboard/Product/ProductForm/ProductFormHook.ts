@@ -1,3 +1,4 @@
+'use client'
 import React, { ChangeEvent, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductService from "@/lib/ProductApi";
@@ -16,8 +17,8 @@ export default function ProductFormHook({ type, product }) {
     quantity: product?.quantity || "",
     price: product?.price || "",
     seo: product?.seo || "",
-    image: product?.image || "",
     display: product?.image || "",
+    image: "",
     description: product?.description || "",
     id: product?._id || "",
   });
@@ -26,10 +27,11 @@ export default function ProductFormHook({ type, product }) {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
   };
 
+  console.log(form.display)
   const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-
     const file = e.target.files?.[0];
+    console.log(file)
     if (!file) return;
     if (!file.type.includes("image")) {
       alert("Please upload an image!");
@@ -66,7 +68,7 @@ export default function ProductFormHook({ type, product }) {
       formData.append("image", form.image);
     }
 
-    if (form.image !== "") {
+    if (type === "edit" && form.image !== "") {
       formData.append("image", form.image);
     }
 
@@ -76,7 +78,7 @@ export default function ProductFormHook({ type, product }) {
     formData.append("price", form.price);
     formData.append("seo", form.seo);
 
-    console.log(form.image)
+
 
     setSubmitting(false);
     // bring coockies in client comp
@@ -85,29 +87,35 @@ export default function ProductFormHook({ type, product }) {
     try {
       if (type === "create") {
         const result = await ProductService.create(token, formData);
-        console.log(result)
-        if (result.errors) {
+
+        if (result.errors || result.error) {
           setSubmitting(false);
           displayErrors(result);
           return;
-        } else {
+        }
+        if (result.success) {
           setSubmitting(false);
           notify("Created", "success");
-          router.push("/admin/products");
+          router.push('/products')
         }
       }
 
       if (type === "edit") {
         const result = await ProductService.update(token, formData, product.id);
-
-        if (result.errors) {
+        console.log(result)
+        if (result.errors || result.error) {
           displayErrors(result);
           setSubmitting(false);
           return;
-        } else {
-          notify("Edited Done", "success");
-          router.refresh();
         }
+        if (result.status) {
+          setSubmitting(false);
+          notify("Updated Done", "success");
+          router.refresh();
+          return;
+        }
+
+
       }
     } catch (error) {
       notify(

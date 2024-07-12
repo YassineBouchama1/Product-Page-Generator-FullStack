@@ -48,8 +48,8 @@ export default function LoginHook() {
       if (result) {
         //@ if login succesful
         if (result.token) {
-          Cookies.set("token", result.token, { expires: 7 });
-          console.log("Token set:", Cookies.get("token")); // Add this line
+          Cookies.set("token", result.token);
+          Cookies.set("user", JSON.stringify(result.data));
 
 
           localStorage.setItem("token", result.token);

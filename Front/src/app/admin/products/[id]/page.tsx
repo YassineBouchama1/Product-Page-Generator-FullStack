@@ -1,5 +1,3 @@
-import { getAllFiles } from "@/Redux/FileManager/ActionsFileManager";
-import { store } from "@/Redux/store";
 import ProductForm from "@/components/AdminDashboard/Product/ProductForm/ProductForm";
 import Error from "@/components/Shared/Error";
 import FileManagerServeice from "@/lib/FileManager";
@@ -18,7 +16,7 @@ export default async function Edit({
 
   if (!token) return <Error />;
 
-  const products = await ProductService.findById(token.value, id); // fetch data
+  const products = await ProductService.findById(id, token.value); // fetch data
   // store.dispatch(setDetaileProduct(products.data)); // pass it to redux to save it in state
   const files = await FileManagerServeice.findAll(token.value);
 

@@ -9,8 +9,8 @@ import { ToastContainer } from "react-toastify";
 import ProductCardHook from "./ProductCardHook";
 
 export default function ProductCard({ item }) {
-  const {onDelete} = ProductCardHook();
-  const linkProduct = `http://localhost:3000/${item._id}`;
+  const { onDelete } = ProductCardHook();
+  const linkProduct = `http://localhost:3000/product/${item._id}`;
   return (
     <div className="min-w-sm max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="flex flex-col items-center p-10">

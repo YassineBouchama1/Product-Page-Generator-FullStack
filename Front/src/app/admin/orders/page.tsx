@@ -30,9 +30,9 @@ export default async function OrderPage() {
             type="text"
           ></input>{" "}
         </div>
-        <OrderList orders={orders} />
+        <OrderList orders={orders.data} />
       </section>
-      <Pagination />
+      {/* <Pagination /> */}
     </div>
   );
 }

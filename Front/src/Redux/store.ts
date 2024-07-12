@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import FileManager from "./FileManager/FileManagerSlice";
+// import FileManager from "./FileManager/FileManagerSlice";
 import AuthSlice from "./Auth/AuthSlice";
 export const store = configureStore({
   reducer: {
-    files: FileManager,
+    // files: FileManager,
     auth: AuthSlice,
   },
 });

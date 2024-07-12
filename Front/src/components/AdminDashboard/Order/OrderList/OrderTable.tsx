@@ -7,9 +7,13 @@ import OrderService from "@/lib/OrdersApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import Cookies from "js-cookie";
 
 export default function OrderTable({ order }) {
   const router = useRouter();
+
+
+  console.log(order)
 
   //delete order
   const onDelete = async (
@@ -20,7 +24,10 @@ export default function OrderTable({ order }) {
 
     if (id === "" || null || undefined) return notify("the is error", "warn");
 
-    const result = await OrderService.deleteById(id);
+    // bring coockies in client comp
+    const token = Cookies.get('token');
+
+    const result = await OrderService.deleteById(token, id);
 
     if (result.status === "error") {
       notify("there is pb repeat", "warn");
@@ -44,9 +51,9 @@ export default function OrderTable({ order }) {
       >
         {order.shippingAddress.name || ""}
       </th>
-      <td className="px-6 py-4">{order.cartItems[0].quantity}</td>
+      <td className="px-6 py-4">{order.cartItems.quantity}</td>
       <td className="px-6 py-4">{useConvertor.date(order.created_at)}</td>
-      <td className="px-6 py-4">${order.cartItems[0].price}</td>
+      <td className="px-6 py-4">${order.cartItems.price}</td>
       <td className="px-6 py-4">{StatusOrder(order.status)}</td>
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">

@@ -1,9 +1,11 @@
 "use client";
 import notify from "@/hooks/useNotifaction";
 import BuyNow from "../BuyBtn";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import OrderService from "@/lib/OrdersApi";
 import { Product } from "@/types/ProductType";
+import Modal from "@/components/Shared/Modal";
+import ThankYou from "../ThankYou";
 
 interface FormData {
   name: string;
@@ -18,12 +20,15 @@ interface FormBuyProps {
 export default function FormBuy({ product }: FormBuyProps) {
 
   const [quantity, setQuantity] = useState(1);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [form, setForm] = useState<FormData>({
     name: "",
     phone: "",
     address: "",
   });
 
+
+  const formRef = useRef<HTMLFormElement>(null)
   const handleStateChange = (fieldName: keyof FormData, value: string) => {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
   };
@@ -47,17 +52,27 @@ export default function FormBuy({ product }: FormBuyProps) {
     const formData = {
       cartItems: { productID: product.id, quantity: quantity, price: product.price },
       shippingAddress: form,
-      totalOrderPrice: product.price * 3,
+      totalOrderPrice: product.price * quantity,
       user: product.user,
     };
 
     try {
       const result = await OrderService.create(formData);
-      console.log(result);
-      notify("Order Created", "success");
+
+      if (result.status) {
+        // notify("Order Created", "success");
+        setIsOpenModal(true)
+        if (formRef.current) {
+          formRef.current?.reset();
+        }
+
+      }
+
+
+
     } catch (error) {
       console.error("Error creating order:", error);
-      notify("Failed to create order", "error");
+      notify("فشل في إنشاء الطلب", "error");
     }
   };
 
@@ -69,7 +84,7 @@ export default function FormBuy({ product }: FormBuyProps) {
   };
 
   return (
-    <form className="mx-auto m-6 max-w-lg rounded-lg border" onSubmit={(e) => handleFormSubmit(e)}
+    <form ref={formRef} className="mx-auto m-6 max-w-lg rounded-lg border" onSubmit={(e) => handleFormSubmit(e)}
     >
       <div className="flex flex-col gap-4 p-4 md:p-8">
         <div className="flex gap-5">
@@ -103,7 +118,7 @@ export default function FormBuy({ product }: FormBuyProps) {
           <button
             className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base"
           >
-            اطلب الان (Order Now)
+            اطلب الان
           </button>
 
           <div className="flex items-center gap-4 mx-5 border border-gray-200 rounded">
@@ -126,6 +141,9 @@ export default function FormBuy({ product }: FormBuyProps) {
         </div>
 
       </div>
+      <Modal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)}>
+        <ThankYou />
+      </Modal>
     </form>
   );
 }

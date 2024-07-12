@@ -39,14 +39,14 @@ const create = async (token: string, formData: any) => {
   }
 };
 
-const update = async (token: string, id: any, formData: any) => {
+const update = async (token: string, formData: any, id: string) => {
   try {
-    const response = await fetch(`${API_URL}/${formData}`, {
+    const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      body: id,
+      body: formData,
     });
 
     return response.json();
@@ -76,7 +76,7 @@ const deleteById = async (token: string, id: any) => {
   }
 };
 
-const findById = async (token: string, id: string) => {
+const findById = async (id: string, token?: string) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       headers: {

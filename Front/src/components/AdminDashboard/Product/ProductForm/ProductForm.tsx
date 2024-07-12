@@ -26,7 +26,7 @@ export default function ProductForm({ type, product, files }) {
       {!product?.title && type === "edit" ? <Loader /> : null}
 
       <h2 className="font-extrabold py-4">تفاصيل المنتج</h2>
-      <form onSubmit={(e) => handleFormSubmit(e)}>
+      <form encType="multipart/form-data" onSubmit={(e) => handleFormSubmit(e)}>
         <div className="grid grid-rows-2 grid-cols-4 gap-4     ">
           {/* Product Details */}
           <section className="col-span-4 xl:col-span-2  w-full bg-white h-full min-h-[500px] rounded-md shadow p-4 justify-center items-center">
@@ -90,11 +90,11 @@ export default function ProductForm({ type, product, files }) {
                 htmlFor="poster"
                 className="flex justify-center items-center  h-[300px]"
               >
-                {!form.image && "Choose a poster for your project"}
-                {form.image && (
+                {!form.display && "Choose a poster for your project"}
+                {form.display && (
                   <div>
                     <button
-                      onClick={() => handleStateChange("image", "")}
+                      onClick={() => handleStateChange("display", "")}
                       className="text-red-800"
                     >
                       x

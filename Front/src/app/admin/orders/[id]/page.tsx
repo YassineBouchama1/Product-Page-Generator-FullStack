@@ -6,20 +6,28 @@ import Customer from "@/components/AdminDashboard/Order/OrderDetails/Customer";
 import OrderField from "@/components/AdminDashboard/Order/OrderDetails/OrderField";
 import OrderStatus from "@/components/AdminDashboard/Order/OrderDetails/OrderStatus";
 import StatusOrder from "@/hooks/useStatusOrder";
+import { cookies } from "next/headers";
 
 export default async function page({
   params: { id },
 }: {
   params: { id: string };
 }) {
-  const order = await OrderService.findById(id); // fetch data
+
+  const cookieStore = cookies()
+  const token = cookieStore.get('token')
+
+  if (!token) return <Error />;
+
+  const order = await OrderService.findById(token.value, id); // fetch data
 
   const product = await ProductService.findById(
-    order.data.cartItems[0].productID.id
+
+    order.data.cartItems.productID, token.value
   ); // fetch data product or we can send url with order to less requests
 
-  if (!order?.data) return <Error />;
-
+  console.log(product)
+  if (!order?.data || !product.data) return <Error message="There is a pb while fetching orders check server" />;
   return (
     <main>
       <h2 className="font-extrabold py-4 overflow-hidden ">تفاصيل الطلب</h2>

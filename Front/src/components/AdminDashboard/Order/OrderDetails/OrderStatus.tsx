@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import OrderService from "@/lib/OrdersApi";
 import { useRouter } from "next/navigation";
 import notify from "@/hooks/useNotifaction";
+import Cookies from "js-cookie";
 
 export default function OrderStatus({ orderId }) {
   const [status, setStatus] = useState("");
@@ -22,11 +23,14 @@ export default function OrderStatus({ orderId }) {
         return;
       }
 
-      const response = await OrderService.updateStatus(orderId, status);
+      // bring coockies in client comp
+      const token = Cookies.get('token');
+
+      const response = await OrderService.updateStatus(token, orderId, status);
 
       if (response.status === "error") {
         notify("There is a problem. Please try again.", "warn");
-      } else if (response.data) {
+      } else if (response.status) {
         router.refresh();
 
         notify("Updated successfully", "success");
@@ -54,6 +58,7 @@ export default function OrderStatus({ orderId }) {
         value={status}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
       >
+        <option value="PENDING">انتظار</option>
         <option value="Confirmed">تم تأكيد الطلب</option>
         <option value="Shipped">تم شحن</option>
         <option value="Delivered">تم استلام</option>

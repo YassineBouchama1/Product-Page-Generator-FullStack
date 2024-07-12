@@ -5,7 +5,6 @@ import { ToastContainer } from "react-toastify";
 
 export default function OrderList({ orders }) {
   console.log(orders);
-  console.log("orders");
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-b-lg text-right">
       <table className="w-full text-sm  text-gray-500 dark:text-gray-400 divide-y divide-gray-200">
@@ -35,7 +34,7 @@ export default function OrderList({ orders }) {
           </tr>
         </thead>
         <tbody>
-          {orders.data.map((item, index) => (
+          {orders.map((item, index) => (
             <OrderTable key={index} order={item} />
           ))}
         </tbody>

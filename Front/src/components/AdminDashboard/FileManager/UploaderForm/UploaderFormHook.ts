@@ -18,14 +18,14 @@ const useUploaderForm = () => {
 
     const formData = new FormData();
     formData.append("image", file);
- 
+
 
     // bring coockies in client comp
     const token = Cookies.get('token');
-  
+
 
     try {
-      const result = await FileManagerServeice.create(token,formData);
+      const result = await FileManagerServeice.create(token, formData);
 
       if (result.status === "error") {
         notify("There is a problem. Please try again.", "warn");
