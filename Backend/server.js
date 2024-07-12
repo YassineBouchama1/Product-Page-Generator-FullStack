@@ -31,6 +31,7 @@ dbContact()
 // app.use('/images' , express.static('./uploads'))
 app.use(express.static(path.join(__dirname, 'uploads')))
 
+app.get("/test", (req, res) => res.send("Express on Vercel"));
 
 
 
