@@ -1,5 +1,4 @@
-import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
+
 const API_URL = `${process.env.BACKEND_URL}/uploader`;
 
 export const findAll = async (token: string) => {

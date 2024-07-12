@@ -1,5 +1,5 @@
 
-const API_URL = `${process.env.BACKEND_URL}/auth`;
+const API_URL = `http://product-page-generator-backend.vercel.app/api/v1/auth`;
 async function signup(body: Promise<any>) {
   const res = await fetch(`${API_URL}/signup`, {
     method: "POST",

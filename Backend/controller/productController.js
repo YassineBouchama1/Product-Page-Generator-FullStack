@@ -42,8 +42,6 @@ exports.imageUploaderProduct = uploadSingleImage('image');
 exports.CreateProduct = expressAsyncHandler(async (req, res, next) => {
 
 
-    /// bugs thata wont pass to new ariabal
-
 
     // check if user exist
     if (!req.user) {
