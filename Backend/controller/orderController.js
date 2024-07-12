@@ -11,21 +11,21 @@ const ApiFeatures = require('../utils/apiFeatures')
 // @ROUTE GET /API/V1/order
 // @DACCESS Poulic
 exports.CreateOrder = expressAsyncHandler(async (req, res, next) => {
-    console.log(req.body);
 
-    const { product, quantity, price } = req.body.cartItems;
-    const { shippingAddress, totalOrderPrice } = req.body;
 
+    const { productID, quantity, price } = req.body.cartItems;
+    const { shippingAddress, totalOrderPrice, user } = req.body;
+    console.log(quantity)
     // 1- Create Order
     const newOrder = await OrderModel.create({
         cartItems: {
-            productID: product,
-            quantity: quantity,
-            price: price
+            productID,
+            quantity,
+            price
         },
-        shippingAddress: shippingAddress,
-        totalOrderPrice: totalOrderPrice,
-        user: req.user
+        shippingAddress,
+        totalOrderPrice,
+        user: user
     });
 
     // 2- After creating order, decrement product quantity, increment product sold
@@ -50,6 +50,8 @@ exports.getAllPOrders = expressAsyncHandler(async (req, res) => {
         filter = req.filterObj;
     }
 
+
+    console.log(req.user._id)
     // Build query
     const documentsCounts = await Product.countDocuments();
 
@@ -65,7 +67,7 @@ exports.getAllPOrders = expressAsyncHandler(async (req, res) => {
 
     res.status(200)
         .json({ results: files.length, paginationResult, data: files });
-    // //1) filter order by userid{get only order belong this userID}
+    //1) filter order by userid{get only order belong this userID}
     // const Orders = await OrderModel.find({ user: req.user._id })
 
 
@@ -89,11 +91,13 @@ exports.getAllPOrders = expressAsyncHandler(async (req, res) => {
 
 
 
-// @desc    Update order delivered status
-// @route   PUT /api/v1/orders/:id/deliver
+// @desc    Update order  status
+// @route   PUT /api/v1/orders/:id/status
 // @access  Protected/Admin
-exports.updateIsDelivered = expressAsyncHandler(async (req, res, next) => {
+exports.updateStatus = expressAsyncHandler(async (req, res, next) => {
 
+
+    console.log(req.body)
     //1) get order from db by id
     const order = await OrderModel.findById(req.params.id)
 
@@ -103,39 +107,13 @@ exports.updateIsDelivered = expressAsyncHandler(async (req, res, next) => {
     }
 
     //2) Update is Deleverd
-    order.isDelivered = !order.isDelivered
+    order.status = req.body.status
 
 
     const UpdatedOrder = await order.save();
 
-    res.status(200).json({ status: "success", data: UpdatedOrder })
+    res.status(200).json({ status: true, })
 })
-
-// @desc    Update order delivered status
-// @route   PUT /api/v1/orders/:id/deliver
-// @access  Protected/Admin
-exports.updateIsShipped = expressAsyncHandler(async (req, res, next) => {
-
-    //1) get order from db by id
-    const order = await OrderModel.findById(req.params.id)
-
-    if (!order) {
-        return next(new ApiError(`there is no Order belong this id ${req.params.id}`, 400))
-
-    }
-
-    //2) Update is Deleverd
-    order.isShipped = !order.isShipped
-
-
-    const UpdatedOrder = await order.save();
-
-    res.status(200).json({ status: "success", data: UpdatedOrder })
-})
-
-
-
-
 
 
 

@@ -1,6 +1,7 @@
 const expressAsyncHandler = require("express-async-handler")
 
 const ApiError = require('../utils/ApiError')
+const orderModel = require("../models/orderModel")
 
 
 
@@ -52,7 +53,7 @@ exports.getAll = (Model) =>
 
 
 
-exports.deleteOne = (Model) => expressAsyncHandler(async (req, res, next) => {
+exports.deleteOne = (Model, nameModel) => expressAsyncHandler(async (req, res, next) => {
     const { id } = req.params;
     const document = await Model.findByIdAndDelete(id)
 
@@ -60,6 +61,8 @@ exports.deleteOne = (Model) => expressAsyncHandler(async (req, res, next) => {
 
         return next(new ApiError(`the is no document belong this id ${id}`, 400))
     }
+
+    
     res.status(202).json({ data: document })
 })
 

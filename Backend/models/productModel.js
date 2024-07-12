@@ -55,16 +55,10 @@ const productSchema = mongoose.Schema({
     },
 
 
-    colors: [String],
-    size: [String],
 
     image: String,
 
-    // images: {
-    //     type: [String],
-    //     required: [true, 'images cover is required']
 
-    // },
 
 
 
@@ -85,29 +79,7 @@ postUrl.save('products')
 
 
 
-// const setImageUrl = (doc) => {
 
-//     if (doc.images) {
-//         // also we can use foreach
-//         // eslint-disable-next-line array-callback-return
-//         doc.images.map((img, index) => {
-
-//             const imageUrl = `${URL}products/${img}`
-//             doc.images[index] = imageUrl
-//         })
-
-//     }
-// }
-
-// productSchema.post('init', (doc) => {
-//     setImageUrl(doc)
-
-// });
-
-// productSchema.post('save', (doc) => {
-//     setImageUrl(doc)
-
-// });
 
 
 

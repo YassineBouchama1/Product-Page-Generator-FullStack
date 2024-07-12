@@ -27,7 +27,6 @@ const userSchema = mongoose.Schema({
     passwordChangedAt: Date,
     credit: {
         type: Number,
-
         default: 5
     },
     role: {

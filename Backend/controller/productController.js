@@ -4,47 +4,12 @@ const Product = require('../models/productModel');
 const ApiError = require('../utils/ApiError');
 const factory = require('./handlersFactory')
 const sharp = require('sharp');
-const { uploadMultImage, uploadSingleImage } = require('../middleWares/uploadImageMiddleWar');
+const { uploadSingleImage } = require('../middleWares/uploadImageMiddleWar');
 const ApiFeatures = require('../utils/apiFeatures');
+const orderModel = require('../models/orderModel');
+const productModel = require('../models/productModel');
+const userModel = require('../models/userModel');
 
-
-
-// // @desc Resize Image That user input
-// exports.resizeImage = expressAsyncHandler(async (req, res, next) => {
-
-//     console.log('resizeImage')
-
-//     if (req.files?.images) {
-//         req.body.images = []
-//         await Promise.all(
-//             req.files.images.map(async (img) => {
-//                 const imageName = `PRODUCT-${req.user._id}-${Date.now()}-${Math.round(Math.random() * 1E9)}.png`
-
-//                 await sharp(img.buffer)
-//                     .resize(1000, 1000)
-//                     .toFormat('png')
-//                     .jpeg({ quality: 90 })
-//                     .toFile(`uploads/products/${imageName}`)
-
-
-//                 req.body.images.push(imageName)
-
-//             })
-//         )
-
-//     }
-//     next()
-// })
-
-
-
-// //@Desc MiddleWare using multer to upload image to server
-// exports.imageUploaderProduct = uploadMultImage([
-
-
-//     { name: 'images', maxCount: 5 }
-
-// ])
 
 
 
@@ -52,24 +17,22 @@ const ApiFeatures = require('../utils/apiFeatures');
 
 // @desc Resize Image That user input
 exports.resizeImage = expressAsyncHandler(async (req, res, next) => {
+    const fileName = `${req.user.nameStore}-${Date.now()} - ${Math.round(Math.random() * 1E9)}.png`;
 
-    const fileName = `${req.user.name}-${Date.now()}-${Math.round(Math.random() * 1E9)}.png`
     if (req.file) {
-
         await sharp(req.file.buffer)
             .resize(900, 900)
             .toFormat('png')
             .png({ quality: 90 })
-            .toFile(`uploads/products/${fileName}`)
-        req.body.image = fileName
+            .toFile(`uploads/products/${fileName}`);
+        req.body.image = fileName;
     }
-    next()
-})
 
-
+    next();
+});
 
 //@Desc MiddleWare using multer to upload image to server
-exports.imageUploaderProduct = uploadSingleImage('image')
+exports.imageUploaderProduct = uploadSingleImage('image');
 
 
 
@@ -85,14 +48,13 @@ exports.CreateProduct = expressAsyncHandler(async (req, res, next) => {
     // check if user exist
     if (!req.user) {
         return next(
-            new ApiError(`There is user id `, 404)
+            new ApiError(`There is no user Logged`, 404)
         );
     }
 
     // get number of all Products that user created
     const Products = await Product.find({ user: req.user._id })
-    console.log(Products.length)
-    console.log(req.user.credit)
+
 
     // check if user rich limit to create product
     if (Products.length >= req.user.credit) {
@@ -110,7 +72,7 @@ exports.CreateProduct = expressAsyncHandler(async (req, res, next) => {
     //1) filter Product by userid{get only Product belong this userID}
     // const AllProducts = await Product.find({ user: req.user._id })
     // document.save()
-    res.status(200).json({ data: newProduct })
+    res.status(200).json({ status: true })
 
 })
 
@@ -167,9 +129,37 @@ exports.updateProduct = factory.updateOne(Product)
 // @desc    Delete specific category
 // @route   DELETE /api/v1/Prodcuts/:id
 // @access    Protected/Admin
-exports.deleteProduct = factory.deleteOne(Product)
+// exports.deleteProduct = factory.deleteOne(Product)
+exports.deleteProduct = expressAsyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const product = await productModel.findByIdAndDelete(id)
+
+    const result = await orderModel.deleteMany({ 'cartItems.productID': id });
+
+
+    if (!product) {
+
+        return next(new ApiError(`the is no product belong this id ${id}`, 400))
+    }
+
+
+    res.status(202).json({ status: true })
+
+})
 
 // @desc    Get specific category
 // @route   GET /api/v1/Prodcuts/:id
 // @access    Protected/Admin
-exports.getOneProduct = factory.getOne(Product)
+// exports.getOneProduct = factory.getOne(Product)
+exports.getOneProduct = expressAsyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+    const product = await productModel.findById(id)
+
+    if (!product) {
+        return next(new ApiError(`No product for this id ${id}`, 404));
+    }
+    const user = await userModel.findById(product.user)
+
+
+    res.status(200).json({ data: product, user: user })
+})
