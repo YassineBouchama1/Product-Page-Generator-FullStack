@@ -10,8 +10,7 @@ const productsRoute = require('./routes/productRoute')
 const uploaderRoute = require('./routes/uploaderRoute')
 const orderRoute = require('./routes/orderRoute')
 const ApiError = require('./utils/ApiError')
-const fs = require('fs');
-const path = require('path');
+
 const cors = require('cors');
 
 dotenv.config({ path: '.env' })
@@ -42,15 +41,6 @@ app.get("/test", (req, res) => res.send("Express on Vercel"));
 
 
 
-const uploadsPath = path.join(__dirname, 'public', 'uploads');
-
-fs.mkdir(uploadsPath, { recursive: true }, (err) => {
-    if (err) {
-        console.error(`Error creating directory ${uploadsPath}:`, err);
-    } else {
-        console.log(`Directory ${uploadsPath} created successfully.`);
-    }
-});
 
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/user', userRoute)
