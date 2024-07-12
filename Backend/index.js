@@ -34,27 +34,27 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 //endpoit get all images
-// app.use('/images' , express.static('./uploads'))
-// app.use(express.static(path.join(__dirname, 'public/uploads')))
+app.use('/images', express.static('./uploads'))
+
 
 app.get("/test", (req, res) => res.send("Express on Vercel"));
 
 
 
 // Create directories
-const directories = ['uploads', 'uploads/products', 'uploads/storage', 'uploads/Uploader'];
+// const directories = ['uploads', 'uploads/products', 'uploads/storage', 'uploads/Uploader'];
 
-directories.forEach((dir) => {
-    fs.mkdir(dir, { recursive: true }, (err) => {
-        if (err) {
-            console.error(`Error creating directory ${dir}:`, err);
-        } else {
-            console.log(`Directory ${dir} created successfully.`);
-        }
-    });
-});
+// directories.forEach((dir) => {
+//     fs.mkdir(dir, { recursive: true }, (err) => {
+//         if (err) {
+//             console.error(`Error creating directory ${dir}:`, err);
+//         } else {
+//             console.log(`Directory ${dir} created successfully.`);
+//         }
+//     });
+// });
 
-app.use(express.static(path.join(__dirname, 'uploads')));
+// app.use(express.static(path.join(__dirname, 'uploads')));
 
 // ... rest of the code
 
