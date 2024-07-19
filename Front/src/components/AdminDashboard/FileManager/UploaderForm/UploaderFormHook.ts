@@ -6,13 +6,16 @@ import Cookies from "js-cookie";
 
 const useUploaderForm = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false)
+
   const [file, setFile] = useState<File | null>(null);
 
   const onSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
+    setIsLoading(true)
     if (!file) {
       notify("Please select an image", "warn");
+      setIsLoading(false)
       return;
     }
 
@@ -28,6 +31,7 @@ const useUploaderForm = () => {
       const result = await FileManagerServeice.create(token, formData);
 
       if (result.status === "error") {
+
         notify("There is a problem. Please try again.", "warn");
       } else {
         router.refresh();
@@ -37,10 +41,12 @@ const useUploaderForm = () => {
     } catch (error) {
       notify("An error occurred. Please try again later.", "error");
       console.error("Error uploading image:", error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
-  return { onSubmit, setFile };
+  return { isLoading, onSubmit, setFile };
 };
 
 export default useUploaderForm;

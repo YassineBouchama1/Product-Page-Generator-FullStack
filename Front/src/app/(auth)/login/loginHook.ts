@@ -7,6 +7,7 @@ import Validator from "../../../hooks/useFormValidator";
 import Cookies from "js-cookie";
 
 import notify from "@/hooks/useNotifaction";
+import { useState } from "react";
 
 interface initialData {
   email: string;
@@ -15,6 +16,7 @@ interface initialData {
 
 export default function LoginHook() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false)
   const initialData: initialData = {
     email: "",
     password: "",
@@ -34,18 +36,27 @@ export default function LoginHook() {
 
   const onSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+
+    // set loaidng
+    setIsLoading(true)
     const rsul = validateData();
     //validator
     if (!rsul) {
       console.log("data dosn't valid");
+      notify("data dosen't valid", "warn");
+      setIsLoading(false)
+
       return;
     } else {
+
       console.log("data  valid");
       //send inputs to server fro create accont
       const result = await AuthService.login(data);
       console.log(result);
       // handdle result came from server
       if (result) {
+        setIsLoading(false)
+
         //@ if login succesful
         if (result.token) {
           Cookies.set("token", result.token);
@@ -70,11 +81,14 @@ export default function LoginHook() {
           }
         }
       }
+      setIsLoading(false)
+
       console.log("data  valid");
     }
   };
 
   return {
+    isLoading,
     handleChange,
     onSubmit,
   };

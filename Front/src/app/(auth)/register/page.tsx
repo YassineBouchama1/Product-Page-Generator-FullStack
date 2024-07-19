@@ -6,8 +6,8 @@ import Link from "next/link";
 import RegisterHook from "@/app/(auth)/register/registerHook";
 // eslint-disable-next-line @next/next/no-async-client-component
 export default function Register() {
-  
-  const { handleChange, onSubmit } = RegisterHook();
+
+  const { isLoading, handleChange, onSubmit } = RegisterHook();
   return (
     <>
       <UserLayout>
@@ -81,11 +81,16 @@ export default function Register() {
                   </div>
 
                   <button
+                    disabled={isLoading}
                     onClick={onSubmit}
+                    style={{ opacity: isLoading ? 0.5 : 1 }}
+
                     className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base"
                   >
-                    أنشئ حسابك
+
+                    {isLoading ? " أنشئ حسابك" : "جاري التحميل..."}
                   </button>
+
 
                   <div className="flex items-center justify-center bg-gray-100 p-4">
                     <p className="text-center text-sm text-gray-500">

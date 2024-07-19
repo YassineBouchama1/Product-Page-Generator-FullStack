@@ -26,7 +26,7 @@ export default async function page({
     order.data.cartItems.productID, token.value
   ); // fetch data product or we can send url with order to less requests
 
-  console.log(product)
+
   if (!order?.data || !product.data) return <Error message="There is a pb while fetching orders check server" />;
   return (
     <main>

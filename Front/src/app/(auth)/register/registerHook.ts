@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Validator from "@/hooks/useFormValidator";
 
 import notify from "@/hooks/useNotifaction";
+import { useState } from "react";
 
 interface initialData {
   nameStore: string;
@@ -15,6 +16,8 @@ interface initialData {
 
 export default function RegisterHook() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false)
+
   const initialData: initialData = {
     nameStore: "",
     email: "",
@@ -38,18 +41,24 @@ export default function RegisterHook() {
 
   const onSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    setIsLoading(true);
+
     const rsul = validateData();
     //validator
     if (!rsul) {
+      setIsLoading(false);
       console.log("data dosn't valid");
+      notify("data dosn't valid", 'warn')
       return;
     } else {
+
       console.log("data  valid");
       //send inputs to server fro create accont
       const result = await AuthService.signup(data);
 
       // handdle result came from server
       if (result) {
+        setIsLoading(false);
         //@ if login succesful
         if (result.user) {
           // localStorage.setItem("token", result.token);
@@ -74,6 +83,7 @@ export default function RegisterHook() {
           }
         }
       }
+      setIsLoading(false);
       console.log("data  valid");
     }
   };
@@ -81,6 +91,7 @@ export default function RegisterHook() {
 
 
   return {
+    isLoading,
     handleChange,
     onSubmit,
   };

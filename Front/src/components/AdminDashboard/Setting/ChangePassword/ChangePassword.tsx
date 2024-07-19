@@ -2,7 +2,7 @@
 import ChangePasswordHook from "./ChangePasswordHook";
 
 export default function ChangePassword() {
-  const { onChangePassword, setPassword, setPasswordConfirm } =
+  const { isLoading, onChangePassword, setPassword, setPasswordConfirm } =
     ChangePasswordHook();
   return (
     <>
@@ -58,10 +58,14 @@ export default function ChangePassword() {
         </a>
       </p>
       <button
+        disabled={isLoading}
+        style={{ opacity: isLoading ? 0.5 : 1 }}
         onClick={(e) => onChangePassword(e)}
         className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white"
       >
-        حفظ كلمة المرور
+
+        {isLoading ? "حفظ كلمة المرور" : "جاري التحميل..."}
+
       </button>
     </>
   );

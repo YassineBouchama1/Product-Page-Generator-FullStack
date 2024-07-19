@@ -11,7 +11,7 @@ export default function SettingPage() {
       <p className="py-2 text-xl font-semibold">عنوان البريد الإلكتروني</p>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <p className="text-gray-600">
-          عنوان بريدك الإلكتروني هو <strong>john.doe@company.com</strong>
+          عنوان بريدك الإلكتروني هو <strong>hello@yassine.info</strong>
         </p>
       </div>
       <hr className="mt-4 mb-8" />

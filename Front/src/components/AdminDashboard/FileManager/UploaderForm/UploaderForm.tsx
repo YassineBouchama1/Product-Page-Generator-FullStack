@@ -2,7 +2,7 @@
 import useUploaderForm from "./UploaderFormHook";
 
 function UploaderForm() {
-  const { onSubmit, setFile } = useUploaderForm();
+  const { isLoading, onSubmit, setFile } = useUploaderForm();
 
   return (
     <div>
@@ -28,10 +28,14 @@ function UploaderForm() {
       />
 
       <button
+        disabled={isLoading}
         onClick={onSubmit}
+        style={{ opacity: isLoading ? 0.5 : 1 }}
+
         className="w-full h-14 bg-green-600 text-white rounded-md"
       >
-        رفع
+
+        {isLoading ? "جاري التحميل..." : "رفع"}
       </button>
     </div>
   );
