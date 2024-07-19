@@ -117,7 +117,7 @@ export default function Login() {
                     style={{ opacity: isLoading ? 0.5 : 1 }}
                     className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base"
                   >
-                    {isLoading ? "تسجيل الدخول" : "جاري التحميل..."}
+                    {isLoading ? "جاري التحميل..." : "تسجيل الدخول"}
                   </button>
 
                   <div className="flex items-center justify-center bg-gray-100 p-4">

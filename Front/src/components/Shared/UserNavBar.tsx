@@ -1,6 +1,10 @@
+import { cookies } from "next/headers";
 import Link from "next/link";
 
-const UserNavBar = () => {
+const UserNavBar = async () => {
+
+  const cookieStore = await cookies()
+  const token = cookieStore?.get('token')
   return (
     <div className="bg-white lg:pb-12">
       <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
@@ -45,8 +49,16 @@ const UserNavBar = () => {
               من نحن
             </Link>
           </nav>
+          {token ? (<div className="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
+            <Link
+              href="/admin"
+              className="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
+            >
+              admin
+            </Link>
 
-          <div className="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
+
+          </div>) : (<div className="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
             <Link
               href="/login"
               className="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
@@ -60,7 +72,8 @@ const UserNavBar = () => {
             >
               إنشاء حساب
             </Link>
-          </div>
+          </div>)}
+
 
           <button
             type="button"

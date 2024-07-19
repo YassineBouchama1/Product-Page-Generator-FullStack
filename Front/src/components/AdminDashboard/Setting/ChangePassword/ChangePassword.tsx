@@ -64,7 +64,7 @@ export default function ChangePassword() {
         className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white"
       >
 
-        {isLoading ? "حفظ كلمة المرور" : "جاري التحميل..."}
+        {isLoading ? "جاري التحميل..." : "حفظ كلمة المرور"}
 
       </button>
     </>
