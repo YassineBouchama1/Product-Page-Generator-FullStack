@@ -1,113 +1,83 @@
-const express = require('express')
-const app = express()
-const dotenv = require('dotenv')
-const globalError = require('./middleWares/errorMiddleWar')
-const dbContact = require('./config/Db')
-const path = require('path')
-const authRoute = require('./routes/authRoute')
-const userRoute = require('./routes/userRoute')
-const productsRoute = require('./routes/productRoute')
-const uploaderRoute = require('./routes/uploaderRoute')
-const orderRoute = require('./routes/orderRoute')
-const ApiError = require('./utils/ApiError')
+const express = require('express');
+const app = express();
+const dotenv = require('dotenv');
+const globalError = require('./middleWares/errorMiddleWar');
+const dbContact = require('./config/Db');
+const path = require('path');
+const authRoute = require('./routes/authRoute');
+const userRoute = require('./routes/userRoute');
+const productsRoute = require('./routes/productRoute');
+const uploaderRoute = require('./routes/uploaderRoute');
+const orderRoute = require('./routes/orderRoute');
+const ApiError = require('./utils/ApiError');
 const fs = require('fs');
 const cors = require('cors');
 
-dotenv.config({ path: '.env' })
-
-
+dotenv.config({ path: '.env' });
 
 // Parse JSON bodies
-app.use(express.json())
+app.use(express.json());
 
 app.use(cors({
     origin: ['http://localhost:3000', 'https://product-page-generator-frontend.vercel.app'],
-    optionsSuccessStatus: 200, // For legacy browser support
+    optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true, // Allow cookies to be sent
-}))
+    credentials: true,
+}));
 
-dbContact()
+dbContact();
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-//endpoit get all images
-app.use('/images', express.static('./uploads'))
+    res.send('Hello World!');
+});
 
+// Create necessary directories
+const directories = ['uploads', 'uploads/products', 'uploads/storage', 'uploads/Uploader'];
+
+directories.forEach((dir) => {
+    fs.mkdirSync(path.join(__dirname, dir), { recursive: true }, (err) => {
+        if (err) {
+            console.error(`Error creating directory ${dir}:`, err);
+        } else {
+            console.log(`Directory ${dir} created successfully.`);
+        }
+    });
+});
+
+// Serve static files
+app.use('/images', express.static(path.join(__dirname, 'uploads')));
 
 app.get("/test", (req, res) => res.send("Express on Vercel"));
 
+// Routes
+app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/user', userRoute);
+app.use('/api/v1/Products', productsRoute);
+app.use('/api/v1/Orders', orderRoute);
+app.use('/api/v1/uploader', uploaderRoute);
 
-
-// Create directories
-// const directories = ['uploads', 'uploads/products', 'uploads/storage', 'uploads/Uploader'];
-
-// directories.forEach((dir) => {
-//     fs.mkdir(dir, { recursive: true }, (err) => {
-//         if (err) {
-//             console.error(`Error creating directory ${dir}:`, err);
-//         } else {
-//             console.log(`Directory ${dir} created successfully.`);
-//         }
-//     });
-// });
-
-// app.use(express.static(path.join(__dirname, 'uploads')));
-
-// ... rest of the code
-
-app.use('/api/v1/auth', authRoute)
-app.use('/api/v1/user', userRoute)
-app.use('/api/v1/Products', productsRoute)
-app.use('/api/v1/Orders', orderRoute)
-
-app.use('/api/v1/uploader', uploaderRoute)
-
-
-
-
-
-
-
-
-
-
-// //endpoit get all images
-// // app.use('/images' , express.static('./uploads'))
-// app.use(express.static(path.join(__dirname, 'uploads')))
-
-//@Desc : Handle Error if User Request Url Not Found
+// Handle 404 errors
 app.all('*', (req, res, next) => {
+    next(new ApiError(`Can't find this url ${req.originalUrl}`, 404));
+});
 
-    next(new ApiError(`cant find this url  ${req.originalUrl}`, 400))
+// Global error handler
+app.use(globalError);
 
-})
+const PORT = process.env.PORT || 3000;
 
+const server = app.listen(PORT, () => {
+    console.log(`Server working on Port: ${PORT}`);
+});
 
-
-//@ Desc : MiddleWare Handel Error Inside Express = every error wil handl
-// MORE : built method in express for  catch any error 
-app.use(globalError)
-
-
-const PORT = process.env.PORT
-
-
-const servier = app.listen(PORT, () => {
-    console.log(`server working on Port:  ${PORT}`)
-})
-
-
-
-// Events => list =? callback(err)  handle any error outside  express like mongoose ...
+// Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
-    console.error(`UnhandledRejection Errors ${err.name} | ${err.message}`)
-    servier.close(() => {
-        console.error(`ShuttDown...`)
+    console.error(`UnhandledRejection Errors: ${err.name} | ${err.message}`);
+    server.close(() => {
+        console.error(`Shutting Down...`);
+        process.exit(1);
+    });
+});
 
-        process.exit(1)
-
-    })
-})
+module.exports = app; // Export the app for testing or other uses

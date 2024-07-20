@@ -49,33 +49,40 @@ exports.CreateProduct = expressAsyncHandler(async (req, res, next) => {
             new ApiError(`There is no user Logged`, 404)
         );
     }
+    try {
 
-    // get number of all Products that user created
-    const Products = await Product.find({ user: req.user._id })
+        // get number of all Products that user created
+        const Products = await Product.find({ user: req.user._id })
 
 
-    // check if user rich limit to create product
-    if (Products.length >= req.user.credit) {
-        return next(
-            new ApiError(`لا يمكنك إنشاء المزيد من المنتجات، لقد وصلت إلى الحد الأقصى الخاص بك`, 404)
-        );
+        // check if user rich limit to create product
+        if (Products.length >= req.user.credit) {
+            return next(
+                new ApiError(`لا يمكنك إنشاء المزيد من المنتجات، لقد وصلت إلى الحد الأقصى الخاص بك`, 404)
+            );
+        }
+
+
+
+        req.body.user = await req.user._id;
+
+        const newProduct = await Product.create(req.body);
+        if (newProduct) {
+            const user = await userModel.findById(req.user._id)
+            user.credit -= 1
+            await user.save();
+        }
+
+        //1) filter Product by userid{get only Product belong this userID}
+        // const AllProducts = await Product.find({ user: req.user._id })
+        // document.save()
+        res.status(200).json({ status: true })
+
+
+    } catch (error) {
+        return next(new ApiError(`Error Creating Product: ${error.message}`, 500));
     }
 
-
-
-    req.body.user = await req.user._id;
-
-    const newProduct = await Product.create(req.body);
-    if (newProduct) {
-        const user = await userModel.findById(req.user._id)
-        user.credit -= 1
-        await user.save();
-    }
-
-    //1) filter Product by userid{get only Product belong this userID}
-    // const AllProducts = await Product.find({ user: req.user._id })
-    // document.save()
-    res.status(200).json({ status: true })
 
 })
 
@@ -91,36 +98,30 @@ exports.getAllProduct = expressAsyncHandler(async (req, res) => {
         filter = req.filterObj;
     }
 
-    // Build query
-    const documentsCounts = await Product.countDocuments();
 
-    const apiFeatures = new ApiFeatures(Product.find({ user: req.user._id }, filter), req.query,)
-        .paginate(documentsCounts)
-        .filter()
+    try {
+        // Build query
+        const documentsCounts = await Product.countDocuments();
 
-        .sort();
+        const apiFeatures = new ApiFeatures(Product.find({ user: req.user._id }, filter), req.query,)
+            .paginate(documentsCounts)
+            .filter()
 
-    // Execute query
-    const { mongooseQuery, paginationResult } = apiFeatures;
-    const files = await mongooseQuery;
+            .sort();
 
-    res.status(200)
-        .json({ results: files.length, paginationResult, data: files });
-    //1) filter Product by userid{get only Product belong this userID}
-    // const Products = await Product.find({ user: req.user._id })
+        // Execute query
+        const { mongooseQuery, paginationResult } = apiFeatures;
+        const files = await mongooseQuery;
+
+        res.status(200)
+            .json({ results: files.length, paginationResult, data: files });
 
 
-    // if (!Products) {
-    //     return next(
-    //         new ApiError(`There is no Product for this user id : ${req.user._id}`, 404)
-    //     );
-    // }
 
-    // res.status(200).json({
-    //     status: 'success',
-    //     result: Products.length,
-    //     data: Products,
-    // });
+    } catch (error) {
+        return next(new ApiError(`Error Updating Product: ${error.message}`, 500));
+    }
+
 })
 
 

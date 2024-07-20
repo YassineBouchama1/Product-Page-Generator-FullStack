@@ -1,10 +1,8 @@
-import { cookies } from "next/headers";
+
 import Link from "next/link";
 
-const UserNavBar = async () => {
+const UserNavBar = ({ token }: { token: string | unknown }) => {
 
-  const cookieStore = await cookies()
-  const token = cookieStore?.get('token')
   return (
     <div className="bg-white lg:pb-12">
       <div className="mx-auto max-w-screen-2xl px-4 md:px-8">

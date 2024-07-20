@@ -12,19 +12,25 @@ const ApiFeatures = require('../utils/apiFeatures');
 
 // @desc Resize Image That user input
 exports.resizeImage = expressAsyncHandler(async (req, res, next) => {
+    if (!req.file) {
+        return next();
+    }
+    console.log(req.user)
+    const fileName = `userName-${Date.now()}-${Math.round(Math.random() * 1E9)}.png`;
 
-    const fileName = `${req.user.name}-${Date.now()}-${Math.round(Math.random() * 1E9)}.png`
-    if (req.file) {
-
+    try {
         await sharp(req.file.buffer)
             .resize(900, 900)
             .toFormat('png')
             .png({ quality: 90 })
-            .toFile(`uploads/storage/${fileName}`)
-        req.body.image = fileName
+            .toFile(`uploads/${fileName}`);
+
+        req.body.image = fileName;
+        next();
+    } catch (error) {
+        return next(new ApiError(`Error processing image: ${error.message}`, 500));
     }
-    next()
-})
+});
 
 
 
@@ -39,16 +45,19 @@ exports.imageUploader = uploadSingleImage('image')
 // @route   POST /api/v1/Images
 // @access  Private/User
 exports.CreateImagesToStock = expressAsyncHandler(async (req, res, next) => {
-    req.body.user = req.user._id
-    newProduct = await uploaderModel.create(
-        req.body);
+    try {
+        req.body.user = req.user._id;
+        const newFIle = await uploaderModel.create(req.body);
 
-    //1) filter Product by userid{get only Product belong this userID}
-    const AllImages = await uploaderModel.find({ user: req.user._id })
-    // document.save()
-    res.status(200).json({ data: AllImages })
+        if (!newFIle) {
+            new ApiError(`Error creating image: ${error.message}`, 500)
+        }
 
-})
+        res.status(200).json({ statue: true });
+    } catch (error) {
+        next(new ApiError(`Error creating image: ${error.message}`, 500));
+    }
+});
 
 
 

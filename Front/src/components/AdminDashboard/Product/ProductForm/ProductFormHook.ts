@@ -1,4 +1,5 @@
 'use client'
+
 import React, { ChangeEvent, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductService from "@/lib/ProductApi";
@@ -6,13 +7,29 @@ import notify from "@/hooks/useNotifaction";
 import displayErrors from "@/hooks/useDisplayErrors";
 import Cookies from "js-cookie";
 
-export default function ProductFormHook({ type, product }) {
+interface ProductFormData {
+  title: string;
+  quantity: string;
+  price: string;
+  seo: string;
+  display: string | any;
+  image: File | string;
+  description: string;
+  id: string;
+}
+
+interface ProductFormHookProps {
+  type: "create" | "edit";
+  product?: Partial<ProductFormData>;
+}
+
+export default function ProductFormHook({ type, product }: ProductFormHookProps) {
   const router = useRouter();
-
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [model, setModel] = useState<boolean>(false);
+  const [modal, setModal] = useState<boolean>(false);
+  const editor = useRef(null);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<ProductFormData>({
     title: product?.title || "",
     quantity: product?.quantity || "",
     price: product?.price || "",
@@ -20,55 +37,49 @@ export default function ProductFormHook({ type, product }) {
     display: product?.image || "",
     image: "",
     description: product?.description || "",
-    id: product?._id || "",
+    id: product?.id || "",
   });
 
-  const handleStateChange = (fieldName, value) => {
+  const handleStateChange = (fieldName: keyof ProductFormData, value: string | File) => {
     setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
   };
 
-  console.log(form.display)
   const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
     const file = e.target.files?.[0];
-    console.log(file)
     if (!file) return;
     if (!file.type.includes("image")) {
-      alert("Please upload an image!");
+      notify("Please upload an image!", "warn");
       return;
     }
     handleStateChange("image", file);
     handleStateChange("display", URL.createObjectURL(file));
   };
 
-  //For Text Rich
-  const editor = useRef(null);
   const config = {
     placeholder: "Start typing...",
     height: "500",
   };
 
+  const validateForm = (): boolean => {
+    if (form.title.trim().length <= 3) {
+      notify("Title should be longer", "warn");
+      return false;
+    }
+    if (form.description.trim().length <= 30) {
+      notify("Description should be longer", "warn");
+      return false;
+    }
+    return true;
+  };
+
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     setSubmitting(true);
-
-    if (form.title.trim().length <= 3) {
-      notify("Title should be longer", "success");
-      return;
-    }
-
-    if (form.description.trim().length <= 30) {
-      notify("Description should be longer", "success");
-      return;
-    }
-
     const formData = new FormData();
 
-    if (type === "create") {
-      formData.append("image", form.image);
-    }
-
-    if (type === "edit" && form.image !== "") {
+    if (type === "create" || (type === "edit" && form.image !== "")) {
       formData.append("image", form.image);
     }
 
@@ -78,72 +89,47 @@ export default function ProductFormHook({ type, product }) {
     formData.append("price", form.price);
     formData.append("seo", form.seo);
 
-
-
-    setSubmitting(false);
-    // bring coockies in client comp
     const token = Cookies.get('token');
 
     try {
+      let result;
       if (type === "create") {
-        const result = await ProductService.create(token, formData);
-
-        if (result.errors || result.error) {
-          setSubmitting(false);
-          displayErrors(result);
-          notify(result.message, "warn");
-
-          return;
-        }
-        if (result.success) {
-          setSubmitting(false);
-          notify("Created", "success");
-          router.push('/products')
-        }
+        result = await ProductService.create(token, formData);
+      } else {
+        result = await ProductService.update(token, formData, form.id);
+      }
+      console.log(result)
+      if (result.errors || result.error) {
+        displayErrors(result);
+        notify(result.message || "An error occurred", "warn");
+        return;
       }
 
-      if (type === "edit") {
-        const result = await ProductService.update(token, formData, product.id);
-        console.log(result)
-        if (result.errors || result.error) {
-          displayErrors(result);
-          setSubmitting(false);
-          return;
-        }
-        if (result.status) {
-          setSubmitting(false);
-          notify("Updated Done", "success");
-          router.refresh();
-          return;
-        }
-
-
+      if (result.success || result.status) {
+        notify(`Product ${type === "create" ? "created" : "updated"} successfully`, "success");
+        // router.push('/admin/products');
       }
     } catch (error) {
-      notify(
-        `Failed to ${type === "create" ? "create" : "edit"
-        } a project. Try again!`,
-        "error"
-      );
+      notify(`Failed to ${type} product. Please try again.`, "error");
     } finally {
       setSubmitting(false);
     }
   };
 
-  const onModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const toggleModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    setModel((previous) => !previous);
+    setModal((prev) => !prev);
   };
 
   return {
     submitting,
     form,
-    model,
+    modal,
     handleStateChange,
     editor,
     config,
     handleChangeImage,
     handleFormSubmit,
-    onModal,
+    toggleModal,
   };
 }

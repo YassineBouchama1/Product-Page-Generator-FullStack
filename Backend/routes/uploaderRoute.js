@@ -13,7 +13,7 @@ const { createImagesValidator, DeletImagesValidator, GetOneImagesValidator } = r
 
 
 router.route('/')
-    .post(AuthService.protect, imageUploader, resizeImage, createImagesValidator, CreateImagesToStock)
+    .post(AuthService.protect, imageUploader, resizeImage, CreateImagesToStock)
 
 
     .get(AuthService.protect, getAllImages)

@@ -13,29 +13,36 @@ const ApiFeatures = require('../utils/apiFeatures')
 exports.CreateOrder = expressAsyncHandler(async (req, res, next) => {
 
 
-    const { productID, quantity, price } = req.body.cartItems;
-    const { shippingAddress, totalOrderPrice, user } = req.body;
-    console.log(quantity)
-    // 1- Create Order
-    const newOrder = await OrderModel.create({
-        cartItems: {
-            productID,
-            quantity,
-            price
-        },
-        shippingAddress,
-        totalOrderPrice,
-        user: user
-    });
+    try {
 
-    // 2- After creating order, decrement product quantity, increment product sold
-    if (newOrder) {
-        await Product.findByIdAndUpdate(product, {
-            $inc: { quantity: -quantity, sold: quantity }
+        const { productID, quantity, price } = req.body.cartItems;
+        const { shippingAddress, totalOrderPrice, user } = req.body;
+        console.log(quantity)
+        // 1- Create Order
+        const newOrder = await OrderModel.create({
+            cartItems: {
+                productID,
+                quantity,
+                price
+            },
+            shippingAddress,
+            totalOrderPrice,
+            user: user
         });
+
+        // 2- After creating order, decrement product quantity, increment product sold
+        if (newOrder) {
+            await Product.findByIdAndUpdate(product, {
+                $inc: { quantity: -quantity, sold: quantity }
+            });
+        }
+
+        res.status(201).json({ status: true });
+
+    } catch (error) {
+        return next(new ApiError(`Error Creating Order: ${error.message}`, 500));
     }
 
-    res.status(201).json({ status: true });
 });
 
 
@@ -67,21 +74,7 @@ exports.getAllPOrders = expressAsyncHandler(async (req, res) => {
 
     res.status(200)
         .json({ results: files.length, paginationResult, data: files });
-    //1) filter order by userid{get only order belong this userID}
-    // const Orders = await OrderModel.find({ user: req.user._id })
 
-
-    // if (!Orders) {
-    //     return next(
-    //         new ApiError(`There is no Product for this user id : ${req.user._id}`, 404)
-    //     );
-    // }
-
-    // res.status(200).json({
-    //     status: 'success',
-    //     result: Orders.length,
-    //     data: Orders,
-    // });
 })
 
 
@@ -96,23 +89,27 @@ exports.getAllPOrders = expressAsyncHandler(async (req, res) => {
 // @access  Protected/Admin
 exports.updateStatus = expressAsyncHandler(async (req, res, next) => {
 
+    try {
+        //1) get order from db by id
+        const order = await OrderModel.findById(req.params.id)
 
-    console.log(req.body)
-    //1) get order from db by id
-    const order = await OrderModel.findById(req.params.id)
+        if (!order) {
+            return next(new ApiError(`there is no Order belong this id ${req.params.id}`, 400))
 
-    if (!order) {
-        return next(new ApiError(`there is no Order belong this id ${req.params.id}`, 400))
+        }
 
+        //2) Update is Deleverd
+        order.status = req.body.status
+
+
+        const UpdatedOrder = await order.save();
+
+        res.status(200).json({ status: true, })
+
+    } catch (error) {
+        return next(new ApiError(`Error updating Order status: ${error.message}`, 500))
     }
 
-    //2) Update is Deleverd
-    order.status = req.body.status
-
-
-    const UpdatedOrder = await order.save();
-
-    res.status(200).json({ status: true, })
 })
 
 
