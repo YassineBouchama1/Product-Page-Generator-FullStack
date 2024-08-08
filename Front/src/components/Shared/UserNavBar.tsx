@@ -1,7 +1,7 @@
 
 import Link from "next/link";
 
-const UserNavBar = ({ token }: { token: string | unknown }) => {
+const UserNavBar = () => {
 
   return (
     <div className="bg-white lg:pb-12">
@@ -47,16 +47,7 @@ const UserNavBar = ({ token }: { token: string | unknown }) => {
               من نحن
             </Link>
           </nav>
-          {token ? (<div className="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
-            <Link
-              href="/admin"
-              className="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
-            >
-              admin
-            </Link>
-
-
-          </div>) : (<div className="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
+          <div className="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
             <Link
               href="/login"
               className="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
@@ -70,7 +61,7 @@ const UserNavBar = ({ token }: { token: string | unknown }) => {
             >
               إنشاء حساب
             </Link>
-          </div>)}
+          </div>
 
 
           <button

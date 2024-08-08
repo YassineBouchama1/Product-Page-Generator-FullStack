@@ -15,7 +15,8 @@ async function page() {
 
   const files = await FileManagerServeice.findAll(token?.value);
 
-  if (!files?.data) return <Error message="There is a pb while fetching Files"/>;
+  if (!files?.data) return <Error message="There is a pb while fetching Files" />;
+  console.log(files)
   return (
     <section className="bg-white rounded-md flex flex-col  overflow-hidden px-8 shadow">
       <section className="bg-white rounded-md grid  grid-cols-6">

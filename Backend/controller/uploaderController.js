@@ -16,14 +16,14 @@ exports.resizeImage = expressAsyncHandler(async (req, res, next) => {
         return next();
     }
     console.log(req.user)
-    const fileName = `userName-${Date.now()}-${Math.round(Math.random() * 1E9)}.png`;
+    const fileName = `storage-${Date.now()}-${Math.round(Math.random() * 1E9)}.png`;
 
     try {
         await sharp(req.file.buffer)
             .resize(900, 900)
             .toFormat('png')
             .png({ quality: 90 })
-            .toFile(`uploads/${fileName}`);
+            .toFile(`uploads/storage/${fileName}`)
 
         req.body.image = fileName;
         next();
