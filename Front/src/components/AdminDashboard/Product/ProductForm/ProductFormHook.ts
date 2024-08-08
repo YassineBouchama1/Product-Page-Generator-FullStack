@@ -107,7 +107,7 @@ export default function ProductFormHook({ type, product }: ProductFormHookProps)
 
       if (result.success || result.status) {
         notify(`Product ${type === "create" ? "created" : "updated"} successfully`, "success");
-        // router.push('/admin/products');
+        router.push('/admin/products');
       }
     } catch (error) {
       notify(`Failed to ${type} product. Please try again.`, "error");
